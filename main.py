@@ -46,7 +46,7 @@ def calculate_sililarity_score(transcribedText):
 
 print("--" * 20)
 # for dir in listOfDirs:
-dir = "/Users/jay/work/transcribe_pledge/folder_2"
+dir = "folder_2" #path of the directory
 filesList = glob.glob(f"{dir}/*.mp4")
 filesList.sort()
 
@@ -57,7 +57,7 @@ for files in filesList:
     start_time = time.time()
     transcribedText = transcribe(files)
     name = find_name(transcribedText)
-    similarityScore = calculate_sililarity_score(transcribedText)
+    #similarityScore = calculate_sililarity_score(transcribedText)
     end_time = time.time()
 
     calculate_time = end_time - start_time
@@ -65,23 +65,4 @@ for files in filesList:
     print("##" * 20)
     ic(calculate_time)
     print("##" * 20)
-
-
-#     new_row = {
-#     'videoFilePath': files,
-#     'name': name,
-#     'transcribe': transcribedText,
-#     'pledge_score': similarityScore
-#     }
-
-#     new_df = pd.DataFrame(new_row, index=[0])
-#     df = pd.concat([df, new_df], ignore_index=True)
-
-#     print(df.head())
-# csv_file = 'output_2.csv'
-
-# # Save the DataFrame as a CSV file
-# df.to_csv(csv_file, index=False)
-
-
 
