@@ -58,11 +58,13 @@ for files in filesList:
     transcribedText = transcribe(files)
     name = find_name(transcribedText)
     #similarityScore = calculate_sililarity_score(transcribedText)
+    
     end_time = time.time()
 
     calculate_time = end_time - start_time
     
     print("##" * 20)
+    ic(transcribedText)
     ic(calculate_time)
     print("##" * 20)
 
