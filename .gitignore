@@ -8,9 +8,7 @@
 !.git*
 !.editorconfig
 !.eslint*
-!.prettierrc*
 !.vscode
-!.husky
 
 ## Dev
 .eslintcache
