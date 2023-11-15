@@ -7,6 +7,9 @@ install requirements file.
 pip install -r requirements.txt
 --------------------------------------------
 
+Make output folder.
+"mkdir output"
+---
 Move video direcories in this directory.
 in line no 49 of main.py change the name of the folder.
 
