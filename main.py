@@ -11,9 +11,10 @@ model = whisper.load_model("large")
 import demucs.separate
 import pandas as pd
 
+# TODO: move "separated/mdx_extra" -> "output/separated/mdx_extra"
 BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY = "separated/mdx_extra"
 TRANSCRIBED_FILE_PATH = "output/transcribe_text.csv" ### PATH OF THE OUTPUT CSV FILE
-INPUT_VIDEO_DIRECTORY = "/Users/jay/work/pledge-transcribe_/new_video" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH)
+INPUT_VIDEO_DIRECTORY = "/Users/khasgiwa/Downloads/GWR/16_20" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH)
 
 class TRANSCRIBE():
     def __init__(self):
@@ -78,7 +79,7 @@ class TRANSCRIBE():
             new_df = pd.DataFrame(new_row, index=[0])
             self.df = pd.concat([self.df, new_df], ignore_index=True)
 
-            # Save the DataFrame as a CSV file            
+            # Save the DataFrame as a CSV file
             self.df.to_csv(csv_path, index=False)
 
 

@@ -1,19 +1,20 @@
-import cv2
-from numpy.linalg import norm
 import glob
-from icecream import ic
 import random
 
-IMAGE_SAVE_DIRECTORY = "screenshots" # PATH DIR OF SAVE FRAME FROM VIDEO (DO NOT ADD / AT THE END OF PATH)
-VIDEO_DIRECTORY = "/Users/jay/work/pledge-transcribe_/new_video" # PATH OF VIDEO DIRECTORY (DO NOT ADD / AT THE END OF PATH)
-IMAGE_INDEX_DIRECTORY = "image_index"
+import cv2
+from icecream import ic
+from numpy.linalg import norm
+
+IMAGE_SAVE_DIRECTORY = "output/screenshots" # PATH DIR OF SAVE FRAME FROM VIDEO (DO NOT ADD / AT THE END OF PATH)
+VIDEO_DIRECTORY = "/Users/khasgiwa/Downloads/GWR/16_20" # PATH OF VIDEO DIRECTORY (DO NOT ADD / AT THE END OF PATH)
+IMAGE_INDEX_DIRECTORY = "output/image_index"
 class GETFRAME():
-    
+
     def __init__(self):
         pass
 
     def getImageFromVideo(self, video_path):
-        video_capture = cv2.VideoCapture(video_path)  
+        video_capture = cv2.VideoCapture(video_path)
         total_frames = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
         random_frame = random.randint(1, total_frames-5)
 
@@ -24,9 +25,9 @@ class GETFRAME():
             if not ret or current_frame == random_frame:
                 break
             current_frame += 1
-        if current_frame == random_frame:            
-            return frame   
-        
+        if current_frame == random_frame:
+            return frame
+
     def process(self, dir_path, frame_save_dir):
         filesList = glob.glob(f"{dir_path}/*.mp4")
         filesList.sort()
@@ -49,7 +50,7 @@ class GETFRAME():
             with open(imageIndexFilePath, 'w') as f:
                 f.write("")
 
-        
+
 if __name__ == "__main__":
 
     lowest_diff = 10
@@ -58,4 +59,4 @@ if __name__ == "__main__":
     frame_save_dir = IMAGE_SAVE_DIRECTORY
     getframe_obj = GETFRAME()
     getframe_obj.process(dir_path, frame_save_dir)
-    
+

@@ -1,9 +1,11 @@
-from deepface import DeepFace
 import glob
-from icecream import ic
-import cv2
 
+import cv2
 import pandas as pd
+from deepface import DeepFace
+from icecream import ic
+
+# TODO: extract config directories, clean, refactor
 
 class COMPAREFACE():
     def __init__(self):
@@ -40,7 +42,7 @@ class COMPAREFACE():
                 # self.df.to_csv("face_compare_score.csv", index=False)
 
             except:
-                result_2 = "face not detected" 
+                result_2 = "face not detected"
                 print("face not detected")
 
             new_row = {
@@ -52,11 +54,11 @@ class COMPAREFACE():
             self.df = pd.concat([self.df, new_df], ignore_index=True)
             self.df.to_csv("face_compare_score.csv", index=False)
 
-            
+
         # ic(minimum_score)
         # ic(minimum_score_image)
         # ic(minimum_score_result)
-        
+
         # sorted_dict = dict(sorted(similar_face_score_dict.items()))
 
         # if len(sorted_dict) > 5:
@@ -73,18 +75,11 @@ class COMPAREFACE():
             a = input()
             # Save the DataFrame as a CSV file
 
-
-    
-
-
-
-
-
 if __name__ == "__main__":
     multi_image_list = glob.glob("face_images/*")
     print(multi_image_list)
     single_image_list = glob.glob("face_images_single/*")
-    
+
     single_image_list.sort()
     print("--" * 20)
     print(single_image_list)

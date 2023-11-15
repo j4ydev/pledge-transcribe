@@ -17,8 +17,5 @@
 *.log
 
 # custom directories contaning input and output data
-separated/
 input/
-output/
-intermediate/
-transcribe_text.csv
+# output/
