@@ -12,7 +12,7 @@ import pandas as pd
 
 class TRANSCRIBE():
     def __init__(self):
-        self.df = pd.DataFrame(columns=['videoFilePath','transcribe_text'])
+        self.df = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'transcribetext'])
 
     def transcribe(self, agentName):
         demucs.separate.main(["--mp3", "--two-stems", "vocals", "-n", "mdx_extra", agentName])
@@ -35,6 +35,7 @@ class TRANSCRIBE():
         for files in filesList:
             print(files)
             # transcribe text
+
             start_time = time.time()
             transcribedText = self.transcribe(files)
             end_time = time.time()
@@ -45,10 +46,24 @@ class TRANSCRIBE():
             ic(calculate_time)
             print("##" * 20)
 
+
+            file_name = files.split("/")[-1].replace(".mp4","")
+            file_name_seperate_list = file_name.split("_")
+            file_row = file_name_seperate_list[1]
+            file_column = file_name_seperate_list[2]
+            file_index = "index_number"
+            file_pagenumber = file_name_seperate_list[0]
+            file_videoid = file_name_seperate_list[3]
+            file_transcribetext = transcribedText
+
             #update database
             new_row = {
-            'videoFilePath': files.split("/")[-1].replace(".mp4",""),
-            'transcribe_text': transcribedText,
+            'row': file_row, 
+            'column': file_column,
+            'index': file_index,
+            'pagenumber': file_pagenumber,
+            'videoid': file_videoid, 
+            'transcribetext': file_transcribetext
             }
 
             new_df = pd.DataFrame(new_row, index=[0])
@@ -60,7 +75,7 @@ class TRANSCRIBE():
 
 ####
 if __name__ == "__main__":
-    dir = "/Users/jay/work/transcribe_pledge/all_mp4" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH)
+    dir = "/Users/jay/work/pledge-transcribe_/new_video" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH)
     csv_path = "transcribe_text.csv" ### PATH OF THE CSV FILE
     transcribe_obj = TRANSCRIBE()
     transcribe_obj.process(dir, csv_path)
