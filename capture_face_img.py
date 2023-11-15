@@ -4,6 +4,9 @@ import glob
 from icecream import ic
 import random
 
+IMAGE_SAVE_DIRECTORY = "screenshots" # PATH DIR OF SAVE FRAME FROM VIDEO (DO NOT ADD / AT THE END OF PATH)
+VIDEO_DIRECTORY = "/Users/jay/work/pledge-transcribe_/new_video" # PATH OF VIDEO DIRECTORY (DO NOT ADD / AT THE END OF PATH)
+IMAGE_INDEX_DIRECTORY = "image_index"
 class GETFRAME():
     
     def __init__(self):
@@ -28,21 +31,31 @@ class GETFRAME():
         filesList = glob.glob(f"{dir_path}/*.mp4")
         filesList.sort()
 
-        for files in filesList:
-            for i in range (0,5):
-                frame = self.getImageFromVideo(files)
-                frame_filename = f'{frame_save_dir}/{files.split("/")[-1].replace(".mp4", f"_{i}.png")}'
-                # Save the frame as an image
-                print(frame_filename)
-                print("--")
-                cv2.imwrite(frame_filename, frame)
+        for videoFilePath in filesList:
+            videoFileName = videoFilePath.split("/")[-1].replace(".mp4", ".png")
+            # for i in range (0,5):
+            frame = self.getImageFromVideo(videoFilePath)
+            frame_filename = f'{frame_save_dir}/{videoFileName}'
+            # Save the frame as an image
+            print(frame_filename)
+            print("--")
+            cv2.imwrite(frame_filename, frame)
+
+
+            ### create image_index file
+            imageIndexFileName = videoFilePath.split("/")[-1].replace(".mp4", ".txt")
+            imageIndexFilePath = f"{IMAGE_INDEX_DIRECTORY}/{imageIndexFileName}"
+
+            with open(imageIndexFilePath, 'w') as f:
+                f.write("")
+
         
 if __name__ == "__main__":
 
     lowest_diff = 10
     lowest_diff_path = ""
-    dir_path = "/Users/jay/work/transcribe_pledge/all_mp4" # PATH OF VIDEO DIRECTORY (DO NOT ADD / AT THE END OF PATH)
-    frame_save_dir = "face_images" # PATH DIR OF SAVE FRAME FROM VIDEO (DO NOT ADD / AT THE END OF PATH)
+    dir_path = VIDEO_DIRECTORY
+    frame_save_dir = IMAGE_SAVE_DIRECTORY
     getframe_obj = GETFRAME()
     getframe_obj.process(dir_path, frame_save_dir)
     
