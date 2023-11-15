@@ -7,7 +7,8 @@ input:: a directory having videos with file name having metadata - `${pageNumber
 output::
 
 1. A csv with folllowing columns (do not give header) row, column, index, pageNumber, video-id, transcribed text
-2. image index, create a file (with same file name as video) in directory named image_index - that will be used later
+2. screenshot, create a file (with same file name as video) in directory named screenshot - that will be used in next step
+3. image index, create a file (with same file name as video) in directory named image_index - that will be used later
 
 Phase#3 (TBD)
 input:: (a csv or a json that is to be looped)
