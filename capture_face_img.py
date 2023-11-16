@@ -16,7 +16,11 @@ class GETFRAME():
     def getImageFromVideo(self, video_path):
         video_capture = cv2.VideoCapture(video_path)
         total_frames = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
+        
+        # try:
         random_frame = random.randint(1, total_frames-5)
+        # except:
+        #     random_frame = 0
 
         current_frame = 0
 
