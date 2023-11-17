@@ -10,8 +10,9 @@ from icecream import ic
 class COMPAREFACE():
     def __init__(self):
         # self.df = pd.DataFrame(columns=['videoFilePath','similar_face_name_score','maximin_score', 'maximum_score_face_name'])
-        self.df =  pd.DataFrame(columns=['image_name', 'embedding'])
-
+        # self.df =  pd.DataFrame(columns=['row', 'column', 'index', 'pageNumber', 'video-id_1', 'similarity_score_1','video-id_2','similarity_score_2', 'video-id_2','similarity_score_2'])
+        pass
+    
     def main(self, images_list, ref_image, single_image_path):
         minimum_score = 1
         minimum_score_image = ""
