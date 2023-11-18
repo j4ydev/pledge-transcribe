@@ -1,14 +1,17 @@
-from video_transcribe import TRANSCRIBE
+import glob
+import os
+import time
+
+import cv2
+import numpy as np
+import pandas as pd
+from deepface.commons import distance as dst
+from deepface.commons import functions, realtime
+from icecream import ic
+
 from capture_face_img import GETFRAME
 from face_embedding import FACEEMBEDDINGS
-import glob
-import pandas as pd
-import time
-import os
-from icecream import ic
-import cv2
-from deepface.commons import functions, realtime, distance as dst
-import numpy as np
+from video_transcribe import TRANSCRIBE
 
 transcribe_obj = TRANSCRIBE()
 getframe_obj = GETFRAME()
@@ -18,7 +21,7 @@ faceembeddings_obj = FACEEMBEDDINGS()
 # TODO: move "separated/mdx_extra" -> "output/separated/mdx_extra"
 BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY = "separated/mdx_extra"
 TRANSCRIBED_FILE_PATH = "output/transcribe_text.csv" ### PATH OF THE OUTPUT CSV FILE
-FACE_MATHCING_CSV_PATH = "output/face_match.csv"
+FACE_MATCHING_CSV_PATH = "output/face_match.csv"
 INPUT_VIDEO_DIRECTORY = "/Users/jay/work/new_video" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH)
 IMAGE_SAVE_DIRECTORY = "output/screenshots" # PATH DIR OF SAVE FRAME FROM VIDEO (DO NOT ADD / AT THE END OF PATH)
 IMAGE_INDEX_DIRECTORY = "output/image_index" # PATH DIR OF SAVE FACE EMBEDDINGS FROM SCREENSHOTS (DO NOT ADD / AT THE END OF THE PATH)
@@ -33,9 +36,9 @@ else:
     transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'timeconsumed', 'transcribetext'])
 
 ### IF FACEMATCHING DATAFRAME EXIST OR NOT EXISTS ###
-if os.path.isfile(FACE_MATHCING_CSV_PATH):
+if os.path.isfile(FACE_MATCHING_CSV_PATH):
     try:
-        face_match_dataframe = pd.read_csv(FACE_MATHCING_CSV_PATH)
+        face_match_dataframe = pd.read_csv(FACE_MATCHING_CSV_PATH)
     except:
         face_match_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'video-id_1', 'similarity_score_1','video-id_2','similarity_score_2', 'video-id_3','similarity_score_3'])
 else:
@@ -51,14 +54,14 @@ def get_details_from_video_name(file_name):
     file_videoid = file_name_separate_list[3]
 
     return file_row, file_column, file_index, file_pagenumber, file_videoid
-    
+
 ### CHECK IF VIDEO IS ALREADY PROCESSED OR NOT ###
 def is_value_present(index_number, dataframe):
     if index_number in dataframe["index"].values:
         return True
     else:
         return False
-    
+
 ### CHECK IF SCREENSHOT ALREADY PRESENT IN DIRECTORY ###
 def check_if_screenshot_present(imageFileName):
     possible_screenshot_path = f"{IMAGE_SAVE_DIRECTORY}/{imageFileName}"
@@ -119,13 +122,13 @@ def process(transcribe_dataframe, face_match_dataframe):
         is_value_present_flag = is_value_present(file_index, transcribe_dataframe)
 
         if not is_value_present_flag:
-            # MODULE:1 ------> TRANSCRIBE VIDEO PROCESS 
+            # MODULE:1 ------> TRANSCRIBE VIDEO PROCESS
             start_time = time.time()
             fileTranscribeText = transcribe_obj.transcribe(videoFilePath)
             end_time = time.time()
             time_consumed = end_time - start_time
 
-            # INSERT DATA IN DATAFRAME 
+            # INSERT DATA IN DATAFRAME
             newTranscribeRow = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'videoid': file_videoid, 'timeconsumed': time_consumed, 'transcribetext': fileTranscribeText}
             print("##" * 20)
             ic(newTranscribeRow)
@@ -137,15 +140,15 @@ def process(transcribe_dataframe, face_match_dataframe):
             transcribe_dataframe.to_csv(TRANSCRIBED_FILE_PATH, index=False)
         else:
             print("DATA ALREADY PRESENT IN DATAFRAME.")
-        
+
 
         # is_value_present_flag = is_value_present(file_index, embeding_dataframe)
         # MODULE:2 ------> CAPTURE FACE IMAGES
         imageFileName = videoFilePath.split("/")[-1].replace(".mp4", ".png")
         screenshot_present_flag = check_if_screenshot_present(imageFileName)
         if not screenshot_present_flag:
-            
-            # MODULE:3 ------> SAVE IMAGE EMBEDDINGS 
+
+            # MODULE:3 ------> SAVE IMAGE EMBEDDINGS
             embeddingData = capture_face_image_and_embedding(videoFilePath, imageFileName)
             ### create image_index file
             imageIndexFileName = videoFilePath.split("/")[-1].replace(".mp4", ".txt")
@@ -156,7 +159,7 @@ def process(transcribe_dataframe, face_match_dataframe):
 
     faceEmbeddingList = glob.glob(f"{IMAGE_INDEX_DIRECTORY}/*.txt")
     faceEmbeddingList.sort()
-         
+
     for faceEmbeddingPath in faceEmbeddingList:
         # MODULE:4 ------> COMPARE IMAGE WITH OTHER IMAGES
         embeddingFileName = faceEmbeddingPath.split("/")[-1].replace(".txt","")
@@ -167,16 +170,16 @@ def process(transcribe_dataframe, face_match_dataframe):
             with open(faceEmbeddingPath, "r") as f:
                 current_image_embedding = f.read()
             current_image_embedding = eval(current_image_embedding)
-            
-            
+
+
             for embedding_path in embeddingFilesList:
                 print(embedding_path)
                 with open(embedding_path, "r") as f:
                     image_from_dir = f.read()
                 print("::" * 20)
-                
+
                 image_from_dir = eval(image_from_dir)
-                
+
                 a = np.matmul(np.transpose(np.array(image_from_dir[0]["embedding"])), np.array(current_image_embedding[0]["embedding"]))
                 b = np.sum(np.multiply(np.array(image_from_dir[0]["embedding"]), np.array(image_from_dir[0]["embedding"])))
                 c = np.sum(np.multiply(np.array(current_image_embedding[0]["embedding"]), np.array(current_image_embedding[0]["embedding"])))
@@ -194,7 +197,7 @@ def process(transcribe_dataframe, face_match_dataframe):
             print(first_two_pairs)
             videoid_1, similarity_score_1, videoid_2, similarity_score_2 = find_videoid_and_score(first_two_pairs)
 
-            # INSERT DATA IN DATAFRAME 
+            # INSERT DATA IN DATAFRAME
             newFaceRow = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'videoid': file_videoid, 'match_videoid_1': file_videoid, 'similarity_score_1': 1,'match_videoid_2': videoid_1, 'similarity_score_2': similarity_score_1, 'match_videoid_3': videoid_2, 'similarity_score_3': similarity_score_2}
 
             print("##" * 20)
@@ -204,10 +207,10 @@ def process(transcribe_dataframe, face_match_dataframe):
             face_match_dataframe = pd.concat([face_match_dataframe, newFaceDF], ignore_index=True)
 
             # Save the DataFrame as a CSV file
-            face_match_dataframe.to_csv(FACE_MATHCING_CSV_PATH, index=False)
+            face_match_dataframe.to_csv(FACE_MATCHING_CSV_PATH, index=False)
         else:
             print("FACE COMPARISION DATA ALREADY PRESENT IN DATAFRAME.")
-            
+
 
 
 
