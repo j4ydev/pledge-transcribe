@@ -51,12 +51,14 @@ class GETFRAME():
         print("--")
         cv2.imwrite(frameFilePath, frame)
         face_found = self.find_face(frameFilePath)
+
+        if self.counter > 30:
+            return "NO FACE PRESENT IN VIDEO."
+
         if face_found == False:
             frameFilePath = self.capture_face_image(videoFilePath, imageFileName)
         else:
             pass
-        if self.counter > 15:
-            return "NO FACE PRESENT IN VIDEO."
         return frameFilePath
 
     def process(self, inputVideoFilesList):
@@ -66,6 +68,7 @@ class GETFRAME():
             if not screenshot_present_flag:
                 self.counter = 0 
                 frameFilePath = self.capture_face_image(videoFilePath, imageFileName)
+                print(frameFilePath)
         return "Complete"
 
 if __name__ == "__main__":
