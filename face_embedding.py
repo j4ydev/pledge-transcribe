@@ -1,10 +1,7 @@
 import glob
-
-import cv2
-import pandas as pd
+from config import *
 from deepface import DeepFace
-from icecream import ic
-
+import os
 
 # TODO: extract config directories, clean, refactor
 
@@ -21,21 +18,45 @@ class FACEEMBEDDINGS():
             print("face not detected")
 
         return result_2
+    
+    def check_if_embedding_present(self, imageFileName):
+        possible_screenshot_path = f"{IMAGE_INDEX_DIRECTORY}/{imageFileName}"
+        if os.path.isfile(possible_screenshot_path):
+            return True
+        else:
+            return False
+    
+    def process(self, faceImageFilesList):
+
+        for faceImagesPath in faceImageFilesList:
+             
+            imageIndexFileName = faceImagesPath.split("/")[-1].replace(".png", ".txt")
+            imageIndexFilePath = f"{IMAGE_INDEX_DIRECTORY}/{imageIndexFileName}"
+
+            embeddingPresentFlag = self.check_if_embedding_present(imageIndexFilePath)
+
+
+            if embeddingPresentFlag == False:
+                result, result_2_embedding_data = DeepFace.verify(img1_path = self.ref_image_path, img2_path = faceImagesPath)
+            else:
+                print("EMBEDDING ALREADY PRESENT IN DIRECTORY.")
+
+            with open(imageIndexFilePath, 'w') as f:
+                f.write(str(result_2_embedding_data))
+
+        return "Complete"
 
 
 
 if __name__ == "__main__":
-    multi_image_list = glob.glob("/Users/jay/work/pledge-transcribe_face/face_images/*")
     faceembedding_obj = FACEEMBEDDINGS()
 
+    faceImageFilesList = glob.glob(f"{IMAGE_SAVE_DIRECTORY}/*.png")
+    faceImageFilesList.sort()
 
-    for image_path in multi_image_list:
+    faceembedding_obj.process(faceImageFilesList)
 
-        embedding = faceembedding_obj.find_face_embedding(image_path)
-        save_path = f'output/multiple_images_index/{image_path.split("/")[-1].replace(".png", ".txt")}'
 
-        with open(save_path, 'w') as f:
-            f.write(str(embedding))
 
     # single_image_list.sort()
     # print("--" * 20)

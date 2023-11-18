@@ -6,21 +6,31 @@ import spacy
 import whisper
 from fuzzywuzzy import fuzz
 from icecream import ic
+import os
 
 model = whisper.load_model("large")
 import demucs.separate
 import pandas as pd
+from icecream import ic
+from config import *
+from utils import *
 
-# TODO: move "separated/mdx_extra" -> "output/separated/mdx_extra"
-BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY = "separated/mdx_extra"
-TRANSCRIBED_FILE_PATH = "output/transcribe_text.csv" ### PATH OF THE OUTPUT CSV FILE
-INPUT_VIDEO_DIRECTORY = "/Users/jay/work/new_video" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH)
+
+# # TODO: move "separated/mdx_extra" -> "output/separated/mdx_extra"
+# BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY = "separated/mdx_extra"
+# TRANSCRIBED_FILE_PATH = "output/transcribe_text.csv" ### PATH OF THE OUTPUT CSV FILE
+# INPUT_VIDEO_DIRECTORY = "/Users/jay/work/new_video" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH)
 
 class TRANSCRIBE():
     def __init__(self):
-        # self.df = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'timeconsumed', 'transcribetext'])
-        pass
-    
+        if os.path.isfile(TRANSCRIBED_FILE_PATH):
+            try:
+                self.transcribe_dataframe = pd.read_csv(TRANSCRIBED_FILE_PATH)
+            except:
+                self.transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'timeconsumed', 'transcribetext'])
+        else:
+            self.transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'timeconsumed', 'transcribetext'])
+
     def transcribe(self, videoFilePath):
         # at times incorrect files are also present -- handle this later
         videoFileName = videoFilePath.split('/')[-1].replace('.mp4', '')
@@ -28,65 +38,47 @@ class TRANSCRIBE():
         demucs.separate.main(["--mp3", "--two-stems", "vocals", "-n", "mdx_extra", videoFilePath])
         audioPath = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{videoFileName}/vocals.mp3"
 
-
         options = dict(language="en", beam_size=5, best_of=5)
         transcribeOption = dict(task="transcribe", **options)
+        
         transcription = model.transcribe(audioPath, **transcribeOption)
-
         transcribedText = transcription["text"]
-
         return transcribedText
 
-    # def process(self, dir_path, csv_path):
-    #     dir = dir_path
-    #     filesPathList = glob.glob(f"{dir}/*.mp4")
-    #     filesPathList.sort()
-    #     print(filesPathList)
 
-    #     for filePath in filesPathList:
-    #         print(filePath)
-    #         # transcribe text
+    def process(self, inputVideoFilesList):
 
-    #         start_time = time.time()
-    #         transcribedText = self.transcribe(filePath)
-    #         end_time = time.time()
-    #         time_consumed = end_time - start_time
+        for videoFilePath in inputVideoFilesList:
+            ic(videoFilePath)
 
+            # GET DETAILS OF VIDEO FROM VIDEO FILE NAME
+            file_name = videoFilePath.split("/")[-1].replace(".mp4","")
+            file_row, file_column, file_index, file_pagenumber, file_videoid = get_details_from_video_name(file_name)
+            is_value_present_flag = is_value_present_in_dataframe(file_index, self.transcribe_dataframe)
 
-    #         file_name = filePath.split("/")[-1].replace(".mp4","")
-    #         file_name_separate_list = file_name.split("_")
-    #         file_row = file_name_separate_list[1]
-    #         file_column = file_name_separate_list[2]
-    #         file_index = 4*(int(file_row)-1) + int(file_column)
-    #         file_pagenumber = file_name_separate_list[0]
-    #         file_videoid = file_name_separate_list[3]
-    #         file_transcribetext = transcribedText
+            if not is_value_present_flag:
+                # MODULE:1 ------> TRANSCRIBE VIDEO PROCESS 
+                start_time = time.time()
+                fileTranscribeText = self.transcribe(videoFilePath)
+                end_time = time.time()
+                time_consumed = end_time - start_time
 
-    #         #update database
-    #         new_row = {
-    #         'row': file_row,
-    #         'column': file_column,
-    #         'index': file_index,
-    #         'pagenumber': file_pagenumber,
-    #         'videoid': file_videoid,
-    #         'timeconsumed': time_consumed,
-    #         'transcribetext': file_transcribetext
-    #         }
+                # INSERT DATA IN DATAFRAME 
+                newTranscribeRow = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'videoid': file_videoid, 'timeconsumed': time_consumed, 'transcribetext': fileTranscribeText}
+                print("##" * 20)
+                ic(newTranscribeRow)
+                print("##" * 20)
+                newTranscribeDF = pd.DataFrame(newTranscribeRow, index=[0])
+                self.transcribe_dataframe = pd.concat([self.transcribe_dataframe, newTranscribeDF], ignore_index=True)
 
-    #         print("##" * 20)
-    #         ic(new_row)
-    #         print("##" * 20)
+                # Save the DataFrame as a CSV file
+                self.transcribe_dataframe.to_csv(TRANSCRIBED_FILE_PATH, index=False)
+            else:
+                print("DATA ALREADY PRESENT IN DATAFRAME.")
+        return "Complete"
 
-    #         new_df = pd.DataFrame(new_row, index=[0])
-    #         self.df = pd.concat([self.df, new_df], ignore_index=True)
-
-    #         # Save the DataFrame as a CSV file
-    #         self.df.to_csv(csv_path, index=False)
-
-
-# ####
-# if __name__ == "__main__":
-#     dir = INPUT_VIDEO_DIRECTORY
-#     csv_path = TRANSCRIBED_FILE_PATH
-#     transcribe_obj = TRANSCRIBE()
-#     transcribe_obj.process(dir, csv_path)
+if __name__ == "__main__":
+    transcribe_obj = TRANSCRIBE()
+    inputVideoFilesList = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*.mp4")
+    inputVideoFilesList.sort()
+    transcribe_obj.process(inputVideoFilesList)
