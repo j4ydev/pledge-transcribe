@@ -2,6 +2,7 @@
 
 
 def get_details_from_video_name(file_name):
+    
     file_name_separate_list = file_name.split("_")
     file_row = file_name_separate_list[1]
     file_column = file_name_separate_list[2]

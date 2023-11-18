@@ -1,11 +1,9 @@
 import glob
-
 from icecream import ic
-
-from capture_face_img import GETFRAME
+from capture_face_image import GETFRAME
 from config import *
-from face_embedding import FACEEMBEDDINGS
-from video_transcribe import TRANSCRIBE
+from face_index import FACEEMBEDDINGS
+from transcribe import TRANSCRIBE
 
 transcribe_obj = TRANSCRIBE()
 getframe_obj = GETFRAME()
