@@ -18,4 +18,8 @@
 
 # custom directories contaning input and output data
 input/
-# output/
+output/
+separated
+
+# libraries
+*.pyc
