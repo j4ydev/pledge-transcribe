@@ -41,7 +41,6 @@ class GETFRAME():
             foundFaceFlag = True
         except:
             foundFaceFlag = False
-            print("face not detected")
         return foundFaceFlag
 
     def capture_face_image(self, videoFilePath, imageFileName):
@@ -50,7 +49,7 @@ class GETFRAME():
         frame = self.getImageFromVideo(videoFilePath)
         frameFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFileName}'
         # Save the frame as an image
-        print(frameFilePath)
+        print("ATTEMPTING TO FIND FACE: ", frameFilePath)
         print("--")
         cv2.imwrite(frameFilePath, frame)
         face_found = self.find_face(frameFilePath)

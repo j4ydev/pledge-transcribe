@@ -39,21 +39,18 @@ class COMPAREFACE():
         first_two_pairs = dict(first_two_pairs)
         first_distance = True
         for distance in first_two_pairs:
-            print("aaaa",first_two_pairs[distance])
             file_row, file_column, file_index, file_pagenumber, file_videoid = get_details_from_video_name(first_two_pairs[distance].split("/")[-1].replace(".mp4",""))
             if first_distance:
                 first_distance = False
                 videoid_1 = file_videoid
                 similarity_score_1 = 1 - float(distance)
                 ic(videoid_1)
-                print("@@"* 50)
             else:
                 videoid_2 = file_videoid
                 similarity_score_2 = 1 - float(distance)
         return videoid_1, similarity_score_1, videoid_2, similarity_score_2
 
     def process(self, faceEmbeddingList):
-        print(faceEmbeddingList)
         for faceEmbeddingPath in faceEmbeddingList:
             # MODULE:4 ------> COMPARE IMAGE WITH OTHER IMAGES
             embeddingFileName = faceEmbeddingPath.split("/")[-1].replace(".txt","")
