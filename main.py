@@ -4,7 +4,7 @@ from icecream import ic
 
 from capture_face_image import GETFRAME
 from config import *
-from face_index import FACEEMBEDDINGS
+from store_deepface_embedding import FACEEMBEDDINGS
 from transcribe import TRANSCRIBE
 
 transcribe_obj = TRANSCRIBE()
