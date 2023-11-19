@@ -57,12 +57,15 @@ class GETFRAME():
         face_found = self.find_face(frameFilePath)
 
         if self.counter > 30:
+            print("NO FACE PRESENT IN VIDEO: Attempts", self.counter)
             return "NO FACE PRESENT IN VIDEO."
 
         if face_found == False:
             frameFilePath = self.capture_face_image(videoFilePath, imageFileName)
         else:
+            print("Attempts", self.counter)
             pass
+
         return frameFilePath
 
     def process(self, inputVideoFilesList):
