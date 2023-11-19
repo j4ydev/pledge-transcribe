@@ -7,14 +7,18 @@ from deepface import DeepFace
 from icecream import ic
 from numpy.linalg import norm
 
-from config import *
+from config import *  # TODO: Import only needed names or import the module and then use its members. google to know more
 
-SCREENSHOT_FILE_FORMAT = '.png' # TODO: Jay move this to config file and use it from there
-VIDEO_FILE_FORMAT = '.mp4' # TODO: Jay move this to config file and use it from there
+SCREENSHOT_FILE_FORMAT = 'png' # TODO: Jay move this to config file and use it from there
+VIDEO_FILE_FORMAT = 'mp4' # TODO: Jay move this to config file and use it from there
 
 class GETFRAME():
     def __init__(self):
         self.counter = 0
+
+    def remove_file_if_exists(self, file_path):
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
     def getImageFromVideo(self, video_path):
         video_capture = cv2.VideoCapture(video_path)
@@ -44,12 +48,12 @@ class GETFRAME():
             foundFaceFlag = False
         return foundFaceFlag
 
-    def capture_face_image(self, videoFilePath, imageFileName):
-        referenceFrameFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFileName}'
-        frameToCompareFilePath = f'{IMAGE_SAVE_DIRECTORY}/2_{imageFileName}'
+    def capture_face_image(self, videoFilePath, imageFilePathWithoutExtension):
+        referenceFrameFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFilePathWithoutExtension}.{SCREENSHOT_FILE_FORMAT}'
+        frameToCompareFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFilePathWithoutExtension}_2.{SCREENSHOT_FILE_FORMAT}'
 
         if self.counter == 0:
-            print("Attempting to find face in video: ", referenceFrameFilePath)
+            print("Attempting to find face in video: ", imageFilePathWithoutExtension)
 
         self.counter = self.counter + 1
 
@@ -60,30 +64,28 @@ class GETFRAME():
         cv2.imwrite(referenceFrameFilePath, referenceFrame)
 
         if self.counter > 30:
-            if os.path.exists(referenceFrameFilePath):
-                os.remove(referenceFrameFilePath)
-            if os.path.exists(frameToCompareFilePath):
-                os.remove(frameToCompareFilePath)
+            self.remove_file_if_exists(referenceFrameFilePath)
+            self.remove_file_if_exists(frameToCompareFilePath)
             print("No face present in video. Attempts: ", self.counter)
             return
 
         face_found = self.find_face(referenceFrameFilePath, frameToCompareFilePath)
 
         if face_found == True:
-            if os.path.exists(frameToCompareFilePath):
-                os.remove(frameToCompareFilePath)
+            self.remove_file_if_exists(frameToCompareFilePath)
             print("Face Found, Attempts: ", self.counter)
             return
         else:
-            self.capture_face_image(videoFilePath, imageFileName)
+            self.capture_face_image(videoFilePath, referenceFrameFilePath)
 
     def process(self, inputVideoFilesList):
         for videoFilePath in inputVideoFilesList:
             imageFileName = videoFilePath.split("/")[-1].replace(".mp4", ".png")
+            imageFilePathWithoutExtension = imageFileName.replace(".mp4", "")
             screenshot_present_flag = self.check_if_screenshot_present(imageFileName)
             if not screenshot_present_flag:
                 self.counter = 0
-                self.capture_face_image(videoFilePath, imageFileName)
+                self.capture_face_image(videoFilePath, imageFilePathWithoutExtension)
         return "Complete"
 
 if __name__ == "__main__":
