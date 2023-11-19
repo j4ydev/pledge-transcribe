@@ -49,11 +49,11 @@ class GETFRAME():
             print("ATTEMPTING TO FIND FACE: ", frameFilePath)
 
         self.counter = self.counter + 1
-        frame = self.getImageFromVideo(videoFilePath) # TODO: get array of frames - say 30 frames and then process them
+        frame = self.getImageFromVideo(videoFilePath)
         frameFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFileName}'
-        # Save the frame as an image
 
-        cv2.imwrite(frameFilePath, frame)
+
+        cv2.imwrite(frameFilePath, frame) # Save the frame as an image
         face_found = self.find_face(frameFilePath)
 
         if self.counter > 30:
