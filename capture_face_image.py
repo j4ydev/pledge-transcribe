@@ -9,8 +9,6 @@ from numpy.linalg import norm
 
 from config import *  # TODO: Import only needed names or import the module and then use its members. google to know more
 
-SCREENSHOT_FILE_FORMAT = 'png' # TODO: Jay move this to config file and use it from there
-VIDEO_FILE_FORMAT = 'mp4' # TODO: Jay move this to config file and use it from there
 
 class GETFRAME():
     def __init__(self):
@@ -33,8 +31,8 @@ class GETFRAME():
         if current_frame == random_frame:
             return frame
 
-    def check_if_screenshot_present(self, imageFileName):
-        possible_screenshot_path = f"{IMAGE_SAVE_DIRECTORY}/{imageFileName}"
+    def check_if_screenshot_present(self, image_file_name):
+        possible_screenshot_path = f"{IMAGE_SAVE_DIRECTORY}/{image_file_name}"
         if os.path.isfile(possible_screenshot_path):
             return True
         else:
@@ -43,54 +41,54 @@ class GETFRAME():
     def find_face(self, img1_path, img2_path):
         try:
             result = DeepFace.verify(img1_path , img2_path)
-            foundFaceFlag = result["verified"]
+            found_face_flag = result["verified"]
         except:
-            foundFaceFlag = False
-        return foundFaceFlag
+            found_face_flag = False
+        return found_face_flag
 
-    def capture_face_image(self, videoFilePath, imageFilePathWithoutExtension):
-        referenceFrameFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFilePathWithoutExtension}.{SCREENSHOT_FILE_FORMAT}'
-        frameToCompareFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFilePathWithoutExtension}_2.{SCREENSHOT_FILE_FORMAT}'
+    def capture_face_image(self, video_file_path, image_file_path_without_extension):
+        reference_frame_file_path = f'{IMAGE_SAVE_DIRECTORY}/{image_file_path_without_extension}.{SCREENSHOT_FILE_FORMAT}'
+        frame_to_compare_file_path = f'{IMAGE_SAVE_DIRECTORY}/{image_file_path_without_extension}_2.{SCREENSHOT_FILE_FORMAT}'
 
         if self.counter == 0:
-            print("Attempting to find face in video: ", imageFilePathWithoutExtension)
+            print("Attempting to find face in video: ", image_file_path_without_extension)
 
         self.counter = self.counter + 1
 
-        frameToCompare = self.getImageFromVideo(videoFilePath)
-        cv2.imwrite(frameToCompareFilePath, frameToCompare)
+        frame_to_compare = self.getImageFromVideo(video_file_path)
+        cv2.imwrite(frame_to_compare_file_path, frame_to_compare)
 
-        referenceFrame = self.getImageFromVideo(videoFilePath)
-        cv2.imwrite(referenceFrameFilePath, referenceFrame)
+        reference_frame = self.getImageFromVideo(video_file_path)
+        cv2.imwrite(reference_frame_file_path, reference_frame)
 
         if self.counter > 30:
-            self.remove_file_if_exists(referenceFrameFilePath)
-            self.remove_file_if_exists(frameToCompareFilePath)
+            self.remove_file_if_exists(reference_frame_file_path)
+            self.remove_file_if_exists(frame_to_compare_file_path)
             print("No face present in video. Attempts: ", self.counter)
             return
 
-        face_found = self.find_face(referenceFrameFilePath, frameToCompareFilePath)
+        face_found = self.find_face(reference_frame_file_path, frame_to_compare_file_path)
 
         if face_found == True:
-            self.remove_file_if_exists(frameToCompareFilePath)
+            self.remove_file_if_exists(frame_to_compare_file_path)
             print("Face Found, Attempts: ", self.counter)
             return
         else:
-            self.capture_face_image(videoFilePath, referenceFrameFilePath)
+            self.capture_face_image(video_file_path, reference_frame_file_path)
 
-    def process(self, inputVideoFilesList):
-        for videoFilePath in inputVideoFilesList:
+    def process(self, input_video_files_list):
+        for video_file_path in input_video_files_list:
             # TODO: split filePath and fileName, then extract fileName without extension and then pass filePath, fileNameWithoutExtension
-            imageFileName = videoFilePath.split("/")[-1].replace(".mp4", ".png") # Incorrect variable name imageFileName is not file name it is file path!!
-            imageFilePathWithoutExtension = imageFileName.replace(".mp4", "")
-            screenshot_present_flag = self.check_if_screenshot_present(imageFileName)
+            image_file_name = video_file_path.split("/")[-1].replace(".mp4", ".png") # Incorrect variable name image_file_name is not file name it is file path!!
+            image_file_path_without_extension = image_file_name.replace(".mp4", "")
+            screenshot_present_flag = self.check_if_screenshot_present(image_file_name)
             if not screenshot_present_flag:
                 self.counter = 0
-                self.capture_face_image(videoFilePath, imageFilePathWithoutExtension)
+                self.capture_face_image(video_file_path, image_file_path_without_extension)
         return "Complete"
 
 if __name__ == "__main__":
     getframe_obj = GETFRAME()
-    inputVideoFilesList = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*.mp4")
-    inputVideoFilesList.sort()
-    getframe_obj.process(inputVideoFilesList)
+    input_video_files_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*.mp4")
+    input_video_files_list.sort()
+    getframe_obj.process(input_video_files_list)

@@ -17,11 +17,11 @@ class COMPAREFACE():
         ### IF FACEMATCHING DATAFRAME EXIST OR NOT EXISTS ###
         if os.path.isfile(FACE_MATCHING_CSV_PATH):
             try:
-                self.faceMatchDataframe = pd.read_csv(FACE_MATCHING_CSV_PATH)
+                self.face_match_dataframe = pd.read_csv(FACE_MATCHING_CSV_PATH)
             except:
-                self.faceMatchDataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'video-id_1', 'similarity_score_1','video-id_2','similarity_score_2', 'video-id_3','similarity_score_3'])
+                self.face_match_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'video-id_1', 'similarity_score_1','video-id_2','similarity_score_2', 'video-id_3','similarity_score_3'])
         else:
-            self.faceMatchDataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'match_videoid_1', 'similarity_score_1','match_videoid_2','similarity_score_2', 'match_videoid_3','similarity_score_3'])
+            self.face_match_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'match_videoid_1', 'similarity_score_1','match_videoid_2','similarity_score_2', 'match_videoid_3','similarity_score_3'])
 
     ### GET DETAILS FROM VIDEO FILE NAME ###
     def get_details_from_video_name(self, file_name):
@@ -50,18 +50,18 @@ class COMPAREFACE():
                 similarity_score_2 = 1 - float(distance)
         return videoid_1, similarity_score_1, videoid_2, similarity_score_2
 
-    def process(self, faceEmbeddingList):
-        for faceEmbeddingPath in faceEmbeddingList:
+    def process(self, face_embedding_list):
+        for face_embedding_path in face_embedding_list:
             # MODULE:4 ------> COMPARE IMAGE WITH OTHER IMAGES
-            embeddingFileName = faceEmbeddingPath.split("/")[-1].replace(".txt","")
+            embeddingFileName = face_embedding_path.split("/")[-1].replace(".txt","")
             file_row, file_column, file_index, file_pagenumber, file_videoid = self.get_details_from_video_name(embeddingFileName)
-            is_face_embedding_present_flag = is_value_present_in_dataframe(file_index, self.faceMatchDataframe)
+            is_face_embedding_present_flag = is_value_present_in_dataframe(file_index, self.face_match_dataframe)
             similar_face_score_dict = {}
             if not is_face_embedding_present_flag:
-                with open(faceEmbeddingPath, "r") as f:
+                with open(face_embedding_path, "r") as f:
                     current_image_embedding = f.read()
                 current_image_embedding = eval(current_image_embedding)
-                for embedding_path in faceEmbeddingList:
+                for embedding_path in face_embedding_list:
                     print(embedding_path)
                     with open(embedding_path, "r") as f:
                         image_from_dir = f.read()
@@ -80,16 +80,16 @@ class COMPAREFACE():
                 print(first_two_pairs)
                 videoid_1, similarity_score_1, videoid_2, similarity_score_2 = self.find_videoid_and_score(first_two_pairs)
                 # INSERT DATA IN DATAFRAME
-                newFaceRow = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'videoid': file_videoid, 'match_videoid_1': file_videoid, 'similarity_score_1': 1,'match_videoid_2': videoid_1, 'similarity_score_2': similarity_score_1, 'match_videoid_3': videoid_2, 'similarity_score_3': similarity_score_2}
-                newFaceDF = pd.DataFrame(newFaceRow, index=[0])
-                self.faceMatchDataframe = pd.concat([self.faceMatchDataframe, newFaceDF], ignore_index=True)
+                new_face_row = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'videoid': file_videoid, 'match_videoid_1': file_videoid, 'similarity_score_1': 1,'match_videoid_2': videoid_1, 'similarity_score_2': similarity_score_1, 'match_videoid_3': videoid_2, 'similarity_score_3': similarity_score_2}
+                new_face_dataframe = pd.DataFrame(new_face_row, index=[0])
+                self.face_match_dataframe = pd.concat([self.face_match_dataframe, new_face_dataframe], ignore_index=True)
                 # Save the DataFrame as a CSV file
-                self.faceMatchDataframe.to_csv(FACE_MATCHING_CSV_PATH, index=False)
+                self.face_match_dataframe.to_csv(FACE_MATCHING_CSV_PATH, index=False)
             else:
                 print("FACE COMPARISION DATA ALREADY PRESENT IN DATAFRAME.")
 
 if __name__ == "__main__":
     compareface_obj = COMPAREFACE()
-    faceEmbeddingList = glob.glob(f"{IMAGE_INDEX_DIRECTORY}/*.txt")
-    faceEmbeddingList.sort()
-    compareface_obj.process(faceEmbeddingList)
+    face_embedding_list = glob.glob(f"{IMAGE_INDEX_DIRECTORY}/*.txt")
+    face_embedding_list.sort()
+    compareface_obj.process(face_embedding_list)

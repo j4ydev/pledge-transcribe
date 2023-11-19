@@ -15,23 +15,23 @@ class FACEEMBEDDINGS():
             print("face not detected")
         return result_2
 
-    def check_if_embedding_present(self, imageFileName):
-        possible_screenshot_path = f"{IMAGE_INDEX_DIRECTORY}/{imageFileName}"
+    def check_if_embedding_present(self, image_file_name):
+        possible_screenshot_path = f"{IMAGE_INDEX_DIRECTORY}/{image_file_name}"
         if os.path.isfile(possible_screenshot_path):
             return True
         else:
             return False
 
-    def process(self, faceImageFilesList):
-        for faceImagesPath in faceImageFilesList:
-            imageIndexFileName = faceImagesPath.split("/")[-1].replace(".png", ".txt")
-            imageIndexFilePath = f"{IMAGE_INDEX_DIRECTORY}/{imageIndexFileName}"
-            embeddingPresentFlag = self.check_if_embedding_present(imageIndexFilePath)
-            if embeddingPresentFlag == False:
-                result, result_2_embedding_data = DeepFace.verify(img1_path = self.ref_image_path, img2_path = faceImagesPath)
+    def process(self, face_image_files_list):
+        for face_images_path in face_image_files_list:
+            image_index_file_name = face_images_path.split("/")[-1].replace(".png", ".txt")
+            image_index_file_path = f"{IMAGE_INDEX_DIRECTORY}/{image_index_file_name}"
+            embedding_present_flag = self.check_if_embedding_present(image_index_file_path)
+            if embedding_present_flag == False:
+                result, result_2_embedding_data = DeepFace.verify(img1_path = self.ref_image_path, img2_path = face_images_path)
             else:
                 print("EMBEDDING ALREADY PRESENT IN DIRECTORY.")
-            with open(imageIndexFilePath, 'w') as f:
+            with open(image_index_file_path, 'w') as f:
                 f.write(str(result_2_embedding_data))
         return "Complete"
 
