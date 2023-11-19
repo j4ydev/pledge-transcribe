@@ -35,39 +35,47 @@ class GETFRAME():
         else:
             return False
 
-    def find_face(self, new_image_path):
+    def find_face(self, img1_path, img2_path):
         try:
-            result, result_2 = DeepFace.verify(img1_path = self.ref_image_path, img2_path = new_image_path)
-            foundFaceFlag = True
+            result = DeepFace.verify(img1_path , img2_path)
+            foundFaceFlag = result["verified"]
         except:
             foundFaceFlag = False
         return foundFaceFlag
 
     def capture_face_image(self, videoFilePath, imageFileName):
-
-        frameFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFileName}'
+        referenceFrameFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFileName}'
+        frameToCompareFilePath = f'{IMAGE_SAVE_DIRECTORY}/2_{imageFileName}'
 
         if self.counter == 0:
-            print("ATTEMPTING TO FIND FACE: ", frameFilePath)
+            referenceFrame = self.getImageFromVideo(videoFilePath)
+            cv2.imwrite(referenceFrameFilePath, referenceFrame)
+            print("Attempting to find face in video: ", referenceFrameFilePath)
+
         self.counter = self.counter + 1
 
-        if self.counter > 31:
-            print("Attempts", self.counter)
-            return "NO FACE PRESENT IN VIDEO."
+        if self.counter > 30:
+            if os.path.exists(referenceFrameFilePath):
+                os.remove(referenceFrameFilePath)
+            if os.path.exists(frameToCompareFilePath):
+                os.remove(frameToCompareFilePath)
+            print("No face present in video. Attempts: ", self.counter)
+            return
 
-        frame = self.getImageFromVideo(videoFilePath)
-        face_found = self.find_face(frameFilePath)
+        frameToCompare = self.getImageFromVideo(videoFilePath)
+        cv2.imwrite(frameToCompareFilePath, frameToCompare)
+
+        face_found = self.find_face(referenceFrameFilePath, frameToCompareFilePath)
+
         # ic(face_found, self.counter)
 
         if face_found == True:
-            print("Face Found, Attempts", self.counter)
-            cv2.imwrite(frameFilePath, frame) # Save the frame as an image
-            return frameFilePath
+            if os.path.exists(frameToCompareFilePath):
+                os.remove(frameToCompareFilePath)
+            print("Face Found, Attempts: ", self.counter)
+            return
         else:
-            frameFilePath = self.capture_face_image(videoFilePath, imageFileName)
-
-
-
+            self.capture_face_image(videoFilePath, imageFileName)
 
     def process(self, inputVideoFilesList):
         for videoFilePath in inputVideoFilesList:
@@ -75,8 +83,7 @@ class GETFRAME():
             screenshot_present_flag = self.check_if_screenshot_present(imageFileName)
             if not screenshot_present_flag:
                 self.counter = 0
-                frameFilePath = self.capture_face_image(videoFilePath, imageFileName)
-                print(frameFilePath)
+                self.capture_face_image(videoFilePath, imageFileName)
         return "Complete"
 
 if __name__ == "__main__":
