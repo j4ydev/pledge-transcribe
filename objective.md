@@ -31,3 +31,16 @@ output: a csv/json
 ---
 
 Info: `index: 4 * (row - 1) + column`
+
+---
+
+we will create a directory with value of vid as the directory name in "output/similar_pledge_takers"
+and in that vid directory we will store 5 files (1 file will be the reference image from the video)
+for example if we are processing 1_1_2_6340954574112_Rahul_VP.png
+directory name will be 6340954574112
+prefix the similarity rank to the file name and store; example the most matching file will be
+1-difference_indicator-1_1_2_6340954574112_Rahul_VP.png
+where difference_indicator is stringified 1000\*"VGG-Face_cosine" - this should be exact 4 chars, so in case of exact match it will be
+1-0000-1_1_2_6340954574112_Rahul_VP.png
+
+6340954574112, 6340954574113:difference_indicator, 6340954574114:difference_indicator,
