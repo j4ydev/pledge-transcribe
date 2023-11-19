@@ -80,7 +80,8 @@ class GETFRAME():
 
     def process(self, inputVideoFilesList):
         for videoFilePath in inputVideoFilesList:
-            imageFileName = videoFilePath.split("/")[-1].replace(".mp4", ".png")
+            # TODO: split filePath and fileName, then extract fileName without extension and then pass filePath, fileNameWithoutExtension
+            imageFileName = videoFilePath.split("/")[-1].replace(".mp4", ".png") # Incorrect variable name imageFileName is not file name it is file path!!
             imageFilePathWithoutExtension = imageFileName.replace(".mp4", "")
             screenshot_present_flag = self.check_if_screenshot_present(imageFileName)
             if not screenshot_present_flag:
