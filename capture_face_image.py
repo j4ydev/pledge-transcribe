@@ -49,24 +49,25 @@ class GETFRAME():
 
         if self.counter == 0:
             print("ATTEMPTING TO FIND FACE: ", frameFilePath)
-
-        frame = self.getImageFromVideo(videoFilePath)
-
         self.counter = self.counter + 1
-        cv2.imwrite(frameFilePath, frame) # Save the frame as an image
-        face_found = self.find_face(frameFilePath)
 
-        if self.counter > 30:
-            print("NO FACE PRESENT IN VIDEO: Attempts", self.counter)
+        if self.counter > 31:
+            print("Attempts", self.counter)
             return "NO FACE PRESENT IN VIDEO."
 
-        if face_found == False:
-            frameFilePath = self.capture_face_image(videoFilePath, imageFileName)
-        else:
-            print("Attempts", self.counter)
-            pass
+        frame = self.getImageFromVideo(videoFilePath)
+        face_found = self.find_face(frameFilePath)
+        # ic(face_found, self.counter)
 
-        return frameFilePath
+        if face_found == True:
+            print("Face Found, Attempts", self.counter)
+            cv2.imwrite(frameFilePath, frame) # Save the frame as an image
+            return frameFilePath
+        else:
+            frameFilePath = self.capture_face_image(videoFilePath, imageFileName)
+
+
+
 
     def process(self, inputVideoFilesList):
         for videoFilePath in inputVideoFilesList:
