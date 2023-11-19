@@ -29,7 +29,7 @@ class TRANSCRIBE():
             self.transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'timeconsumed', 'videoduration', 'transcribetext'])
 
     def transcribe(self, video_file_path):
-        # at times incorrect files are also present -- handle this later
+        ## TODO: at times incorrect files are also present -- handle this later
         video_file_name = video_file_path.split('/')[-1].replace(INPUT_VIDEO_FILE_FORMAT, '')
         demucs.separate.main(["--mp3", "--two-stems", "vocals", "-n", "mdx_extra", video_file_path])
         audioPath = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}/vocals.mp3"
