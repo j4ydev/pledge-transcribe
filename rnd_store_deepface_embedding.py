@@ -2,6 +2,7 @@ import glob
 import os
 
 from deepface import DeepFace
+from icecream import ic
 
 from config import *
 
@@ -42,6 +43,13 @@ class FACEEMBEDDINGS():
 
 if __name__ == "__main__":
     faceembedding_obj = FACEEMBEDDINGS()
-    faceImageFilesList = glob.glob(f"{FACE_IMAGE_DIRECTORY}/*.png")
+    faceImageFilesList = glob.glob(f"{FACE_IMAGE_DIRECTORY}/*{FACE_IMAGE_FILE_FORMAT}")
     faceImageFilesList.sort()
     faceembedding_obj.process(faceImageFilesList)
+    # dfs = DeepFace.find(img_path = "output/screenshots/1_1_2_6340954574112_Rahul_VP.png", db_path = "/Users/khasgiwa/Workbench/codebench/a7v/pledge-transcribe/output/screenshots")
+    # print((dfs[0].head(5)["VGG-Face_cosine"][1]))
+    # print((dfs[0].head(5)["identity"][1]))
+    # print((dfs[0].head(5)["VGG-Face_cosine"][2]))
+    # print((dfs[0].head(5)["identity"][2]))
+    # print((dfs[0].head(5)["VGG-Face_cosine"][3]))
+    # print((dfs[0].head(5)["identity"][3]))
