@@ -45,12 +45,14 @@ class GETFRAME():
 
     def capture_face_image(self, videoFilePath, imageFileName):
 
+        if self.counter == 0:
+            print("ATTEMPTING TO FIND FACE: ", frameFilePath)
+
         self.counter = self.counter + 1
-        frame = self.getImageFromVideo(videoFilePath)
+        frame = self.getImageFromVideo(videoFilePath) # TODO: get array of frames - say 30 frames and then process them
         frameFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFileName}'
         # Save the frame as an image
-        print("ATTEMPTING TO FIND FACE: ", frameFilePath)
-        print("--")
+
         cv2.imwrite(frameFilePath, frame)
         face_found = self.find_face(frameFilePath)
 
