@@ -30,7 +30,7 @@ class TRANSCRIBE():
 
     def transcribe(self, video_file_path):
         # at times incorrect files are also present -- handle this later
-        video_file_name = video_file_path.split('/')[-1].replace(VIDEO_FILE_FORMAT, '')
+        video_file_name = video_file_path.split('/')[-1].replace(INPUT_VIDEO_FILE_FORMAT, '')
         demucs.separate.main(["--mp3", "--two-stems", "vocals", "-n", "mdx_extra", video_file_path])
         audioPath = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}/vocals.mp3"
         options = dict(language="en", beam_size=5, best_of=5)
@@ -45,7 +45,7 @@ class TRANSCRIBE():
         for video_file_path in input_video_files_list:
             ic(video_file_path)
             # GET DETAILS OF VIDEO FROM VIDEO FILE NAME
-            file_name = video_file_path.split("/")[-1].replace(VIDEO_FILE_FORMAT,"")
+            file_name = video_file_path.split("/")[-1].replace(INPUT_VIDEO_FILE_FORMAT,"")
             file_row, file_column, file_index, file_pagenumber, file_videoid = get_details_from_video_name(file_name)
             print(file_videoid)
             is_value_present_flag = is_value_present_in_dataframe(file_videoid, self.transcribe_dataframe)
@@ -73,6 +73,6 @@ class TRANSCRIBE():
 
 if __name__ == "__main__":
     transcribe_obj = TRANSCRIBE()
-    input_video_files_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*{VIDEO_FILE_FORMAT}")
+    input_video_files_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*{INPUT_VIDEO_FILE_FORMAT}")
     input_video_files_list.sort()
     transcribe_obj.process(input_video_files_list)

@@ -20,7 +20,7 @@ def process():
     transcribeStatus = transcribe_obj.process(inputVideoFilesList)
     faceCaptureStatus = getframe_obj.process(inputVideoFilesList)
 
-    faceImageFilesList = glob.glob(f"{IMAGE_SAVE_DIRECTORY}/*.png")
+    faceImageFilesList = glob.glob(f"{FACE_IMAGE_DIRECTORY}/*.png")
     faceImageFilesList.sort()
 
     getEmbeddingStatus = faceembedding_obj.process(faceImageFilesList)

@@ -20,10 +20,10 @@ faceembeddings_obj = FACEEMBEDDINGS()
 # TODO: move "separated/mdx_extra" -> "output/separated/mdx_extra"
 BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY = "separated/mdx_extra"
 TRANSCRIBED_FILE_PATH = "output/transcribe_text.csv" ### PATH OF THE OUTPUT CSV FILE
-FACE_MATCHING_CSV_PATH = "output/face_match.csv"
+FACE_MATCH_RESULT_CSV_PATH = "output/face_match.csv"
 INPUT_VIDEO_DIRECTORY = "/Users/jay/work/new_video" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH)
-IMAGE_SAVE_DIRECTORY = "output/screenshots" # PATH DIR OF SAVE FRAME FROM VIDEO (DO NOT ADD / AT THE END OF PATH)
-IMAGE_INDEX_DIRECTORY = "output/image_index" # PATH DIR OF SAVE FACE EMBEDDINGS FROM SCREENSHOTS (DO NOT ADD / AT THE END OF THE PATH)
+FACE_IMAGE_DIRECTORY = "output/screenshots" # PATH DIR OF SAVE FRAME FROM VIDEO (DO NOT ADD / AT THE END OF PATH)
+FACE_IMAGE_INDEX_DIRECTORY = "output/image_index" # PATH DIR OF SAVE FACE EMBEDDINGS FROM SCREENSHOTS (DO NOT ADD / AT THE END OF THE PATH)
 
 ### IF TRANSCRIBE DATAFRAME EXIST OR NOT EXISTS ###
 if os.path.isfile(TRANSCRIBED_FILE_PATH):
@@ -35,9 +35,9 @@ else:
     transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'timeconsumed', 'transcribetext'])
 
 ### IF FACEMATCHING DATAFRAME EXIST OR NOT EXISTS ###
-if os.path.isfile(FACE_MATCHING_CSV_PATH):
+if os.path.isfile(FACE_MATCH_RESULT_CSV_PATH):
     try:
-        face_match_dataframe = pd.read_csv(FACE_MATCHING_CSV_PATH)
+        face_match_dataframe = pd.read_csv(FACE_MATCH_RESULT_CSV_PATH)
     except:
         face_match_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'video-id_1', 'similarity_score_1','video-id_2','similarity_score_2', 'video-id_3','similarity_score_3'])
 else:
@@ -63,7 +63,7 @@ def is_value_present(index_number, dataframe):
 
 ### CHECK IF SCREENSHOT ALREADY PRESENT IN DIRECTORY ###
 def check_if_screenshot_present(imageFileName):
-    possible_screenshot_path = f"{IMAGE_SAVE_DIRECTORY}/{imageFileName}"
+    possible_screenshot_path = f"{FACE_IMAGE_DIRECTORY}/{imageFileName}"
     if os.path.isfile(possible_screenshot_path):
         return True
     else:
@@ -73,7 +73,7 @@ def check_if_screenshot_present(imageFileName):
 ### RECURRENT THE FUNCTION UNTIL YOU GET FACE IMAGE ###
 def capture_face_image_and_embedding(videoFilePath, imageFileName):
     frame = getframe_obj.getImageFromVideo(videoFilePath)
-    frameFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFileName}'
+    frameFilePath = f'{FACE_IMAGE_DIRECTORY}/{imageFileName}'
     # Save the frame as an image
     print(frameFilePath)
     print("--")
@@ -112,7 +112,7 @@ def process(transcribe_dataframe, face_match_dataframe):
     for videoFilePath in inputVideoFilesList:
         ic(videoFilePath)
 
-        embeddingFilesList = glob.glob(f"{IMAGE_INDEX_DIRECTORY}/*.txt")
+        embeddingFilesList = glob.glob(f"{FACE_IMAGE_INDEX_DIRECTORY}/*.txt")
         embeddingFilesList.sort()
 
         # GET DETAILS OF VIDEO FROM VIDEO FILE NAME
@@ -151,12 +151,12 @@ def process(transcribe_dataframe, face_match_dataframe):
             embeddingData = capture_face_image_and_embedding(videoFilePath, imageFileName)
             ### create image_index file
             imageIndexFileName = videoFilePath.split("/")[-1].replace(".mp4", ".txt")
-            imageIndexFilePath = f"{IMAGE_INDEX_DIRECTORY}/{imageIndexFileName}"
+            imageIndexFilePath = f"{FACE_IMAGE_INDEX_DIRECTORY}/{imageIndexFileName}"
 
             with open(imageIndexFilePath, 'w') as f:
                 f.write(str(embeddingData))
 
-    faceEmbeddingList = glob.glob(f"{IMAGE_INDEX_DIRECTORY}/*.txt")
+    faceEmbeddingList = glob.glob(f"{FACE_IMAGE_INDEX_DIRECTORY}/*.txt")
     faceEmbeddingList.sort()
 
     for faceEmbeddingPath in faceEmbeddingList:
@@ -206,7 +206,7 @@ def process(transcribe_dataframe, face_match_dataframe):
             face_match_dataframe = pd.concat([face_match_dataframe, newFaceDF], ignore_index=True)
 
             # Save the DataFrame as a CSV file
-            face_match_dataframe.to_csv(FACE_MATCHING_CSV_PATH, index=False)
+            face_match_dataframe.to_csv(FACE_MATCH_RESULT_CSV_PATH, index=False)
         else:
             print("FACE COMPARISION DATA ALREADY PRESENT IN DATAFRAME.")
 

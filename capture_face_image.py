@@ -18,7 +18,7 @@ class GETFRAME():
         if os.path.exists(file_path):
             os.remove(file_path)
 
-    def getImageFromVideo(self, video_path):
+    def get_image_from_video(self, video_path):
         video_capture = cv2.VideoCapture(video_path)
         total_frames = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
         random_frame = random.randint(1, total_frames-5)
@@ -32,33 +32,34 @@ class GETFRAME():
             return frame
 
     def check_if_screenshot_present(self, image_file_name):
-        possible_screenshot_path = f"{IMAGE_SAVE_DIRECTORY}/{image_file_name}"
+        possible_screenshot_path = f"{FACE_IMAGE_DIRECTORY}/{image_file_name}"
         if os.path.isfile(possible_screenshot_path):
             return True
         else:
             return False
 
     def find_face(self, img1_path, img2_path):
+        found_face_flag = False
         try:
             result = DeepFace.verify(img1_path , img2_path)
             found_face_flag = result["verified"]
-        except:
+        finally:
             found_face_flag = False
         return found_face_flag
 
     def capture_face_image(self, video_file_path, image_file_path_without_extension):
-        reference_frame_file_path = f'{IMAGE_SAVE_DIRECTORY}/{image_file_path_without_extension}.{SCREENSHOT_FILE_FORMAT}'
-        frame_to_compare_file_path = f'{IMAGE_SAVE_DIRECTORY}/{image_file_path_without_extension}_2.{SCREENSHOT_FILE_FORMAT}'
+        reference_frame_file_path = f'{FACE_IMAGE_DIRECTORY}/{image_file_path_without_extension}.{FACE_IMAGE_FILE_FORMAT}'
+        frame_to_compare_file_path = f'{FACE_IMAGE_DIRECTORY}/{image_file_path_without_extension}_2.{FACE_IMAGE_FILE_FORMAT}'
 
         if self.counter == 0:
             print("Attempting to find face in video: ", image_file_path_without_extension)
 
         self.counter = self.counter + 1
 
-        frame_to_compare = self.getImageFromVideo(video_file_path)
+        frame_to_compare = self.get_image_from_video(video_file_path)
         cv2.imwrite(frame_to_compare_file_path, frame_to_compare)
 
-        reference_frame = self.getImageFromVideo(video_file_path)
+        reference_frame = self.get_image_from_video(video_file_path)
         cv2.imwrite(reference_frame_file_path, reference_frame)
 
         if self.counter > 30:

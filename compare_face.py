@@ -15,9 +15,9 @@ from utils import *
 class COMPAREFACE():
     def __init__(self):
         ### IF FACEMATCHING DATAFRAME EXIST OR NOT EXISTS ###
-        if os.path.isfile(FACE_MATCHING_CSV_PATH):
+        if os.path.isfile(FACE_MATCH_RESULT_CSV_PATH):
             try:
-                self.face_match_dataframe = pd.read_csv(FACE_MATCHING_CSV_PATH)
+                self.face_match_dataframe = pd.read_csv(FACE_MATCH_RESULT_CSV_PATH)
             except:
                 self.face_match_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'video-id_1', 'similarity_score_1','video-id_2','similarity_score_2', 'video-id_3','similarity_score_3'])
         else:
@@ -84,12 +84,12 @@ class COMPAREFACE():
                 new_face_dataframe = pd.DataFrame(new_face_row, index=[0])
                 self.face_match_dataframe = pd.concat([self.face_match_dataframe, new_face_dataframe], ignore_index=True)
                 # Save the DataFrame as a CSV file
-                self.face_match_dataframe.to_csv(FACE_MATCHING_CSV_PATH, index=False)
+                self.face_match_dataframe.to_csv(FACE_MATCH_RESULT_CSV_PATH, index=False)
             else:
                 print("FACE COMPARISION DATA ALREADY PRESENT IN DATAFRAME.")
 
 if __name__ == "__main__":
     compareface_obj = COMPAREFACE()
-    face_embedding_list = glob.glob(f"{IMAGE_INDEX_DIRECTORY}/*.txt")
+    face_embedding_list = glob.glob(f"{FACE_IMAGE_INDEX_DIRECTORY}/*.txt")
     face_embedding_list.sort()
     compareface_obj.process(face_embedding_list)
