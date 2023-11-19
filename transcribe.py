@@ -8,7 +8,7 @@ import whisper
 from fuzzywuzzy import fuzz
 from icecream import ic
 
-model = whisper.load_model("large")
+whisper_model = whisper.load_model("large")
 import demucs.separate
 import pandas as pd
 from icecream import ic
@@ -35,7 +35,7 @@ class TRANSCRIBE():
         audio_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}/vocals.mp3"
         options = dict(language="en", beam_size=5, best_of=5)
         transcribe_option = dict(task="transcribe", **options)
-        transcription = model.transcribe(audio_path, **transcribe_option, fp16=USE_FP16)
+        transcription = whisper_model.transcribe(audio_path, **transcribe_option, fp16=USE_FP16)
         transcribed_text = transcription["text"]
         return transcribed_text
 
