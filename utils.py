@@ -1,5 +1,5 @@
     ### GET DETAILS FROM VIDEO FILE NAME ###
-
+import numpy as np
 
 def get_details_from_video_name(file_name):
     
@@ -12,8 +12,9 @@ def get_details_from_video_name(file_name):
 
     return file_row, file_column, file_index, file_pagenumber, file_videoid
 
-def is_value_present_in_dataframe(index_number, dataframe):
-    if index_number in dataframe["index"].values:
-        return True
+def is_value_present_in_dataframe(file_videoid, dataframe):
+
+    if np.int64(file_videoid) in dataframe["videoid"].values:
+        return True 
     else:
         return False

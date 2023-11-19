@@ -30,7 +30,7 @@ class TRANSCRIBE():
 
     def transcribe(self, video_file_path):
         # at times incorrect files are also present -- handle this later
-        video_file_name = video_file_path.split('/')[-1].replace('.mp4', '')
+        video_file_name = video_file_path.split('/')[-1].replace(VIDEO_FILE_FORMAT, '')
         demucs.separate.main(["--mp3", "--two-stems", "vocals", "-n", "mdx_extra", video_file_path])
         audioPath = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}/vocals.mp3"
         options = dict(language="en", beam_size=5, best_of=5)
@@ -45,9 +45,10 @@ class TRANSCRIBE():
         for video_file_path in input_video_files_list:
             ic(video_file_path)
             # GET DETAILS OF VIDEO FROM VIDEO FILE NAME
-            file_name = video_file_path.split("/")[-1].replace(".mp4","")
+            file_name = video_file_path.split("/")[-1].replace(VIDEO_FILE_FORMAT,"")
             file_row, file_column, file_index, file_pagenumber, file_videoid = get_details_from_video_name(file_name)
-            is_value_present_flag = is_value_present_in_dataframe(file_index, self.transcribe_dataframe)
+            print(file_videoid)
+            is_value_present_flag = is_value_present_in_dataframe(file_videoid, self.transcribe_dataframe)
 
             if not is_value_present_flag:
                 # MODULE:1 ------> TRANSCRIBE VIDEO PROCESS
@@ -55,9 +56,7 @@ class TRANSCRIBE():
                 file_transcribe_text = self.transcribe(video_file_path)
                 end_time = time.time()
                 time_consumed = end_time - start_time
-
                 clip = VideoFileClip(video_file_path)
-                print( clip.duration )
 
                 # INSERT DATA IN DATAFRAME
                 new_transcribe_row = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'videoid': file_videoid, 'timeconsumed': time_consumed, 'videoduration':clip.duration,  'transcribetext': file_transcribe_text}
@@ -74,6 +73,6 @@ class TRANSCRIBE():
 
 if __name__ == "__main__":
     transcribe_obj = TRANSCRIBE()
-    input_video_files_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*.mp4")
+    input_video_files_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*{VIDEO_FILE_FORMAT}")
     input_video_files_list.sort()
     transcribe_obj.process(input_video_files_list)
