@@ -43,7 +43,7 @@ class GETFRAME():
         try:
             result = DeepFace.verify(img1_path , img2_path)
             found_face_flag = result["verified"]
-        finally:
+        except:
             found_face_flag = False
         return found_face_flag
 
