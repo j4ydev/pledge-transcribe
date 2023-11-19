@@ -1,19 +1,23 @@
 import glob
 import os
 import time
+
 import numpy as np
 import spacy
 import whisper
 from fuzzywuzzy import fuzz
 from icecream import ic
+
 model = whisper.load_model("large")
 import demucs.separate
 import pandas as pd
 from icecream import ic
+from moviepy.editor import VideoFileClip
+
 from config import *
 from utils import *
-from moviepy.editor import VideoFileClip
-  
+
+
 class TRANSCRIBE():
     def __init__(self):
         if os.path.isfile(TRANSCRIBED_FILE_PATH):
@@ -31,7 +35,7 @@ class TRANSCRIBE():
         audioPath = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{videoFileName}/vocals.mp3"
         options = dict(language="en", beam_size=5, best_of=5)
         transcribeOption = dict(task="transcribe", **options)
-        transcription = model.transcribe(audioPath, **transcribeOption)
+        transcription = model.transcribe(audioPath, **transcribeOption, fp16=USE_FP16)
         transcribedText = transcription["text"]
         return transcribedText
 

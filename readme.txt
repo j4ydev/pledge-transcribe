@@ -1,8 +1,9 @@
 Install python=3.9.6
 Install ffmpeg - "brew install ffmpeg"
 --------------------------------------------
-install requirements file.
-"pip install -r requirements.txt"
+install the following file.
+"pip install -r requirement.txt"
+"pip install python-Levenshtein"
 --------------------------------------------
 
 
