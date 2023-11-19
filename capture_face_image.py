@@ -1,11 +1,14 @@
 import glob
 import os
 import random
+
 import cv2
 from deepface import DeepFace
 from icecream import ic
 from numpy.linalg import norm
+
 from config import *
+
 
 class GETFRAME():
     def __init__(self):
@@ -42,7 +45,7 @@ class GETFRAME():
         return foundFaceFlag
 
     def capture_face_image(self, videoFilePath, imageFileName):
-        
+
         self.counter = self.counter + 1
         frame = self.getImageFromVideo(videoFilePath)
         frameFilePath = f'{IMAGE_SAVE_DIRECTORY}/{imageFileName}'
@@ -66,7 +69,7 @@ class GETFRAME():
             imageFileName = videoFilePath.split("/")[-1].replace(".mp4", ".png")
             screenshot_present_flag = self.check_if_screenshot_present(imageFileName)
             if not screenshot_present_flag:
-                self.counter = 0 
+                self.counter = 0
                 frameFilePath = self.capture_face_image(videoFilePath, imageFileName)
                 print(frameFilePath)
         return "Complete"

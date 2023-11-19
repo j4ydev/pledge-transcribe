@@ -1,5 +1,7 @@
 import glob
+
 from icecream import ic
+
 from capture_face_image import GETFRAME
 from config import *
 from face_index import FACEEMBEDDINGS

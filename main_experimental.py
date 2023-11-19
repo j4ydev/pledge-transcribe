@@ -5,12 +5,11 @@ import time
 import cv2
 import numpy as np
 import pandas as pd
+from capture_face_img import GETFRAME
 from deepface.commons import distance as dst
 from deepface.commons import functions, realtime
-from icecream import ic
-
-from capture_face_img import GETFRAME
 from face_embedding import FACEEMBEDDINGS
+from icecream import ic
 from video_transcribe import TRANSCRIBE
 
 transcribe_obj = TRANSCRIBE()

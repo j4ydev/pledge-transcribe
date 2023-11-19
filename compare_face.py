@@ -1,12 +1,15 @@
 import glob
 import os
+
 import cv2
+import numpy as np
 import pandas as pd
 from deepface import DeepFace
 from icecream import ic
+
 from config import *
 from utils import *
-import numpy as np
+
 # TODO: extract config directories, clean, refactor
 
 class COMPAREFACE():
@@ -19,7 +22,7 @@ class COMPAREFACE():
                 self.faceMatchDataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'video-id_1', 'similarity_score_1','video-id_2','similarity_score_2', 'video-id_3','similarity_score_3'])
         else:
             self.faceMatchDataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'match_videoid_1', 'similarity_score_1','match_videoid_2','similarity_score_2', 'match_videoid_3','similarity_score_3'])
-    
+
     ### GET DETAILS FROM VIDEO FILE NAME ###
     def get_details_from_video_name(self, file_name):
         file_name_separate_list = file_name.split("_")
@@ -29,7 +32,7 @@ class COMPAREFACE():
         file_pagenumber = file_name_separate_list[0]
         file_videoid = file_name_separate_list[3]
 
-        return file_row, file_column, file_index, file_pagenumber, file_videoid 
+        return file_row, file_column, file_index, file_pagenumber, file_videoid
 
     ### GET 2 CLOSEST FACES AND THEIR SCORE FROM DIRECTORY. ###
     def find_videoid_and_score(self, first_two_pairs):
@@ -60,7 +63,7 @@ class COMPAREFACE():
             if not is_face_embedding_present_flag:
                 with open(faceEmbeddingPath, "r") as f:
                     current_image_embedding = f.read()
-                current_image_embedding = eval(current_image_embedding) 
+                current_image_embedding = eval(current_image_embedding)
                 for embedding_path in faceEmbeddingList:
                     print(embedding_path)
                     with open(embedding_path, "r") as f:
