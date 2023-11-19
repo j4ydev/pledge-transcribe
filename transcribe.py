@@ -12,16 +12,17 @@ import pandas as pd
 from icecream import ic
 from config import *
 from utils import *
-
+from moviepy.editor import VideoFileClip
+  
 class TRANSCRIBE():
     def __init__(self):
         if os.path.isfile(TRANSCRIBED_FILE_PATH):
             try:
                 self.transcribeDataframe = pd.read_csv(TRANSCRIBED_FILE_PATH)
             except:
-                self.transcribeDataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'timeconsumed', 'transcribetext'])
+                self.transcribeDataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'timeconsumed', 'videoduration', 'transcribetext'])
         else:
-            self.transcribeDataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'timeconsumed', 'transcribetext'])
+            self.transcribeDataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'videoid', 'timeconsumed', 'videoduration', 'transcribetext'])
 
     def transcribe(self, videoFilePath):
         # at times incorrect files are also present -- handle this later
@@ -51,8 +52,11 @@ class TRANSCRIBE():
                 end_time = time.time()
                 time_consumed = end_time - start_time
 
+                clip = VideoFileClip(videoFilePath)
+                print( clip.duration )
+
                 # INSERT DATA IN DATAFRAME
-                newTranscribeRow = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'videoid': file_videoid, 'timeconsumed': time_consumed, 'transcribetext': fileTranscribeText}
+                newTranscribeRow = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'videoid': file_videoid, 'timeconsumed': time_consumed, 'videoduration':clip.duration,  'transcribetext': fileTranscribeText}
                 print("##" * 20)
                 ic(newTranscribeRow)
                 print("##" * 20)
