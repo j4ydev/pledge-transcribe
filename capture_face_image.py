@@ -9,10 +9,11 @@ from numpy.linalg import norm
 
 from config import *
 
+SCREENSHOT_FILE_FORMAT = '.png' # TODO: Jay move this to config file and use it from there
+VIDEO_FILE_FORMAT = '.mp4' # TODO: Jay move this to config file and use it from there
 
 class GETFRAME():
     def __init__(self):
-        self.ref_image_path = "ref_image.png"
         self.counter = 0
 
     def getImageFromVideo(self, video_path):
@@ -48,11 +49,15 @@ class GETFRAME():
         frameToCompareFilePath = f'{IMAGE_SAVE_DIRECTORY}/2_{imageFileName}'
 
         if self.counter == 0:
-            referenceFrame = self.getImageFromVideo(videoFilePath)
-            cv2.imwrite(referenceFrameFilePath, referenceFrame)
             print("Attempting to find face in video: ", referenceFrameFilePath)
 
         self.counter = self.counter + 1
+
+        frameToCompare = self.getImageFromVideo(videoFilePath)
+        cv2.imwrite(frameToCompareFilePath, frameToCompare)
+
+        referenceFrame = self.getImageFromVideo(videoFilePath)
+        cv2.imwrite(referenceFrameFilePath, referenceFrame)
 
         if self.counter > 30:
             if os.path.exists(referenceFrameFilePath):
@@ -62,12 +67,7 @@ class GETFRAME():
             print("No face present in video. Attempts: ", self.counter)
             return
 
-        frameToCompare = self.getImageFromVideo(videoFilePath)
-        cv2.imwrite(frameToCompareFilePath, frameToCompare)
-
         face_found = self.find_face(referenceFrameFilePath, frameToCompareFilePath)
-
-        # ic(face_found, self.counter)
 
         if face_found == True:
             if os.path.exists(frameToCompareFilePath):
