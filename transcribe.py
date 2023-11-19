@@ -6,7 +6,6 @@ import numpy as np
 import spacy
 import whisper
 from fuzzywuzzy import fuzz
-from icecream import ic
 
 whisper_model = whisper.load_model("large")
 import demucs.separate
