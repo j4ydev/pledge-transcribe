@@ -30,18 +30,18 @@ if os.path.isfile(TRANSCRIBED_FILE_PATH):
     try:
         transcribe_dataframe = pd.read_csv(TRANSCRIBED_FILE_PATH)
     except:
-        transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'vid', 'extract_audio_time', 'transcribe_time', 'transcribetext'])
+        transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'page_number', 'vid', 'extract_audio_time', 'transcribe_time', 'transcribe_text'])
 else:
-    transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'vid', 'extract_audio_time', 'transcribe_time', 'transcribetext'])
+    transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'page_number', 'vid', 'extract_audio_time', 'transcribe_time', 'transcribe_text'])
 
 ### IF FACEMATCHING DATAFRAME EXIST OR NOT EXISTS ###
 if os.path.isfile(FACE_MATCH_RESULT_CSV_PATH):
     try:
         face_match_dataframe = pd.read_csv(FACE_MATCH_RESULT_CSV_PATH)
     except:
-        face_match_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'video-id_1', 'similarity_score_1','video-id_2','similarity_score_2', 'video-id_3','similarity_score_3'])
+        face_match_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'page_number', 'video-id_1', 'similarity_score_1','video-id_2','similarity_score_2', 'video-id_3','similarity_score_3'])
 else:
-    face_match_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'vid', 'match_videoid_1', 'similarity_score_1','match_videoid_2','similarity_score_2', 'match_videoid_3','similarity_score_3'])
+    face_match_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'page_number', 'vid', 'match_videoid_1', 'similarity_score_1','match_videoid_2','similarity_score_2', 'match_videoid_3','similarity_score_3'])
 
 ### GET DETAILS FROM VIDEO FILE NAME ###
 def get_details_from_video_name(file_name):
@@ -128,7 +128,7 @@ def process(transcribe_dataframe, face_match_dataframe):
             time_consumed = end_time - start_time
             # # TODO: This will break re-write the file
             # INSERT DATA IN DATAFRAME
-            newTranscribeRow = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'vid': file_video_id, 'transcribe_time': time_consumed, 'transcribetext': fileTranscribeText}
+            newTranscribeRow = {'row': file_row, 'column': file_column, 'index': file_index, 'page_number': file_pagenumber, 'vid': file_video_id, 'transcribe_time': time_consumed, 'transcribe_text': fileTranscribeText}
             print("##" * 20)
             ic(newTranscribeRow)
             print("##" * 20)
@@ -197,7 +197,7 @@ def process(transcribe_dataframe, face_match_dataframe):
             videoid_1, similarity_score_1, videoid_2, similarity_score_2 = find_videoid_and_score(first_two_pairs)
 
             # INSERT DATA IN DATAFRAME
-            newFaceRow = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'vid': file_video_id, 'match_videoid_1': file_video_id, 'similarity_score_1': 1,'match_videoid_2': videoid_1, 'similarity_score_2': similarity_score_1, 'match_videoid_3': videoid_2, 'similarity_score_3': similarity_score_2}
+            newFaceRow = {'row': file_row, 'column': file_column, 'index': file_index, 'page_number': file_pagenumber, 'vid': file_video_id, 'match_videoid_1': file_video_id, 'similarity_score_1': 1,'match_videoid_2': videoid_1, 'similarity_score_2': similarity_score_1, 'match_videoid_3': videoid_2, 'similarity_score_3': similarity_score_2}
 
             print("##" * 20)
             ic(newFaceRow)
