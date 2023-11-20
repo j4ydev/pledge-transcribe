@@ -69,7 +69,7 @@ function getCellData({ row, column }) {
     `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > div.views-field.views-field-nothing-3 > span.field-content > a`
   );
 
-  var currentState = document.querySelector(
+  var stateDuringScraping = document.querySelector(
     `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-moderation-state > span.field-content`
   ).innerText;
 
@@ -114,7 +114,7 @@ function getCellData({ row, column }) {
     vid: downloadAnchorTag.getAttribute("vid"),
     bid: refreshAnchorTag.getAttribute("bid"),
     name: downloadAnchorTag.getAttribute("name"),
-    currentState,
+    stateDuringScraping,
     emailId,
     resolution,
 
