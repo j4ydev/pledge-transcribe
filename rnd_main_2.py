@@ -30,9 +30,9 @@ if os.path.isfile(TRANSCRIBED_FILE_PATH):
     try:
         transcribe_dataframe = pd.read_csv(TRANSCRIBED_FILE_PATH)
     except:
-        transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'vid', 'timeconsumed', 'transcribetext'])
+        transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'vid', 'extract_audio_time', 'transcribe_time', 'transcribetext'])
 else:
-    transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'vid', 'timeconsumed', 'transcribetext'])
+    transcribe_dataframe = pd.DataFrame(columns=['row', 'column', 'index', 'pagenumber', 'vid', 'extract_audio_time', 'transcribe_time', 'transcribetext'])
 
 ### IF FACEMATCHING DATAFRAME EXIST OR NOT EXISTS ###
 if os.path.isfile(FACE_MATCH_RESULT_CSV_PATH):
@@ -126,9 +126,9 @@ def process(transcribe_dataframe, face_match_dataframe):
             fileTranscribeText = transcribe_obj.transcribe(videoFilePath)
             end_time = time.time()
             time_consumed = end_time - start_time
-
+            # # TODO: This will break re-write the file
             # INSERT DATA IN DATAFRAME
-            newTranscribeRow = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'vid': file_video_id, 'timeconsumed': time_consumed, 'transcribetext': fileTranscribeText}
+            newTranscribeRow = {'row': file_row, 'column': file_column, 'index': file_index, 'pagenumber': file_pagenumber, 'vid': file_video_id, 'transcribe_time': time_consumed, 'transcribetext': fileTranscribeText}
             print("##" * 20)
             ic(newTranscribeRow)
             print("##" * 20)
