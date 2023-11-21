@@ -77,8 +77,8 @@ class GETFRAME():
         else:
             self.capture_face_image(video_file_path, image_file_path_without_extension)
 
-    def process(self, input_video_files_list):
-        for video_file_path in input_video_files_list:
+    def process(self, input_video_file_list):
+        for video_file_path in input_video_file_list:
             image_file_name_without_extension = video_file_path.split("/")[-1].replace(INPUT_VIDEO_FILE_FORMAT, "")
             screenshot_present_flag = self.check_if_screenshot_present(image_file_name_without_extension)
             if not screenshot_present_flag:
@@ -88,6 +88,6 @@ class GETFRAME():
 
 if __name__ == "__main__":
     getframe_obj = GETFRAME()
-    input_video_files_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*.mp4")
-    input_video_files_list.sort()
-    getframe_obj.process(input_video_files_list)
+    input_video_file_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*.mp4")
+    input_video_file_list.sort()
+    getframe_obj.process(input_video_file_list)

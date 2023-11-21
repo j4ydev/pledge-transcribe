@@ -46,10 +46,8 @@ class VIDEO2AUDIO():
             self.video2audio_dataframe = pd.DataFrame(columns=['video_id', 'extract_audio_time', 'video_duration', 'audio_duration'])
 
 
-    def process(self, input_video_files_list):
-
-        for input_video_path in input_video_files_list:
-
+    def process(self, input_video_file_list):
+        for input_video_path in input_video_file_list:
             clip = VideoFileClip(input_video_path)
             video_file_name = input_video_path.split('/')[-1].replace(INPUT_VIDEO_FILE_FORMAT, '')
             file_video_id, file_name_suffix = get_details_from_video_file_name(video_file_name)
@@ -81,7 +79,7 @@ class VIDEO2AUDIO():
 
 
 if __name__ == "__main__":
-    input_video_files_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*{INPUT_VIDEO_FILE_FORMAT}")
-    input_video_files_list.sort()
+    input_video_file_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*{INPUT_VIDEO_FILE_FORMAT}")
+    input_video_file_list.sort()
     video2audio_obj = VIDEO2AUDIO()
-    video2audio_obj.process(input_video_files_list)
+    video2audio_obj.process(input_video_file_list)
