@@ -1,8 +1,11 @@
+# PART - 0
+# util function to read file and extract information ( video_id, batch_index, serial_number, page_number, row, column, nid, bid, file_name_suffix, file_type )
+
 # PART-1.1
-# for the INPUT_VIDEO_DIRECTORY loop to extract the audio files,
-# save the output in the csv file named output/extract_audio_from_video.csv - having 2 column -- video_id, extract_audio_time, video_duration, audio_duration
-# if the video file that we are processing is already processed - skip re processing
-# note: do not keep this  audio_file_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}/vocals.mp3"  instead use
+# 1. for the INPUT_VIDEO_DIRECTORY loop to extract the audio files,
+# 2. save the output in the csv file named output/extract_audio_from_video.csv - having columns -- video_id, extract_audio_time, video_duration, audio_duration
+# 3. if the video file that we are processing is already processed - skip re processing
+# 4 note: do not keep this  audio_file_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}/vocals.mp3"  instead use
 #  audio_file_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_id}/vocals.mp3"
 
 # PART-1.2
@@ -14,4 +17,4 @@
 # skip the files that were previously processed
 # output csv file name will be output/audio_transcription.csv
 
-# sequence of execution PART-1.1, # PART-2, # PART-1.2
+# sequence of execution PART-0, PART-1.1, # PART-2, # PART-1.2
