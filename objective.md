@@ -34,13 +34,20 @@ Info: `index: 4 * (row - 1) + column`
 
 ---
 
-we will create a directory with value of vid as the directory name in "output/similar_pledge_takers"
-and in that vid directory we will store 5 files (1 file will be the reference image from the video)
-for example if we are processing 1_1_2_6340954574112_Rahul_VP.png
-directory name will be 6340954574112
-prefix the similarity rank to the file name and store; example the most matching file will be
-1-difference_indicator-1_1_2_6340954574112_Rahul_VP.png
-where difference_indicator is stringified 1000\*"VGG-Face_cosine" - this should be exact 4 chars, so in case of exact match it will be
-1-0000-1_1_2_6340954574112_Rahul_VP.png
+High level steps for finding potential duplicate videos
 
-6340954574112, 6340954574113:difference_indicator, 6340954574114:difference_indicator,
+1. input directory FACE_IMAGE_DIRECTORY
+2. output file FACE_MATCH_RESULT_CSV_PATH
+   1. sample row: 6340954574112, match_found, 6340954574113:difference_indicator, 6340954574114:difference_indicator,
+3. image once processed will not be processed again - so check the dataframe before processing
+4. output of each face match iteration - a directory inside "output/similar_pledge_takers" - name of directory will be value of corresponding video_id
+5. a config variable will specify how many similar faces to list (set it to 5 for now)
+6. a config variable will specify the threshhold for difference or similarity
+7. the directory thus created will have images in it -
+   1. the 1st image should be the one of pledge taker who we are comparing as that face will match the most (assumption)
+   2. for example if we are processing 6340954574112_rahul_vp.png
+   3. directory name will be 6340954574112
+   4. prefix the similarity rank to the file name and store;
+   5. example the most matching file will be 1_difference-indicator_6340954574112_rahul_vp.png
+   6. where difference_indicator is stringified 1000\*"VGG-Face_cosine" - this should be exact 4 chars, so in case of exact match it will be 1_0000_6340954574112_rahul_vp.png
+8. match_found will be set to true if atleast 1 image (except the one corresponding to the self video) is very similar (developer can decide the criteria for that)
