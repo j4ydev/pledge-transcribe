@@ -48,26 +48,24 @@ class VIDEO2AUDIO():
 
     def process(self, input_video_file_list):
         for input_video_path in input_video_file_list:
-            clip = VideoFileClip(input_video_path)
             video_file_name = input_video_path.split('/')[-1].replace(INPUT_VIDEO_FILE_FORMAT, '')
-            file_video_id, file_name_suffix = get_details_from_video_file_name(video_file_name)
+            file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
             is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.video2audio_dataframe)
 
             if not is_value_present_flag:
                 start_time = time.time()
-                demucs.separate.main(["--mp3", "--two-stems", "vocals", "-n", "mdx_extra", input_video_path])
-                audio_file_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}/{BACKGROUND_REMOVED_FILE_NAME}"
+                demucs.separate.main(["--out", BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY, "--mp3", "--two-stems", "vocals", "-n", "mdx_extra", input_video_path])
+                audio_file_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{video_file_name}/{BACKGROUND_REMOVED_FILE_NAME}"
                 end_time = time.time()
                 extract_audio_time = end_time - start_time
 
+                clip = VideoFileClip(input_video_path)
                 video_duration = clip.duration
                 audio = AudioSegment.from_file(audio_file_path)
                 audio_duration = len(audio) / 1000  # Convert milliseconds to seconds
 
                 #RENAME DIRECTORY
-                os.mkdir(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{file_video_id}")
-                shutil.move(audio_file_path, f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{file_video_id}/{BACKGROUND_REMOVED_FILE_NAME}")
-                shutil.rmtree(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}")
+                shutil.move(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{video_file_name}", f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{file_video_id}")
 
                 new_video2audio_row = {'video_id':file_video_id, 'extract_audio_time': extract_audio_time, 'video_duration': video_duration, 'audio_duration': audio_duration}
 

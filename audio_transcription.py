@@ -34,8 +34,7 @@ class TRANSCRIBE():
         return transcribe_time, transcribed_text
 
     def check_log_and_transcribe_video(self, audio_directory_path):
-        audio_directory_path_name = audio_directory_path.split("/")[-1]
-        file_video_id = audio_directory_path_name
+        file_video_id = audio_directory_path.split("/")[-1]
         is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.transcribe_dataframe)
         audio_file_path = f"{audio_directory_path}/{BACKGROUND_REMOVED_FILE_NAME}"
         ic(audio_file_path)
@@ -68,6 +67,6 @@ class TRANSCRIBE():
 
 if __name__ == "__main__":
     transcribe_obj = TRANSCRIBE()
-    audio_directory_list = glob.glob(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/*")
+    audio_directory_list = glob.glob(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/*")
     audio_directory_list.sort()
     transcribe_obj.process(audio_directory_list)
