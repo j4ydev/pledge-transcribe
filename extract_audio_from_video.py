@@ -32,7 +32,7 @@ from moviepy.editor import VideoFileClip
 from utils import *
 from icecream import ic
 from pydub import AudioSegment
-
+import shutil
 
 class VIDEO2AUDIO():
     def __init__(self):
@@ -57,14 +57,18 @@ class VIDEO2AUDIO():
             if not is_value_present_flag:
                 start_time = time.time()
                 demucs.separate.main(["--mp3", "--two-stems", "vocals", "-n", "mdx_extra", input_video_path])
-                audio_file_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}/vocals.mp3"
+                audio_file_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}/{BACKGROUD_REMOVED_FILE_NAME}"
                 end_time = time.time()
                 extract_audio_time = end_time - start_time
 
                 video_duration = clip.duration
                 audio = AudioSegment.from_file(audio_file_path)
                 audio_duration = len(audio) / 1000  # Convert milliseconds to seconds
-                os.rename(audio_file_path, audio_file_path.replace("vocals.mp3", f"{file_videoid}{AUDIO_FILE_FORMAT}"))
+
+                #RENAME DIRECTORY
+                os.mkdir(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{file_videoid}")
+                shutil.move(audio_file_path, f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{file_videoid}/{BACKGROUD_REMOVED_FILE_NAME}")
+                shutil.rmtree(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}")
 
                 new_video2audio_row = {'vid':file_videoid, 'extract_audio_time': extract_audio_time, 'video_duration': video_duration, 'audio_duration': audio_duration}
 

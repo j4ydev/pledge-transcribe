@@ -1,5 +1,6 @@
 BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY = "separated/mdx_extra"
 AUDIO_FILE_FORMAT = ".mp3"
+BACKGROUD_REMOVED_FILE_NAME = "vocals.mp3"
 
 FACE_IMAGE_DIRECTORY = "output/screenshots" # PATH DIR OF SAVE FRAME FROM VIDEO (DO NOT ADD / AT THE END OF PATH)
 FACE_IMAGE_FILE_FORMAT = '.png'
@@ -16,4 +17,4 @@ ONLY_UNIQUE_VIDEO_DIRECTORY = "output/unique_videos"
 RENAME_FILES_DATAFRAME_PATH = "output/rename_video_files.csv"
 
 
-AUDIO_EXTRACT_CSV_PATH = "output/audio_extract.csv"
+AUDIO_EXTRACT_CSV_PATH = "output/extract_audio_from_video.csv"

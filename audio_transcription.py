@@ -32,10 +32,10 @@ class TRANSCRIBE():
     def check_log_and_transcribe_video(self,audio_folder_path):
 
         audio_folder_path_name = audio_folder_path.split("/")[-1]
-        file_videoid, file_name_suffix = get_details_from_video_name(audio_folder_path_name)
-        
+        file_videoid = audio_folder_path_name
         is_value_present_flag = is_value_present_in_dataframe(file_videoid, self.transcribe_dataframe)
-        audio_file_path = f"{audio_folder_path}/{file_videoid}{AUDIO_FILE_FORMAT}"
+        audio_file_path = f"{audio_folder_path}/{BACKGROUD_REMOVED_FILE_NAME}"
+        ic(audio_file_path)
 
         if not is_value_present_flag:
             # MODULE:1 ------> TRANSCRIBE VIDEO PROCESS
@@ -55,7 +55,6 @@ class TRANSCRIBE():
             
 
     def process(self, audio_folder_list):
-        print(audio_folder_list)
         
         for audio_folder_path in audio_folder_list:
             try:
