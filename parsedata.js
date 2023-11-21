@@ -237,14 +237,3 @@ function boomboom() {
 var pending = 20;
 var dataList = [];
 boomboom();
-
-// const response = await fetch(
-//   "https://pledgewithpfizerco.pfizersite.io/download_video",
-//   getFetchPayload({ pageNumber, payload })
-// );
-// console.log(index, response.status, "------------>>", data);
-// const res = await response.blob();
-// var a = document.createElement("a");
-// a.href = window.URL.createObjectURL(res);
-// a.download = `${pageNumber}_${row}_${column}_${video_id}_${name}`;
-// a.click();
