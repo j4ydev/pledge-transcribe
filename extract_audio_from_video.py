@@ -60,7 +60,7 @@ class VIDEO2AUDIO():
             if not is_value_present_flag:
                 start_time = time.time()
                 demucs.separate.main(["--mp3", "--two-stems", "vocals", "-n", "mdx_extra", input_video_path])
-                audio_file_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}/{BACKGROUD_REMOVED_FILE_NAME}"
+                audio_file_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}/{BACKGROUND_REMOVED_FILE_NAME}"
                 end_time = time.time()
                 extract_audio_time = end_time - start_time
 
@@ -70,7 +70,7 @@ class VIDEO2AUDIO():
 
                 #RENAME DIRECTORY
                 os.mkdir(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{file_video_id}")
-                shutil.move(audio_file_path, f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{file_video_id}/{BACKGROUD_REMOVED_FILE_NAME}")
+                shutil.move(audio_file_path, f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{file_video_id}/{BACKGROUND_REMOVED_FILE_NAME}")
                 shutil.rmtree(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}")
 
                 new_video2audio_row = {'video_id':file_video_id, 'extract_audio_time': extract_audio_time, 'video_duration': video_duration, 'audio_duration': audio_duration}

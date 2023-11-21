@@ -37,7 +37,7 @@ class TRANSCRIBE():
         audio_folder_path_name = audio_folder_path.split("/")[-1]
         file_video_id = audio_folder_path_name
         is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.transcribe_dataframe)
-        audio_file_path = f"{audio_folder_path}/{BACKGROUD_REMOVED_FILE_NAME}"
+        audio_file_path = f"{audio_folder_path}/{BACKGROUND_REMOVED_FILE_NAME}"
         ic(audio_file_path)
 
         if not is_value_present_flag:
