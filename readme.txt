@@ -9,7 +9,7 @@ install the following file.
 
 ### FOR TRANSCRIBE MODULE
 --------------------------------------------
-Make output folder.
+Make output directory.
 "mkdir output"
 --------------------------------------------
 update line no 16.

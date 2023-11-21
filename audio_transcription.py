@@ -8,6 +8,7 @@ whisper_model = whisper.load_model("large")
 import pandas as pd
 from icecream import ic
 
+# TODO: Import only needed names or import the module and then use its members. google to know more
 from config import *
 from utils import *
 
@@ -32,12 +33,11 @@ class TRANSCRIBE():
         transcribe_time = end_time - start_time
         return transcribe_time, transcribed_text
 
-    def check_log_and_transcribe_video(self,audio_folder_path):
-
-        audio_folder_path_name = audio_folder_path.split("/")[-1]
-        file_video_id = audio_folder_path_name
+    def check_log_and_transcribe_video(self, audio_directory_path):
+        audio_directory_path_name = audio_directory_path.split("/")[-1]
+        file_video_id = audio_directory_path_name
         is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.transcribe_dataframe)
-        audio_file_path = f"{audio_folder_path}/{BACKGROUND_REMOVED_FILE_NAME}"
+        audio_file_path = f"{audio_directory_path}/{BACKGROUND_REMOVED_FILE_NAME}"
         ic(audio_file_path)
 
         if not is_value_present_flag:
@@ -57,18 +57,17 @@ class TRANSCRIBE():
             self.transcribe_dataframe.to_csv(TRANSCRIBED_FILE_PATH, index=False)
 
 
-    def process(self, audio_folder_list):
-
-        for audio_folder_path in audio_folder_list:
+    def process(self, audio_directory_list):
+        for audio_directory_path in audio_directory_list:
             try:
-                self.check_log_and_transcribe_video(audio_folder_path)
+                self.check_log_and_transcribe_video(audio_directory_path)
             except Exception as e:
                 ic(e)
-                print("FAILED", audio_folder_path) # TODO: handel this, log it to a separate csv, example 12_2_1_6340799645112_Tapaswini_Bag.mp4'
-
+                print("FAILED", audio_directory_path) # TODO: handel this, log it to a separate csv, example 12_2_1_6340799645112_Tapaswini_Bag.mp4'
         return "Complete"
+
 if __name__ == "__main__":
     transcribe_obj = TRANSCRIBE()
-    audio_folder_list = glob.glob(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/*")
-    audio_folder_list.sort()
-    transcribe_obj.process(audio_folder_list)
+    audio_directory_list = glob.glob(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/*")
+    audio_directory_list.sort()
+    transcribe_obj.process(audio_directory_list)
