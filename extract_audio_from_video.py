@@ -81,7 +81,7 @@ class VIDEO2AUDIO():
 
 
 if __name__ == "__main__":
-    input_video_files_list = glob.glob(f"{ONLY_UNIQUE_VIDEO_DIRECTORY}/*{INPUT_VIDEO_FILE_FORMAT}")
+    input_video_files_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*{INPUT_VIDEO_FILE_FORMAT}")
     input_video_files_list.sort()
     video2audio_obj = VIDEO2AUDIO()
     video2audio_obj.process(input_video_files_list)
