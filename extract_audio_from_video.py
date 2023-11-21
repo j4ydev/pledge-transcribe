@@ -23,16 +23,19 @@
 
 
 import glob
-import pandas as pd
 import os
-from config import *
-import time
-import demucs.separate
-from moviepy.editor import VideoFileClip
-from utils import *
-from icecream import ic
-from pydub import AudioSegment
 import shutil
+import time
+
+import demucs.separate
+import pandas as pd
+from icecream import ic
+from moviepy.editor import VideoFileClip
+from pydub import AudioSegment
+
+from config import *
+from utils import *
+
 
 class VIDEO2AUDIO():
     def __init__(self):
@@ -40,19 +43,19 @@ class VIDEO2AUDIO():
             try:
                 self.video2audio_dataframe = pd.read_csv(AUDIO_EXTRACT_CSV_PATH)
             except:
-                self.video2audio_dataframe = pd.DataFrame(columns=['vid', 'extract_audio_time', 'video_duration', 'audio_duration'])
+                self.video2audio_dataframe = pd.DataFrame(columns=['video_id', 'extract_audio_time', 'video_duration', 'audio_duration'])
         else:
-            self.video2audio_dataframe = pd.DataFrame(columns=['vid', 'extract_audio_time', 'video_duration', 'audio_duration'])
+            self.video2audio_dataframe = pd.DataFrame(columns=['video_id', 'extract_audio_time', 'video_duration', 'audio_duration'])
 
-    
+
     def process(self, input_video_files_list):
-        
+
         for input_video_path in input_video_files_list:
 
             clip = VideoFileClip(input_video_path)
             video_file_name = input_video_path.split('/')[-1].replace(INPUT_VIDEO_FILE_FORMAT, '')
-            file_videoid, file_name_suffix = get_details_from_video_name(video_file_name)
-            is_value_present_flag = is_value_present_in_dataframe(file_videoid, self.video2audio_dataframe)
+            file_video_id, file_name_suffix = get_details_from_video_file_name(video_file_name)
+            is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.video2audio_dataframe)
 
             if not is_value_present_flag:
                 start_time = time.time()
@@ -66,11 +69,11 @@ class VIDEO2AUDIO():
                 audio_duration = len(audio) / 1000  # Convert milliseconds to seconds
 
                 #RENAME DIRECTORY
-                os.mkdir(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{file_videoid}")
-                shutil.move(audio_file_path, f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{file_videoid}/{BACKGROUD_REMOVED_FILE_NAME}")
+                os.mkdir(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{file_video_id}")
+                shutil.move(audio_file_path, f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{file_video_id}/{BACKGROUD_REMOVED_FILE_NAME}")
                 shutil.rmtree(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{video_file_name}")
 
-                new_video2audio_row = {'vid':file_videoid, 'extract_audio_time': extract_audio_time, 'video_duration': video_duration, 'audio_duration': audio_duration}
+                new_video2audio_row = {'video_id':file_video_id, 'extract_audio_time': extract_audio_time, 'video_duration': video_duration, 'audio_duration': audio_duration}
 
                 new_video2audio_dataframe = pd.DataFrame(new_video2audio_row, index=[0])
                 self.video2audio_dataframe = pd.concat([self.video2audio_dataframe, new_video2audio_dataframe], ignore_index=True)
@@ -78,7 +81,7 @@ class VIDEO2AUDIO():
             else:
                 print(f"Audio of the this {input_video_path} is already seperated.")
 
-    
+
 if __name__ == "__main__":
     input_video_files_list = glob.glob(f"{ONLY_UNIQUE_VIDEO_DIRECTORY}/*{INPUT_VIDEO_FILE_FORMAT}")
     input_video_files_list.sort()

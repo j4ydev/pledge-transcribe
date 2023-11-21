@@ -1,10 +1,13 @@
 import glob
 import os
 import time
+
 import whisper
+
 whisper_model = whisper.load_model("large")
 import pandas as pd
 from icecream import ic
+
 from config import *
 from utils import *
 
@@ -15,9 +18,9 @@ class TRANSCRIBE():
             try:
                 self.transcribe_dataframe = pd.read_csv(TRANSCRIBED_FILE_PATH)
             except:
-                self.transcribe_dataframe = pd.DataFrame(columns=['vid', 'transcribe_time', 'transcribe_text'])
+                self.transcribe_dataframe = pd.DataFrame(columns=['video_id', 'transcribe_time', 'transcribe_text'])
         else:
-            self.transcribe_dataframe = pd.DataFrame(columns=['vid', 'transcribe_time', 'transcribe_text'])
+            self.transcribe_dataframe = pd.DataFrame(columns=['video_id', 'transcribe_time', 'transcribe_text'])
 
     def transcribe_audio(self, audio_file_path):
         start_time = time.time()
@@ -32,8 +35,8 @@ class TRANSCRIBE():
     def check_log_and_transcribe_video(self,audio_folder_path):
 
         audio_folder_path_name = audio_folder_path.split("/")[-1]
-        file_videoid = audio_folder_path_name
-        is_value_present_flag = is_value_present_in_dataframe(file_videoid, self.transcribe_dataframe)
+        file_video_id = audio_folder_path_name
+        is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.transcribe_dataframe)
         audio_file_path = f"{audio_folder_path}/{BACKGROUD_REMOVED_FILE_NAME}"
         ic(audio_file_path)
 
@@ -43,7 +46,7 @@ class TRANSCRIBE():
             transcribe_time, file_transcribe_text = self.transcribe_audio(audio_file_path)
 
             # INSERT DATA IN DATAFRAME
-            new_transcribe_row = {'vid': file_videoid, 'transcribe_time': transcribe_time, 'transcribe_text': file_transcribe_text}
+            new_transcribe_row = {'video_id': file_video_id, 'transcribe_time': transcribe_time, 'transcribe_text': file_transcribe_text}
 
             print("##" * 20)
             ic(new_transcribe_row)
@@ -52,10 +55,10 @@ class TRANSCRIBE():
             new_transcribe_dataframe = pd.DataFrame(new_transcribe_row, index=[0])
             self.transcribe_dataframe = pd.concat([self.transcribe_dataframe, new_transcribe_dataframe], ignore_index=True)
             self.transcribe_dataframe.to_csv(TRANSCRIBED_FILE_PATH, index=False)
-            
+
 
     def process(self, audio_folder_list):
-        
+
         for audio_folder_path in audio_folder_list:
             try:
                 self.check_log_and_transcribe_video(audio_folder_path)

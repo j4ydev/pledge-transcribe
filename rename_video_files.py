@@ -14,9 +14,9 @@ class RENAME_VIDEO_FILES():
             try:
                 self.rename_video_dataframe = pd.read_csv(RENAME_FILES_DATAFRAME_PATH)
             except:
-                self.rename_video_dataframe = pd.DataFrame(columns=['vid', 'new_video_filename', 'original_video_filename'])
+                self.rename_video_dataframe = pd.DataFrame(columns=['video_id', 'new_video_filename', 'original_video_filename'])
         else:
-            self.rename_video_dataframe = pd.DataFrame(columns=['vid', 'new_video_filename', 'original_video_filename'])
+            self.rename_video_dataframe = pd.DataFrame(columns=['video_id', 'new_video_filename', 'original_video_filename'])
 
     def rename_video_file_name(self, original_video_file_name):
         video_id_and_name = original_video_file_name.split("_")[3:]
@@ -26,7 +26,7 @@ class RENAME_VIDEO_FILES():
 
 
     def insert_in_dataframe(self, vid, new_video_filename, original_video_filename):
-        new_row = {'vid': vid, 'new_video_filename': new_video_filename, 'original_video_filename': original_video_filename}
+        new_row = {'video_id': vid, 'new_video_filename': new_video_filename, 'original_video_filename': original_video_filename}
         new_dataframe = pd.DataFrame(new_row, index=[0])
         self.rename_video_dataframe = pd.concat([self.rename_video_dataframe, new_dataframe], ignore_index=True)
         self.rename_video_dataframe.to_csv(RENAME_FILES_DATAFRAME_PATH, index=False)
