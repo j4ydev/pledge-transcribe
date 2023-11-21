@@ -65,7 +65,9 @@ class VIDEO2AUDIO():
                 audio_duration = len(audio) / 1000  # Convert milliseconds to seconds
 
                 #RENAME DIRECTORY
-                shutil.move(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{video_file_name}", f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{file_video_id}")
+                current_directory = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{video_file_name}"
+                desired_directory = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{file_video_id}"
+                shutil.move(current_directory, desired_directory)
 
                 new_video2audio_row = {'video_id':file_video_id, 'extract_audio_time': extract_audio_time, 'video_duration': video_duration, 'audio_duration': audio_duration}
 

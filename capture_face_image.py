@@ -88,6 +88,6 @@ class GETFRAME():
 
 if __name__ == "__main__":
     getframe_obj = GETFRAME()
-    input_video_file_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*.mp4")
+    input_video_file_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*{INPUT_VIDEO_FILE_FORMAT}")
     input_video_file_list.sort()
     getframe_obj.process(input_video_file_list)
