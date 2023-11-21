@@ -19,9 +19,6 @@
 
 # sequence of execution PART-0, PART-1.1, # PART-2, # PART-1.2
 
-
-
-
 import glob
 import os
 import shutil
@@ -33,6 +30,7 @@ from icecream import ic
 from moviepy.editor import VideoFileClip
 from pydub import AudioSegment
 
+# TODO: Import only needed names or import the module and then use its members. google to know more
 from config import *
 from utils import *
 

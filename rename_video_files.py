@@ -5,6 +5,7 @@ import shutil
 
 import pandas as pd
 
+# TODO: Import only needed names or import the module and then use its members. google to know more
 from config import *
 
 

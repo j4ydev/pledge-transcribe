@@ -1,5 +1,6 @@
 import numpy as np
 
+# TODO: Import only needed names or import the module and then use its members. google to know more
 from config import *
 
 
@@ -8,7 +9,6 @@ def get_details_from_video_file_name(file_name):
     file_name_separate_list = file_name.split('_')
     file_video_id = file_name_separate_list[0]
     file_name_suffix = file_name_separate_list[1]
-
     return file_video_id, file_name_suffix
 
 def is_value_present_in_dataframe(file_video_id, dataframe):

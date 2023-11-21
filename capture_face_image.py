@@ -7,7 +7,7 @@ from deepface import DeepFace
 from icecream import ic
 from numpy.linalg import norm
 
-from config import *  # # TODO: Import only needed names or import the module and then use its members. google to know more
+from config import *  # TODO: Import only needed names or import the module and then use its members. google to know more
 
 
 class GETFRAME():
