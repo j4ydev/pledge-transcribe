@@ -23,7 +23,7 @@ class RENAME_VIDEO_FILES():
         video_id_and_name = video_file_name.split("_")[3:]
         new_video_file_name = '_'.join(video_id_and_name)
         new_video_file_name  = re.sub(r'[^a-zA-Z0-9-_.]', '', new_video_file_name) #remove unnecessary characters (except alphanumeric,-,_, and .)
-        return new_video_file_name
+        return new_video_file_name.lower()
 
 
     def insert_in_dataframe(self, original_video_path, new_video_path):
@@ -33,7 +33,6 @@ class RENAME_VIDEO_FILES():
         self.video_rename_dataframe.to_csv(RENAME_FILES_DATAFRAME_PATH, index=False)
 
     def copy_video_to_unique_directory(self,video_file_path, new_video_file_name):
-
         if not os.path.isdir(ONLY_UNIQUE_VIDEO_DIRECTORY):
             os.mkdir(ONLY_UNIQUE_VIDEO_DIRECTORY)
         new_path_of_video = f"{ONLY_UNIQUE_VIDEO_DIRECTORY}/{new_video_file_name}"
