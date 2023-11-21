@@ -12,43 +12,44 @@ class RENAME_VIDEO_FILES():
     def __init__(self):
         if os.path.isfile(RENAME_FILES_DATAFRAME_PATH):
             try:
-                self.video_rename_dataframe = pd.read_csv(RENAME_FILES_DATAFRAME_PATH)
+                self.rename_video_dataframe = pd.read_csv(RENAME_FILES_DATAFRAME_PATH)
             except:
-                self.video_rename_dataframe = pd.DataFrame(columns=['original_video_path', 'new_video_path'])
+                self.rename_video_dataframe = pd.DataFrame(columns=['vid', 'new_video_filename', 'original_video_filename'])
         else:
-            self.video_rename_dataframe = pd.DataFrame(columns=['original_video_path', 'new_video_path'])
+            self.rename_video_dataframe = pd.DataFrame(columns=['vid', 'new_video_filename', 'original_video_filename'])
 
-
-    def rename_video_file_name(self, video_file_name):
-        video_id_and_name = video_file_name.split("_")[3:]
+    def rename_video_file_name(self, original_video_file_name):
+        video_id_and_name = original_video_file_name.split("_")[3:]
         new_video_file_name = '_'.join(video_id_and_name)
-        new_video_file_name  = re.sub(r'[^a-zA-Z0-9-_.]', '', new_video_file_name) #remove unnecessary characters (except alphanumeric,-,_, and .)
-        return new_video_file_name.lower()
+        new_video_file_name  = re.sub(r'[^a-zA-Z0-9-_.]', '_', new_video_file_name) #remove unnecessary characters (except alphanumeric,-,_, and .)
+        return new_video_file_name.lower().replace('__', '_').replace('_'+INPUT_VIDEO_FILE_FORMAT, INPUT_VIDEO_FILE_FORMAT)
 
 
-    def insert_in_dataframe(self, original_video_path, new_video_path):
-        new_video_rename_row = {'original_video_path':original_video_path, 'new_video_path': new_video_path}
-        new_video_rename_dataframe = pd.DataFrame(new_video_rename_row, index=[0])
-        self.video_rename_dataframe = pd.concat([self.video_rename_dataframe, new_video_rename_dataframe], ignore_index=True)
-        self.video_rename_dataframe.to_csv(RENAME_FILES_DATAFRAME_PATH, index=False)
+    def insert_in_dataframe(self, vid, new_video_filename, original_video_filename):
+        new_row = {'vid': vid, 'new_video_filename': new_video_filename, 'original_video_filename': original_video_filename}
+        new_dataframe = pd.DataFrame(new_row, index=[0])
+        self.rename_video_dataframe = pd.concat([self.rename_video_dataframe, new_dataframe], ignore_index=True)
+        self.rename_video_dataframe.to_csv(RENAME_FILES_DATAFRAME_PATH, index=False)
 
-    def copy_video_to_unique_directory(self,video_file_path, new_video_file_name):
+    def copy_video_to_unique_directory(self, original_video_file_path, new_video_file_name):
         if not os.path.isdir(ONLY_UNIQUE_VIDEO_DIRECTORY):
             os.mkdir(ONLY_UNIQUE_VIDEO_DIRECTORY)
         new_path_of_video = f"{ONLY_UNIQUE_VIDEO_DIRECTORY}/{new_video_file_name}"
 
         if not os.path.isfile(new_path_of_video):
-            self.insert_in_dataframe(video_file_path, new_path_of_video)
-            shutil.copy(video_file_path, new_path_of_video)
+            original_video_file_name = original_video_file_path.split("/")[-1]
+            vid = new_video_file_name.split("_")[0]
+            self.insert_in_dataframe(vid, new_video_file_name, original_video_file_name)
+            shutil.copy(original_video_file_path, new_path_of_video)
         else:
-            print(f"{new_video_file_name} already present in {ONLY_UNIQUE_VIDEO_DIRECTORY} directory.")
+            print(f"{original_video_file_path} already present in {ONLY_UNIQUE_VIDEO_DIRECTORY} directory.")
 
     def process(self):
         input_video_file_path_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*{INPUT_VIDEO_FILE_FORMAT}")
-        for video_file_path in input_video_file_path_list:
-            video_file_name = video_file_path.split("/")[-1]
-            new_video_file_name = self.rename_video_file_name(video_file_name)
-            self.copy_video_to_unique_directory(video_file_path, new_video_file_name)
+        for original_video_file_path in input_video_file_path_list:
+            original_video_file_name = original_video_file_path.split("/")[-1]
+            new_video_file_name = self.rename_video_file_name(original_video_file_name)
+            self.copy_video_to_unique_directory(original_video_file_path, new_video_file_name)
 
 
 if __name__ == "__main__":
