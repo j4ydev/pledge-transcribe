@@ -8,7 +8,7 @@ import pandas as pd
 from config import *
 
 
-class RENAME_VIDEO_FILES():
+class RENAMEVIDEOFILES():
     def __init__(self):
         if os.path.isfile(RENAME_FILES_DATAFRAME_PATH):
             try:
@@ -53,7 +53,7 @@ class RENAME_VIDEO_FILES():
 
 
 if __name__ == "__main__":
-    rename_video_files_obj = RENAME_VIDEO_FILES()
+    rename_video_files_obj = RENAMEVIDEOFILES()
     rename_video_files_obj.process()
 
 
