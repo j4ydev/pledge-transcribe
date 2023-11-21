@@ -1,3 +1,11 @@
+/*
+1. capture nid
+2. capture bid
+3. define the batch index - document the date range for batch index
+4. since the oldest is last - update flow to parse in reverse
+5. finalize on the file name format
+*/
+
 function convertToCSV(arrayOfObject, addHeader = false) {
   var str = "";
 
