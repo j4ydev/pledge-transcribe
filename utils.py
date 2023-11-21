@@ -1,17 +1,15 @@
-    ### GET DETAILS FROM VIDEO FILE NAME ###
+### GET DETAILS FROM VIDEO FILE NAME ###
 import numpy as np
+from config import *
 
 
 def get_details_from_video_name(file_name):
 
     file_name_separate_list = file_name.split("_")
-    file_row = file_name_separate_list[1]
-    file_column = file_name_separate_list[2]
-    file_index = 4*(int(file_row)-1) + int(file_column)
-    file_pagenumber = file_name_separate_list[0]
-    file_video_id = file_name_separate_list[3]
+    file_videoid = file_name_separate_list[0]
+    file_name_suffix = file_name_separate_list[1]
 
-    return file_row, file_column, file_index, file_pagenumber, file_video_id
+    return file_videoid, file_name_suffix
 
 def is_value_present_in_dataframe(file_video_id, dataframe):
 
