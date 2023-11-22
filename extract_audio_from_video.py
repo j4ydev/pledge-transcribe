@@ -49,7 +49,7 @@ class VIDEO2AUDIO():
     def process(self, input_video_file_list):
         for input_video_path in input_video_file_list:
             video_file_name = input_video_path.split('/')[-1].replace(INPUT_VIDEO_FILE_FORMAT, '')
-            file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
+            file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
             is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.video2audio_dataframe)
 
             if not is_value_present_flag:
