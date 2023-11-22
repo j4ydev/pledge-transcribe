@@ -14,8 +14,4 @@ INPUT_VIDEO_FILE_FORMAT = '.mp4'
 TRANSCRIBED_FILE_PATH = "output/transcribe_text.csv" ### PATH OF THE OUTPUT CSV FILE
 USE_FP16 = False
 
-ONLY_UNIQUE_VIDEO_DIRECTORY = "output/unique_videos"
-RENAME_FILES_DATAFRAME_PATH = "output/rename_video_files.csv"
-
-
 AUDIO_EXTRACT_CSV_PATH = "output/extract_audio_from_video.csv"

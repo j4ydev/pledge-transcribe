@@ -5,9 +5,10 @@ import shutil
 
 import pandas as pd
 
-# TODO: Import only needed names or import the module and then use its members. google to know more
-from config import *
-
+INPUT_VIDEO_FILE_FORMAT = '.mp4'
+ONLY_UNIQUE_VIDEO_DIRECTORY = "/Users/khasgiwa/Workbench/data-dumps/GWR/combined"
+RENAME_FILES_DATAFRAME_PATH = "output/rename_video_files_1.csv"
+INPUT_VIDEO_DIRECTORY="/Users/khasgiwa/Workbench/data-dumps/GWR/old"
 
 class RENAMEVIDEOFILES():
     def __init__(self):
@@ -45,8 +46,8 @@ class RENAMEVIDEOFILES():
         else:
             print(f"{original_video_file_path} already present in {ONLY_UNIQUE_VIDEO_DIRECTORY} directory.")
 
-    def process(self):
-        input_video_file_path_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*{INPUT_VIDEO_FILE_FORMAT}")
+    def process(self, input_video_sub_directory):
+        input_video_file_path_list = glob.glob(f"{input_video_sub_directory}/*{INPUT_VIDEO_FILE_FORMAT}")
         for original_video_file_path in input_video_file_path_list:
             original_video_file_name = original_video_file_path.split("/")[-1]
             new_video_file_name = self.rename_video_file_name(original_video_file_name)
@@ -55,6 +56,9 @@ class RENAMEVIDEOFILES():
 
 if __name__ == "__main__":
     rename_video_files_obj = RENAMEVIDEOFILES()
-    rename_video_files_obj.process()
+    video_directory_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*")
+    for video_directory_path in video_directory_list:
+        print(video_directory_path)
+        rename_video_files_obj.process(video_directory_path)
 
 
