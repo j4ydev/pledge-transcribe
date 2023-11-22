@@ -9,6 +9,8 @@ from numpy.linalg import norm
 
 from config import *  # TODO: Import only needed names or import the module and then use its members. google to know more
 
+# TODO: Jay we should generate an output CSV for this too, and also avoid face capture if already done for that video-id,
+# the CSV will have following columns -- video_id, face_found, attempt, time_consumed
 
 class GETFRAME():
     def __init__(self):
