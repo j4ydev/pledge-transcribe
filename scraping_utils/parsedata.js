@@ -1,9 +1,13 @@
 /*
+Next Steps
 1. capture nid
 2. capture bid
-3. define the batch index - document the date range for batch index
-4. since the oldest is last - update flow to parse in reverse
-5. finalize on the file name format
+3. capture URL to accept video
+4. capture URL to reject video
+5. define the batch index - document the date range for batch index - so that a batch once scrapped need not be repeated, and avoid video duplicates
+6. since the oldest is last - update flow to parse in reverse
+7. file name format: bid_vid_file-name-suffix.mp4
+8. Align the CSV with google spreadsheet column sequence
 */
 
 function convertToCSV(arrayOfObject, addHeader = false) {
