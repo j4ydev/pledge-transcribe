@@ -4,6 +4,7 @@ BACKGROUND_REMOVED_FILE_NAME = "vocals.mp3"
 AUDIO_FILE_FORMAT = ".mp3"
 
 
+FACE_MATCH_SAVE_IMAGES_DIRECTORY = "output/similar_pledge_takers"
 FACE_CAPTURE_CSV_PATH = "output/capture_face.csv"
 FACE_IMAGE_DIRECTORY = "output/screenshots" # PATH DIR OF SAVE FRAME FROM VIDEO (DO NOT ADD / AT THE END OF PATH)
 FACE_IMAGE_FILE_FORMAT = '.png'
