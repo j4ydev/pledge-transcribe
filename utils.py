@@ -1,7 +1,6 @@
 import numpy as np
 
-# TODO: Import only needed names or import the module and then use its members. google to know more
-from config import *
+# TODO:Done Import only needed names or import the module and then use its members. google to know more
 
 USE_OLD_VIDEO_FILE_NAME = False
 
