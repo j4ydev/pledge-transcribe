@@ -1,11 +1,15 @@
-from deepface import DeepFace
-import os
-from utils import get_metadata_from_file_name, is_value_present_in_dataframe
-import shutil
-from icecream import ic
 import glob
+import os
+import shutil
+
 import pandas as pd
-from config import FACE_IMAGE_DIRECTORY, FACE_IMAGE_FILE_FORMAT, FACE_MATCH_SAVE_IMAGES_DIRECTORY, FACE_MATCH_RESULT_CSV_PATH
+from deepface import DeepFace
+from icecream import ic
+
+from config import (FACE_IMAGE_DIRECTORY, FACE_IMAGE_FILE_FORMAT,
+                    FACE_MATCH_RESULT_CSV_PATH,
+                    FACE_MATCH_SAVE_IMAGES_DIRECTORY)
+from utils import get_metadata_from_file_name, is_value_present_in_dataframe
 
 
 class MATCHFACE():
@@ -20,13 +24,13 @@ class MATCHFACE():
 
 
     def process(self, face_images_list):
-        
+
         for face_image_path in face_images_list:
-        
+
             match_face_image_file_name = face_image_path.split("/")[-1].replace(".png", "")
             file_bid, video_id, file_name_suffix = get_metadata_from_file_name(match_face_image_file_name)
             is_value_present_flag = is_value_present_in_dataframe(video_id, self.face_match_dataframe)
-            
+
 
             if not is_value_present_flag:
 
@@ -36,8 +40,8 @@ class MATCHFACE():
                 match_face_distance = list(dfs[0].head(5)["VGG-Face_cosine"])
                 print(type(match_face_distance))
                 ic(match_face_distance)
-                
-                
+
+
 
                 if len(match_face_paths) >= 2:
                     match_found = "True"
@@ -55,7 +59,7 @@ class MATCHFACE():
                 new_face_match_dataframe = pd.DataFrame(new_face_match_row, index=[0])
                 self.face_match_dataframe = pd.concat([self.face_match_dataframe, new_face_match_dataframe], ignore_index=True)
                 self.face_match_dataframe.to_csv(FACE_MATCH_RESULT_CSV_PATH, index=False)
-                
+
                 ic(video_id)
                 for i in range (0, len(match_face_paths)):
                     individual_face_match_directory = f"{FACE_MATCH_SAVE_IMAGES_DIRECTORY}/{video_id}"
@@ -67,7 +71,7 @@ class MATCHFACE():
                     ic(match_face_paths[i])
                     print("--" * 40)
                     shutil.copy(match_face_paths[i], similar_face_image_path)
-                
+
 
 
 
@@ -77,5 +81,3 @@ if __name__ == "__main__":
 
     facematch_obj = MATCHFACE()
     facematch_obj.process(face_images_list)
-
-

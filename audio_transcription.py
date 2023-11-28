@@ -70,3 +70,4 @@ if __name__ == "__main__":
     audio_directory_list = glob.glob(f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/*")
     audio_directory_list.sort()
     transcribe_obj.process(audio_directory_list)
+

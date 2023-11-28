@@ -52,34 +52,56 @@ class VIDEO2AUDIO():
             file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
             is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.video2audio_dataframe)
 
+            if file_bid == "1515": # TODO: Jay inquire
+                continue
+            if file_bid == "1800": # TODO: Jay inquire
+                continue
+            if file_bid == "1833": # TODO: Jay inquire
+                continue
+            if file_bid == "1962": # TODO: Jay inquire
+                continue
+            if file_bid == "2014": # TODO: Jay inquire
+                continue
+            if file_bid == "2093": # TODO: Jay inquire
+                continue
+
             if not is_value_present_flag:
-                start_time = time.time()
-                demucs.separate.main(["--out", BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY, "--mp3", "--two-stems", "vocals", "-n", "mdx_extra", input_video_path])
-                audio_file_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{video_file_name}/{BACKGROUND_REMOVED_FILE_NAME}"
-                end_time = time.time()
-                extract_audio_time = end_time - start_time
+                try:
+                    start_time = time.time()
+                    demucs.separate.main(["--out", BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY, "--mp3", "--two-stems", "vocals", "-n", "mdx_extra", input_video_path])
+                    audio_file_path = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{video_file_name}/{BACKGROUND_REMOVED_FILE_NAME}"
+                    end_time = time.time()
+                    extract_audio_time = end_time - start_time
 
-                clip = VideoFileClip(input_video_path)
-                video_duration = clip.duration
-                audio = AudioSegment.from_file(audio_file_path)
-                audio_duration = len(audio) / 1000  # Convert milliseconds to seconds
+                    clip = VideoFileClip(input_video_path)
+                    video_duration = clip.duration
+                    audio = AudioSegment.from_file(audio_file_path)
+                    audio_duration = len(audio) / 1000  # Convert milliseconds to seconds
 
-                #RENAME DIRECTORY
-                current_directory = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{video_file_name}"
-                desired_directory = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{file_video_id}"
-                shutil.move(current_directory, desired_directory)
+                    #RENAME DIRECTORY
+                    current_directory = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{video_file_name}"
+                    desired_directory = f"{BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY}/{BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY}/{file_video_id}"
+                    shutil.move(current_directory, desired_directory)
 
-                new_video2audio_row = {'video_id':file_video_id, 'extract_audio_time': extract_audio_time, 'video_duration': video_duration, 'audio_duration': audio_duration}
+                    new_video2audio_row = {'video_id':file_video_id, 'extract_audio_time': extract_audio_time, 'video_duration': video_duration, 'audio_duration': audio_duration}
 
-                new_video2audio_dataframe = pd.DataFrame(new_video2audio_row, index=[0])
-                self.video2audio_dataframe = pd.concat([self.video2audio_dataframe, new_video2audio_dataframe], ignore_index=True)
-                self.video2audio_dataframe.to_csv(AUDIO_EXTRACT_CSV_PATH, index=False)
+                    new_video2audio_dataframe = pd.DataFrame(new_video2audio_row, index=[0])
+                    self.video2audio_dataframe = pd.concat([self.video2audio_dataframe, new_video2audio_dataframe], ignore_index=True)
+                    self.video2audio_dataframe.to_csv(AUDIO_EXTRACT_CSV_PATH, index=False)
+                except:
+                    print("JAY RECORD THIS DATA FRAME IN A SEPARATE FILE")
             else:
                 print(f"Audio of the this {input_video_path} is already seperated.")
 
-
 if __name__ == "__main__":
-    input_video_file_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*{INPUT_VIDEO_FILE_FORMAT}")
-    input_video_file_list.sort()
     video2audio_obj = VIDEO2AUDIO()
-    video2audio_obj.process(input_video_file_list)
+    input_video_folder_list = glob.glob(f"{DIRECTORY_OF_INPUT_VIDEO_DIRECTORY}/*")
+    input_video_folder_list.sort()
+    start_index = 0
+    end_index = 15
+    # for input_video_folder in input_video_folder_list:
+    for index, input_video_folder in enumerate(input_video_folder_list):
+        if start_index <= index and index < end_index:
+            input_video_file_list = glob.glob(f"{input_video_folder}/*{INPUT_VIDEO_FILE_FORMAT}")
+            input_video_file_list.sort()
+            video2audio_obj.process(input_video_file_list)

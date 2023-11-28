@@ -4,15 +4,12 @@ import random
 import time
 
 import cv2
+import pandas as pd
 from deepface import DeepFace
 from icecream import ic
-import pandas as pd
-from utils import *
+
 from config import *  # TODO: Import only needed names or import the module and then use its members. google to know more
-
-
-
-
+from utils import *
 
 # TODO: Jay we should generate an output CSV for this too, and also avoid face capture if already done for that video-id,
 # the CSV will have following columns -- video_id, face_found, attempt, time_consumed
@@ -117,12 +114,18 @@ class GETFRAME():
                 new_face_capture_dataframe = pd.DataFrame(new_face_capture_raw, index=[0])
                 self.face_capture_dataframe = pd.concat([self.face_capture_dataframe, new_face_capture_dataframe], ignore_index=True)
                 self.face_capture_dataframe.to_csv(FACE_CAPTURE_CSV_PATH, index=False)
-
-
         return "Complete"
 
 if __name__ == "__main__":
     getframe_obj = GETFRAME()
-    input_video_file_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*{INPUT_VIDEO_FILE_FORMAT}")
-    input_video_file_list.sort()
-    getframe_obj.process(input_video_file_list)
+    input_video_folder_list = glob.glob(f"{DIRECTORY_OF_INPUT_VIDEO_DIRECTORY}/*")
+    input_video_folder_list.sort()
+    start_index = 0
+    end_index = 15
+    # for input_video_folder in input_video_folder_list:
+    for index, input_video_folder in enumerate(input_video_folder_list):
+        if start_index <= index and index < end_index:
+            input_video_file_list = glob.glob(f"{input_video_folder}/*{INPUT_VIDEO_FILE_FORMAT}")
+            input_video_file_list.sort()
+            getframe_obj.process(input_video_file_list)
+
