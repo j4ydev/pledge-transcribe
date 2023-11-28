@@ -9,8 +9,8 @@ import pandas as pd
 from icecream import ic
 
 # TODO: Import only needed names or import the module and then use its members. google to know more
-from config import *
-from utils import *
+from config import TRANSCRIBED_FILE_PATH, BACKGROUND_REMOVED_FILE_NAME, BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY, BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY, USE_FP16, FAILED_TRANSCRIBE_CSV_PATH
+from utils import is_value_present_in_dataframe
 
 
 class TRANSCRIBE():
@@ -22,6 +22,15 @@ class TRANSCRIBE():
                 self.transcribe_dataframe = pd.DataFrame(columns=['video_id', 'transcribe_time', 'transcribe_text'])
         else:
             self.transcribe_dataframe = pd.DataFrame(columns=['video_id', 'transcribe_time', 'transcribe_text'])
+
+        if os.path.isfile(FAILED_TRANSCRIBE_CSV_PATH):
+            try:
+                self.failed_transcribe_dataframe = pd.read_csv(TRANSCRIBED_FILE_PATH)
+            except:
+                self.failed_transcribe_dataframe = pd.DataFrame(columns=['audio_path', 'video_id'])
+        else:
+            self.failed_transcribe_dataframe = pd.DataFrame(columns=['audio_path', 'video_id'])
+
 
     def transcribe_audio(self, audio_file_path):
         start_time = time.time()
@@ -55,6 +64,14 @@ class TRANSCRIBE():
             self.transcribe_dataframe = pd.concat([self.transcribe_dataframe, new_transcribe_dataframe], ignore_index=True)
             self.transcribe_dataframe.to_csv(TRANSCRIBED_FILE_PATH, index=False)
 
+    def add_failed_transcribe_file_to_csv(self, audio_path):
+        # INSERT DATA IN DATAFRAME
+        new_failed_transcribe_row = {'audio_path': audio_path}
+
+        new_failed_transcribe_dataframe = pd.DataFrame(new_failed_transcribe_row, index=[0])
+        self.failed_transcribe_dataframe = pd.concat([self.transcribe_dataframe, new_failed_transcribe_dataframe], ignore_index=True)
+        self.failed_transcribe_dataframe.to_csv(TRANSCRIBED_FILE_PATH, index=False)
+
 
     def process(self, audio_directory_list):
         for audio_directory_path in audio_directory_list:
@@ -63,6 +80,7 @@ class TRANSCRIBE():
             except Exception as e:
                 ic(e)
                 print("FAILED", audio_directory_path) # TODO: handel this, log it to a separate csv, example 12_2_1_6340799645112_Tapaswini_Bag.mp4'
+                self.add_failed_transcribe_file_to_csv(audio_directory_path)
         return "Complete"
 
 if __name__ == "__main__":

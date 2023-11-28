@@ -2,7 +2,7 @@ BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY = "output/audio_from_video"
 BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY = "mdx_extra"
 BACKGROUND_REMOVED_FILE_NAME = "vocals.mp3"
 AUDIO_FILE_FORMAT = ".mp3"
-
+FAILED_TRANSCRIBE_CSV_PATH = "failed/failed_transcribe.csv"
 
 FACE_MATCH_SAVE_IMAGES_DIRECTORY = "output/similar_pledge_takers"
 FACE_CAPTURE_CSV_PATH = "output/capture_face.csv"
