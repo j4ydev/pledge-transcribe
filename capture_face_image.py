@@ -8,10 +8,10 @@ import pandas as pd
 from deepface import DeepFace
 from icecream import ic
 
-from config import *  # TODO: Import only needed names or import the module and then use its members. google to know more
-from utils import *
+from config import FACE_CAPTURE_CSV_PATH, FACE_IMAGE_DIRECTORY ,FACE_IMAGE_FILE_FORMAT, INPUT_VIDEO_FILE_FORMAT, DIRECTORY_OF_INPUT_VIDEO_DIRECTORY# TODO:DONE Import only needed names or import the module and then use its members. google to know more
+from utils import is_value_present_in_dataframe, get_metadata_from_file_name
 
-# TODO: Jay we should generate an output CSV for this too, and also avoid face capture if already done for that video-id,
+# TODO:DONE Jay we should generate an output CSV for this too, and also avoid face capture if already done for that video-id,
 # the CSV will have following columns -- video_id, face_found, attempt, time_consumed
 
 class GETFRAME():
@@ -23,7 +23,6 @@ class GETFRAME():
                 self.face_capture_dataframe = pd.DataFrame(columns=['video_id', 'face_found', 'attempt', 'time_consumed'])
         else:
             self.face_capture_dataframe = pd.DataFrame(columns=['video_id', 'face_found', 'attempt', 'time_consumed'])
-
         self.counter = 0
 
     def remove_file_if_exists(self, file_path):
@@ -92,7 +91,8 @@ class GETFRAME():
 
     def process(self, input_video_file_list):
         for video_file_path in input_video_file_list:
-            video_file_name = video_file_path.replace(INPUT_VIDEO_FILE_FORMAT, "")
+            video_file_name = video_file_path.split("/")[-1]
+            video_file_name = video_file_name.replace(INPUT_VIDEO_FILE_FORMAT, "")
             file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
             image_file_name_without_extension = video_file_path.split("/")[-1].replace(INPUT_VIDEO_FILE_FORMAT, "")
             screenshot_present_flag = is_value_present_in_dataframe(file_video_id, self.face_capture_dataframe)
