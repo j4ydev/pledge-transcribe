@@ -45,6 +45,22 @@ class VIDEO2AUDIO():
         else:
             self.video2audio_dataframe = pd.DataFrame(columns=['video_id', 'extract_audio_time', 'video_duration', 'audio_duration'])
 
+        if os.path.isfile(FAILED_VIDEO_2_AUDIO_CSV_PATH):
+            try:
+                self.failed_video2audio_dataframe = pd.read_csv(FAILED_VIDEO_2_AUDIO_CSV_PATH)
+            except:
+                self.failed_video2audio_dataframe = pd.DataFrame(columns=['video_path'])
+        else:
+            self.failed_video2audio_dataframe = pd.DataFrame(columns=['video_path'])
+
+    def add_failed_video2audio_file_to_csv(self, video_path):
+        # INSERT DATA IN DATAFRAME
+        new_failed_video2audio_row = {'video_path': video_path}
+
+        new_failed_video2audio_dataframe = pd.DataFrame(new_failed_video2audio_row, index=[0])
+        self.failed_video2audio_dataframe = pd.concat([self.failed_video2audio_dataframe, new_failed_video2audio_dataframe], ignore_index=True)
+        self.failed_video2audio_dataframe.to_csv(FAILED_VIDEO_2_AUDIO_CSV_PATH, index=False)
+ 
 
     def process(self, input_video_file_list):
         for input_video_path in input_video_file_list:
@@ -89,7 +105,8 @@ class VIDEO2AUDIO():
                     self.video2audio_dataframe = pd.concat([self.video2audio_dataframe, new_video2audio_dataframe], ignore_index=True)
                     self.video2audio_dataframe.to_csv(AUDIO_EXTRACT_CSV_PATH, index=False)
                 except:
-                    print("JAY RECORD THIS DATA FRAME IN A SEPARATE FILE") # TODO: jay this is pending
+                    print("JAY RECORD THIS DATA FRAME IN A SEPARATE FILE")
+                    self.add_failed_video2audio_file_to_csv(input_video_path)
             else:
                 print(f"Audio of the this {input_video_path} is already seperated.")
 
