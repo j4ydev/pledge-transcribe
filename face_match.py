@@ -29,7 +29,6 @@ class MATCHFACE():
 
             match_face_image_file_name = face_image_path.split("/")[-1].replace(".png", "")
             file_bid, video_id, file_name_suffix = get_metadata_from_file_name(match_face_image_file_name)
-
             is_value_present_flag = is_value_present_in_dataframe(video_id, self.face_match_dataframe)
 
 
@@ -67,8 +66,8 @@ class MATCHFACE():
                     if not os.path.isdir(individual_face_match_directory):
                         os.mkdir(individual_face_match_directory)
 
-                    similar_face_image_path = f"{individual_face_match_directory}/{i+1}_{'{:04d}'.format(int(match_face_distance[i]*1000))}_{match_face_image_file_name}.png"
-                    similar_face_image_path = similar_face_image_path.replace(f"_{file_bid}_", "_")
+                    match_file_bid, match_video_id, match_file_name_suffix = get_metadata_from_file_name(match_face_paths[i])
+                    similar_face_image_path = f"{individual_face_match_directory}/{i+1}_{'{:04d}'.format(int(match_face_distance[i]*1000))}_{match_video_id}_{match_file_name_suffix}.png"
                     ic(similar_face_image_path)
                     ic(match_face_paths[i])
                     print("--" * 40)
