@@ -8,11 +8,11 @@ import pandas as pd
 from deepface import DeepFace
 from icecream import ic
 
-from config import FACE_CAPTURE_CSV_PATH, FACE_IMAGE_DIRECTORY ,FACE_IMAGE_FILE_FORMAT, INPUT_VIDEO_FILE_FORMAT, DIRECTORY_OF_INPUT_VIDEO_DIRECTORY# TODO:DONE Import only needed names or import the module and then use its members. google to know more
-from utils import is_value_present_in_dataframe, get_metadata_from_file_name
+from config import (DIRECTORY_OF_INPUT_VIDEO_DIRECTORY, FACE_CAPTURE_CSV_PATH,
+                    FACE_IMAGE_DIRECTORY, FACE_IMAGE_FILE_FORMAT,
+                    INPUT_VIDEO_FILE_FORMAT)
+from utils import get_metadata_from_file_name, is_value_present_in_dataframe
 
-# TODO:DONE Jay we should generate an output CSV for this too, and also avoid face capture if already done for that video-id,
-# the CSV will have following columns -- video_id, face_found, attempt, time_consumed
 
 class GETFRAME():
     def __init__(self):

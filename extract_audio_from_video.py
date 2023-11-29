@@ -89,7 +89,7 @@ class VIDEO2AUDIO():
                     self.video2audio_dataframe = pd.concat([self.video2audio_dataframe, new_video2audio_dataframe], ignore_index=True)
                     self.video2audio_dataframe.to_csv(AUDIO_EXTRACT_CSV_PATH, index=False)
                 except:
-                    print("JAY RECORD THIS DATA FRAME IN A SEPARATE FILE")
+                    print("JAY RECORD THIS DATA FRAME IN A SEPARATE FILE") # TODO: jay this is pending
             else:
                 print(f"Audio of the this {input_video_path} is already seperated.")
 
