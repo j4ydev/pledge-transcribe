@@ -49,18 +49,22 @@ class VIDEO2AUDIO():
             try:
                 self.failed_video2audio_dataframe = pd.read_csv(FAILED_VIDEO_2_AUDIO_CSV_PATH)
             except:
-                self.failed_video2audio_dataframe = pd.DataFrame(columns=['video_path'])
+                self.failed_video2audio_dataframe = pd.DataFrame(columns=['video_id'])
         else:
-            self.failed_video2audio_dataframe = pd.DataFrame(columns=['video_path'])
+            self.failed_video2audio_dataframe = pd.DataFrame(columns=['video_id'])
 
     def add_failed_video2audio_file_to_csv(self, video_path):
         # INSERT DATA IN DATAFRAME
-        new_failed_video2audio_row = {'video_path': video_path}
 
-        new_failed_video2audio_dataframe = pd.DataFrame(new_failed_video2audio_row, index=[0])
-        self.failed_video2audio_dataframe = pd.concat([self.failed_video2audio_dataframe, new_failed_video2audio_dataframe], ignore_index=True)
-        self.failed_video2audio_dataframe.to_csv(FAILED_VIDEO_2_AUDIO_CSV_PATH, index=False)
+        video_file_name = video_path.split("/")[-1]
+        file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
 
+        is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.failed_transcribe_dataframe)
+        if not is_value_present_flag:
+            new_failed_video2audio_row = {'video_id': file_video_id}
+            new_failed_video2audio_dataframe = pd.DataFrame(new_failed_video2audio_row, index=[0])
+            self.failed_video2audio_dataframe = pd.concat([self.failed_video2audio_dataframe, new_failed_video2audio_dataframe], ignore_index=True)
+            self.failed_video2audio_dataframe.to_csv(FAILED_VIDEO_2_AUDIO_CSV_PATH, index=False)
 
     def process(self, input_video_file_list):
         for input_video_path in input_video_file_list:

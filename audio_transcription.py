@@ -12,7 +12,7 @@ from config import (BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY,
                     BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY,
                     BACKGROUND_REMOVED_FILE_NAME, FAILED_TRANSCRIBE_CSV_PATH,
                     TRANSCRIBED_FILE_PATH, USE_FP16)
-from utils import is_value_present_in_dataframe
+from utils import is_value_present_in_dataframe, get_metadata_from_file_name
 
 # TODO: Jay: solve in all files Specify an exception class to catch or reraise the exceptionsonarlint(python:S5754)
 
@@ -30,9 +30,9 @@ class TRANSCRIBE():
             try:
                 self.failed_transcribe_dataframe = pd.read_csv(FAILED_TRANSCRIBE_CSV_PATH)
             except:
-                self.failed_transcribe_dataframe = pd.DataFrame(columns=['audio_path'])
+                self.failed_transcribe_dataframe = pd.DataFrame(columns=['video_id'])
         else:
-            self.failed_transcribe_dataframe = pd.DataFrame(columns=['audio_path'])
+            self.failed_transcribe_dataframe = pd.DataFrame(columns=['video_id'])
 
 
     def transcribe_audio(self, audio_file_path):
@@ -69,11 +69,15 @@ class TRANSCRIBE():
 
     def add_failed_transcribe_file_to_csv(self, audio_path):
         # INSERT DATA IN DATAFRAME
-        new_failed_transcribe_row = {'audio_path': audio_path}
+        audio_file_name = audio_path.split("/")[-1]
+        file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(audio_file_name)
 
-        new_failed_transcribe_dataframe = pd.DataFrame(new_failed_transcribe_row, index=[0])
-        self.failed_transcribe_dataframe = pd.concat([self.failed_transcribe_dataframe, new_failed_transcribe_dataframe], ignore_index=True)
-        self.failed_transcribe_dataframe.to_csv(FAILED_TRANSCRIBE_CSV_PATH, index=False)
+        is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.failed_transcribe_dataframe)
+        if not is_value_present_flag:
+            new_failed_transcribe_row = {'video_id': file_video_id}
+            new_failed_transcribe_dataframe = pd.DataFrame(new_failed_transcribe_row, index=[0])
+            self.failed_transcribe_dataframe = pd.concat([self.failed_transcribe_dataframe, new_failed_transcribe_dataframe], ignore_index=True)
+            self.failed_transcribe_dataframe.to_csv(FAILED_TRANSCRIBE_CSV_PATH, index=False)
 
 
     def process(self, audio_directory_list):
