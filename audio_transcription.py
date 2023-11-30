@@ -72,12 +72,12 @@ class TRANSCRIBE():
         audio_file_name = audio_path.split("/")[-1]
         file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(audio_file_name)
 
-        is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.failed_transcribe_dataframe)
-        if not is_value_present_flag:
-            new_failed_transcribe_row = {'video_id': file_video_id}
-            new_failed_transcribe_dataframe = pd.DataFrame(new_failed_transcribe_row, index=[0])
-            self.failed_transcribe_dataframe = pd.concat([self.failed_transcribe_dataframe, new_failed_transcribe_dataframe], ignore_index=True)
-            self.failed_transcribe_dataframe.to_csv(FAILED_TRANSCRIBE_CSV_PATH, index=False)
+        # is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.failed_transcribe_dataframe)
+        # if not is_value_present_flag:
+        new_failed_transcribe_row = {'video_id': file_video_id}
+        new_failed_transcribe_dataframe = pd.DataFrame(new_failed_transcribe_row, index=[0])
+        self.failed_transcribe_dataframe = pd.concat([self.failed_transcribe_dataframe, new_failed_transcribe_dataframe], ignore_index=True)
+        self.failed_transcribe_dataframe.to_csv(FAILED_TRANSCRIBE_CSV_PATH, index=False)
 
 
     def process(self, audio_directory_list):
