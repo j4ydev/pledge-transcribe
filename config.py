@@ -12,7 +12,7 @@ FACE_IMAGE_FILE_FORMAT = '.png'
 FACE_INDEX_FILE_FORMAT = '.txt'
 FACE_MATCH_RESULT_CSV_PATH = "output/face_match.csv"
 
-DIRECTORY_OF_INPUT_VIDEO_DIRECTORY = "/Users/jay/work/new_video"
+DIRECTORY_OF_INPUT_VIDEO_DIRECTORY = "/Users/khasgiwa/Workbench/data-dumps/GWR/new"
 INPUT_VIDEO_DIRECTORY = "/Users/khasgiwa/Workbench/data-dumps/GWR/new/50" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH)
 INPUT_VIDEO_FILE_FORMAT = '.mp4'
 

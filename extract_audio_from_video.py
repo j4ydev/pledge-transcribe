@@ -30,7 +30,7 @@ from icecream import ic
 from moviepy.editor import VideoFileClip
 from pydub import AudioSegment
 
-# TODO: Import only needed names or import the module and then use its members. google to know more
+# TODO: Import only needed names or import the module and then use its members. google to know more : JAY
 from config import *
 from utils import *
 
@@ -60,7 +60,7 @@ class VIDEO2AUDIO():
         new_failed_video2audio_dataframe = pd.DataFrame(new_failed_video2audio_row, index=[0])
         self.failed_video2audio_dataframe = pd.concat([self.failed_video2audio_dataframe, new_failed_video2audio_dataframe], ignore_index=True)
         self.failed_video2audio_dataframe.to_csv(FAILED_VIDEO_2_AUDIO_CSV_PATH, index=False)
- 
+
 
     def process(self, input_video_file_list):
         for input_video_path in input_video_file_list:
@@ -68,18 +68,18 @@ class VIDEO2AUDIO():
             file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
             is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.video2audio_dataframe)
 
-            if file_bid == "1515": # TODO: Jay inquire
-                continue
-            if file_bid == "1800": # TODO: Jay inquire
-                continue
-            if file_bid == "1833": # TODO: Jay inquire
-                continue
-            if file_bid == "1962": # TODO: Jay inquire
-                continue
-            if file_bid == "2014": # TODO: Jay inquire
-                continue
-            if file_bid == "2093": # TODO: Jay inquire
-                continue
+            # if file_bid == "1515": # TODO: Jay inquire
+            #     continue
+            # if file_bid == "1800": # TODO: Jay inquire
+            #     continue
+            # if file_bid == "1833": # TODO: Jay inquire
+            #     continue
+            # if file_bid == "1962": # TODO: Jay inquire
+            #     continue
+            # if file_bid == "2014": # TODO: Jay inquire
+            #     continue
+            # if file_bid == "2093": # TODO: Jay inquire
+            #     continue
 
             if not is_value_present_flag:
                 try:
@@ -105,7 +105,6 @@ class VIDEO2AUDIO():
                     self.video2audio_dataframe = pd.concat([self.video2audio_dataframe, new_video2audio_dataframe], ignore_index=True)
                     self.video2audio_dataframe.to_csv(AUDIO_EXTRACT_CSV_PATH, index=False)
                 except:
-                    # print("") #TODO:Done JAY RECORD THIS DATA FRAME IN A SEPARATE FILE
                     self.add_failed_video2audio_file_to_csv(input_video_path)
             else:
                 print(f"Audio of the this {input_video_path} is already seperated.")

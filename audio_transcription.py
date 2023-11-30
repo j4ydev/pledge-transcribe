@@ -8,10 +8,13 @@ whisper_model = whisper.load_model("large")
 import pandas as pd
 from icecream import ic
 
-# TODO:Done Import only needed names or import the module and then use its members. google to know more
-from config import TRANSCRIBED_FILE_PATH, BACKGROUND_REMOVED_FILE_NAME, BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY, BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY, USE_FP16, FAILED_TRANSCRIBE_CSV_PATH
+from config import (BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY,
+                    BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY,
+                    BACKGROUND_REMOVED_FILE_NAME, FAILED_TRANSCRIBE_CSV_PATH,
+                    TRANSCRIBED_FILE_PATH, USE_FP16)
 from utils import is_value_present_in_dataframe
 
+# TODO: Jay: solve in all files Specify an exception class to catch or reraise the exceptionsonarlint(python:S5754)
 
 class TRANSCRIBE():
     def __init__(self):
@@ -79,7 +82,7 @@ class TRANSCRIBE():
                 self.check_log_and_transcribe_video(audio_directory_path)
             except Exception as e:
                 ic(e)
-                print("FAILED", audio_directory_path) # TODO:Done handel this, log it to a separate csv, example 12_2_1_6340799645112_Tapaswini_Bag.mp4'
+                print("FAILED", audio_directory_path)
                 self.add_failed_transcribe_file_to_csv(audio_directory_path)
         return "Complete"
 
