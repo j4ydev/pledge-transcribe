@@ -92,29 +92,33 @@ class GETFRAME():
 
     def process(self, input_video_file_list):
         for video_file_path in input_video_file_list:
-            video_file_name = video_file_path.split("/")[-1]
-            video_file_name = video_file_name.replace(INPUT_VIDEO_FILE_FORMAT, "")
-            file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
-            image_file_name_without_extension = video_file_path.split("/")[-1].replace(INPUT_VIDEO_FILE_FORMAT, "")
-            screenshot_present_flag = is_value_present_in_dataframe(file_video_id, self.face_capture_dataframe)
-            if not screenshot_present_flag:
-                self.counter = 0
-                start_time = time.time()
-                capture_face_status = self.capture_face_image(video_file_path, image_file_name_without_extension)
-                end_time = time.time()
-                time_consumed_by_face_capture = end_time - start_time
+            try:
+                video_file_name = video_file_path.split("/")[-1]
+                video_file_name = video_file_name.replace(INPUT_VIDEO_FILE_FORMAT, "")
+                file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
+                image_file_name_without_extension = video_file_path.split("/")[-1].replace(INPUT_VIDEO_FILE_FORMAT, "")
+                screenshot_present_flag = is_value_present_in_dataframe(file_video_id, self.face_capture_dataframe)
+                if not screenshot_present_flag:
+                    self.counter = 0
+                    start_time = time.time()
+                    capture_face_status = self.capture_face_image(video_file_path, image_file_name_without_extension)
+                    end_time = time.time()
+                    time_consumed_by_face_capture = end_time - start_time
 
-                if capture_face_status == None:
-                    capture_face_status = "False"
-                new_face_capture_raw = {'video_id': file_video_id, 'face_found': capture_face_status, 'attempt': self.counter, 'time_consumed': time_consumed_by_face_capture}
+                    if capture_face_status == None:
+                        capture_face_status = "False"
+                    new_face_capture_raw = {'video_id': file_video_id, 'face_found': capture_face_status, 'attempt': self.counter, 'time_consumed': time_consumed_by_face_capture}
 
-                print("##" * 20)
-                ic(new_face_capture_raw)
-                print("##" * 20)
+                    print("##" * 20)
+                    ic(new_face_capture_raw)
+                    print("##" * 20)
 
-                new_face_capture_dataframe = pd.DataFrame(new_face_capture_raw, index=[0])
-                self.face_capture_dataframe = pd.concat([self.face_capture_dataframe, new_face_capture_dataframe], ignore_index=True)
-                self.face_capture_dataframe.to_csv(FACE_CAPTURE_CSV_PATH, index=False)
+                    new_face_capture_dataframe = pd.DataFrame(new_face_capture_raw, index=[0])
+                    self.face_capture_dataframe = pd.concat([self.face_capture_dataframe, new_face_capture_dataframe], ignore_index=True)
+                    self.face_capture_dataframe.to_csv(FACE_CAPTURE_CSV_PATH, index=False)
+            except Exception as e:
+                print(f"{video_file_path} error occurred.")
+                # self.add_failed_video2audio_file_to_csv(input_video_path)
         return "Complete"
 
 if __name__ == "__main__":
