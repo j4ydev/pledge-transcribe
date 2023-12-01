@@ -10,7 +10,7 @@ from icecream import ic
 
 from config import (DIRECTORY_OF_INPUT_VIDEO_DIRECTORY, FACE_CAPTURE_CSV_PATH,
                     FACE_IMAGE_DIRECTORY, FACE_IMAGE_FILE_FORMAT,
-                    INPUT_VIDEO_FILE_FORMAT)
+                    INPUT_VIDEO_FILE_FORMAT, FAILED_FACE_CAPTURE_CSV_PATH)
 from utils import get_metadata_from_file_name, is_value_present_in_dataframe
 
 
@@ -25,6 +25,14 @@ class GETFRAME():
         else:
             self.face_capture_dataframe = pd.DataFrame(columns=['video_id', 'face_found', 'attempt', 'time_consumed'])
         self.counter = 0
+        if os.path.isfile(FAILED_FACE_CAPTURE_CSV_PATH):
+            try:
+                self.failed_capture_face_dataframe = pd.read_csv(FAILED_FACE_CAPTURE_CSV_PATH)
+            except Exception as e:
+                print(f"{FAILED_FACE_CAPTURE_CSV_PATH} already present.")
+                self.failed_capture_face_dataframe = pd.DataFrame(columns=['video_id'])
+        else:
+            self.failed_capture_face_dataframe = pd.DataFrame(columns=['video_id'])
 
     def remove_file_if_exists(self, file_path):
         if os.path.exists(file_path):
@@ -43,12 +51,6 @@ class GETFRAME():
         if current_frame == random_frame:
             return frame
 
-    # def check_if_screenshot_present(self, image_file_name_without_extension):
-    #     possible_screenshot_path = f"{FACE_IMAGE_DIRECTORY}/{image_file_name_without_extension}{FACE_IMAGE_FILE_FORMAT}"
-    #     if os.path.isfile(possible_screenshot_path):
-    #         return True
-    #     else:
-    #         return False
 
     def find_face(self, img1_path, img2_path):
         found_face_flag = False
@@ -90,6 +92,20 @@ class GETFRAME():
         else:
             self.capture_face_image(video_file_path, image_file_path_without_extension)
 
+    def add_failed_capture_face_csv(self, video_path):
+        # INSERT DATA IN DATAFRAME
+
+        video_file_name = video_path.split("/")[-1]
+        file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
+
+        # is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.failed_transcribe_dataframe)
+        # if not is_value_present_flag:
+        new_failed_capture_face_row = {'video_id': file_video_id}
+        new_failed_capture_face_dataframe = pd.DataFrame(new_failed_capture_face_row, index=[0])
+        self.failed_capture_face_dataframe = pd.concat([self.failed_capture_face_dataframe, new_failed_capture_face_dataframe], ignore_index=True)
+        self.failed_capture_face_dataframe.to_csv(FAILED_FACE_CAPTURE_CSV_PATH, index=False)
+
+
     def process(self, input_video_file_list):
         for video_file_path in input_video_file_list:
             try:
@@ -118,7 +134,7 @@ class GETFRAME():
                     self.face_capture_dataframe.to_csv(FACE_CAPTURE_CSV_PATH, index=False)
             except Exception as e:
                 print(f"{video_file_path} error occurred.")
-                # self.add_failed_video2audio_file_to_csv(input_video_path)
+                self.add_failed_capture_face_csv(video_file_path)
         return "Complete"
 
 if __name__ == "__main__":
