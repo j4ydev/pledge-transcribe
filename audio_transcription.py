@@ -5,6 +5,7 @@ import time
 import pandas as pd
 import whisper
 from icecream import ic
+import torch
 
 from config import (BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY,
                     BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY,
@@ -15,14 +16,15 @@ from utils import get_metadata_from_file_name, is_value_present_in_dataframe
 device = "cuda" if torch.cuda.is_available() else "cpu"
 whisper_model = whisper.load_model("large").to(device)
 
-# TODO: Jay: solve in all files Specify an exception class to catch or reraise the exceptionsonarlint(python:S5754)
+# TODO:Done Jay: solve in all files Specify an exception class to catch or reraise the exceptionsonarlint(python:S5754)
 
 class TRANSCRIBE():
     def __init__(self):
         if os.path.isfile(TRANSCRIBED_FILE_PATH):
             try:
                 self.transcribe_dataframe = pd.read_csv(TRANSCRIBED_FILE_PATH)
-            except:
+            except Exception as e:
+                print(f"{TRANSCRIBED_FILE_PATH} already present.")
                 self.transcribe_dataframe = pd.DataFrame(columns=['video_id', 'transcribe_time', 'transcribe_text'])
         else:
             self.transcribe_dataframe = pd.DataFrame(columns=['video_id', 'transcribe_time', 'transcribe_text'])
@@ -30,7 +32,8 @@ class TRANSCRIBE():
         if os.path.isfile(FAILED_TRANSCRIBE_CSV_PATH):
             try:
                 self.failed_transcribe_dataframe = pd.read_csv(FAILED_TRANSCRIBE_CSV_PATH)
-            except:
+            except Exception as e:
+                print(f"{FAILED_TRANSCRIBE_CSV_PATH} already present.")
                 self.failed_transcribe_dataframe = pd.DataFrame(columns=['video_id'])
         else:
             self.failed_transcribe_dataframe = pd.DataFrame(columns=['video_id'])

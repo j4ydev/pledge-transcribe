@@ -30,9 +30,10 @@ from icecream import ic
 from moviepy.editor import VideoFileClip
 from pydub import AudioSegment
 
-# TODO: Import only needed names or import the module and then use its members. google to know more : JAY
-from config import *
-from utils import *
+# TODO:Done Import only needed names or import the module and then use its members. google to know more : JAY
+from config import (AUDIO_EXTRACT_CSV_PATH, FAILED_VIDEO_2_AUDIO_CSV_PATH, INPUT_VIDEO_FILE_FORMAT, BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY, 
+                    BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY, BACKGROUND_REMOVED_FILE_NAME, DIRECTORY_OF_INPUT_VIDEO_DIRECTORY)
+from utils import get_metadata_from_file_name, is_value_present_in_dataframe
 
 
 class VIDEO2AUDIO():
@@ -40,7 +41,8 @@ class VIDEO2AUDIO():
         if os.path.isfile(AUDIO_EXTRACT_CSV_PATH):
             try:
                 self.video2audio_dataframe = pd.read_csv(AUDIO_EXTRACT_CSV_PATH)
-            except:
+            except Exception as e:
+                print(f"{AUDIO_EXTRACT_CSV_PATH} already present.")
                 self.video2audio_dataframe = pd.DataFrame(columns=['video_id', 'extract_audio_time', 'video_duration', 'audio_duration'])
         else:
             self.video2audio_dataframe = pd.DataFrame(columns=['video_id', 'extract_audio_time', 'video_duration', 'audio_duration'])
@@ -48,7 +50,8 @@ class VIDEO2AUDIO():
         if os.path.isfile(FAILED_VIDEO_2_AUDIO_CSV_PATH):
             try:
                 self.failed_video2audio_dataframe = pd.read_csv(FAILED_VIDEO_2_AUDIO_CSV_PATH)
-            except:
+            except Exception as e:
+                print(f"{FAILED_VIDEO_2_AUDIO_CSV_PATH} already present.")
                 self.failed_video2audio_dataframe = pd.DataFrame(columns=['video_id'])
         else:
             self.failed_video2audio_dataframe = pd.DataFrame(columns=['video_id'])
@@ -95,7 +98,7 @@ class VIDEO2AUDIO():
                     new_video2audio_dataframe = pd.DataFrame(new_video2audio_row, index=[0])
                     self.video2audio_dataframe = pd.concat([self.video2audio_dataframe, new_video2audio_dataframe], ignore_index=True)
                     self.video2audio_dataframe.to_csv(AUDIO_EXTRACT_CSV_PATH, index=False)
-                except:
+                except Exception as e:
                     self.add_failed_video2audio_file_to_csv(input_video_path)
             else:
                 print(f"Audio of the this {input_video_path} is already seperated.")
