@@ -19,7 +19,8 @@ class GETFRAME():
         if os.path.isfile(FACE_CAPTURE_CSV_PATH):
             try:
                 self.face_capture_dataframe = pd.read_csv(FACE_CAPTURE_CSV_PATH)
-            except:
+            except Exception as e:
+                print(f"{FACE_CAPTURE_CSV_PATH} already present.")
                 self.face_capture_dataframe = pd.DataFrame(columns=['video_id', 'face_found', 'attempt', 'time_consumed'])
         else:
             self.face_capture_dataframe = pd.DataFrame(columns=['video_id', 'face_found', 'attempt', 'time_consumed'])
@@ -54,7 +55,7 @@ class GETFRAME():
         try:
             result = DeepFace.verify(img1_path , img2_path)
             found_face_flag = result["verified"]
-        except:
+        except Exception as e:
             found_face_flag = False
         return found_face_flag
 
@@ -121,7 +122,7 @@ if __name__ == "__main__":
     input_video_folder_list = glob.glob(f"{DIRECTORY_OF_INPUT_VIDEO_DIRECTORY}/*")
     input_video_folder_list.sort()
     start_index = 0
-    end_index = 60
+    end_index = 15
     # for input_video_folder in input_video_folder_list:
     for index, input_video_folder in enumerate(input_video_folder_list):
         if start_index <= index and index < end_index:
