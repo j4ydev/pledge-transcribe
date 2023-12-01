@@ -72,19 +72,6 @@ class VIDEO2AUDIO():
             file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
             is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.video2audio_dataframe)
 
-            # if file_bid == "1515": # TODO: Jay inquire
-            #     continue
-            # if file_bid == "1800": # TODO: Jay inquire
-            #     continue
-            # if file_bid == "1833": # TODO: Jay inquire
-            #     continue
-            # if file_bid == "1962": # TODO: Jay inquire
-            #     continue
-            # if file_bid == "2014": # TODO: Jay inquire
-            #     continue
-            # if file_bid == "2093": # TODO: Jay inquire
-            #     continue
-
             if not is_value_present_flag:
                 try:
                     start_time = time.time()
@@ -118,7 +105,7 @@ if __name__ == "__main__":
     input_video_folder_list = glob.glob(f"{DIRECTORY_OF_INPUT_VIDEO_DIRECTORY}/*")
     input_video_folder_list.sort()
     start_index = 0
-    end_index = 15
+    end_index = 60
     # for input_video_folder in input_video_folder_list:
     for index, input_video_folder in enumerate(input_video_folder_list):
         if start_index <= index and index < end_index:

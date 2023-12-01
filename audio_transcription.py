@@ -2,17 +2,18 @@ import glob
 import os
 import time
 
-import whisper
-
-whisper_model = whisper.load_model("large")
 import pandas as pd
+import whisper
 from icecream import ic
 
 from config import (BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY,
                     BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY,
                     BACKGROUND_REMOVED_FILE_NAME, FAILED_TRANSCRIBE_CSV_PATH,
                     TRANSCRIBED_FILE_PATH, USE_FP16)
-from utils import is_value_present_in_dataframe, get_metadata_from_file_name
+from utils import get_metadata_from_file_name, is_value_present_in_dataframe
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+whisper_model = whisper.load_model("large").to(device)
 
 # TODO: Jay: solve in all files Specify an exception class to catch or reraise the exceptionsonarlint(python:S5754)
 
