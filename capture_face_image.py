@@ -121,7 +121,7 @@ if __name__ == "__main__":
     input_video_folder_list = glob.glob(f"{DIRECTORY_OF_INPUT_VIDEO_DIRECTORY}/*")
     input_video_folder_list.sort()
     start_index = 0
-    end_index = 15
+    end_index = 60
     # for input_video_folder in input_video_folder_list:
     for index, input_video_folder in enumerate(input_video_folder_list):
         if start_index <= index and index < end_index:
