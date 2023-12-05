@@ -39,23 +39,24 @@ class MATCHFACE():
 
             if not is_value_present_flag:
 
-                dfs = DeepFace.find(img_path = face_image_path, db_path = FACE_IMAGE_DIRECTORY, enforce_detection=False)
+                dfs = DeepFace.find(img_path = face_image_path, db_path = FACE_IMAGE_DIRECTORY, distance_metric="cosine", model_name="Facenet512")
                 print("NUMBER_OF_BEST_MATCH_TO_CONSIDER: ", self.NUMBER_OF_BEST_MATCH_TO_CONSIDER)
                 print(type(self.NUMBER_OF_BEST_MATCH_TO_CONSIDER))
                 match_face_paths = list(dfs[0].head(self.NUMBER_OF_BEST_MATCH_TO_CONSIDER)["identity"])
-                match_face_distance = list(dfs[0].head(self.NUMBER_OF_BEST_MATCH_TO_CONSIDER)["VGG-Face_cosine"])
+                match_face_distance = list(dfs[0].head(self.NUMBER_OF_BEST_MATCH_TO_CONSIDER)["Facenet512_cosine"])
                 ic(match_face_distance)
 
+                temp_NUMBER_OF_BEST_MATCH_TO_CONSIDER = self.NUMBER_OF_BEST_MATCH_TO_CONSIDER
                 if len(match_face_paths) < self.NUMBER_OF_BEST_MATCH_TO_CONSIDER:
-                    self.NUMBER_OF_BEST_MATCH_TO_CONSIDER = len(match_face_distance)
+                    temp_NUMBER_OF_BEST_MATCH_TO_CONSIDER = len(match_face_distance)
                 match_found = "False"
                 new_face_match_row = {'video_id': video_id, 'match_found': match_found}
-                above_threshold_count = 0
-                for j in range(0,self.NUMBER_OF_BEST_MATCH_TO_CONSIDER):
-                    
-                    if match_face_distance[1] < 0.22:
-                        match_found = "True"
-                        new_face_match_row[f"match_found"] = match_found
+
+                for j in range(0,temp_NUMBER_OF_BEST_MATCH_TO_CONSIDER):
+                    if len(match_face_distance) >= 2:
+                        if match_face_distance[1] < 0.30:
+                            match_found = "True"
+                            new_face_match_row[f"match_found"] = match_found
                         
                     _, face_video_id, _ = get_metadata_from_file_name(match_face_paths[j].split("/")[-1])
                     new_face_match_row[f"face_match_{j+1}"] = face_video_id
@@ -87,7 +88,7 @@ class MATCHFACE():
 
 
 if __name__ == "__main__":
-    face_images_list = glob.glob(f"{FACE_IMAGE_DIRECTORY}/*{FACE_IMAGE_FILE_FORMAT}")
+    face_images_list = glob.glob(f"{FACE_IMAGE_DIRECTORY}/*")
     face_images_list.sort()
 
     facematch_obj = MATCHFACE()
