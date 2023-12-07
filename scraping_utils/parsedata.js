@@ -1,7 +1,7 @@
 /*
 Next Steps
-1. capture nid
-2. capture bid
+1. capture nid - done
+2. capture bid - done
 3. capture URL to accept video
 4. capture URL to reject video
 5. define the batch index - document the date range for batch index - so that a batch once scrapped need not be repeated, and avoid video duplicates
@@ -9,6 +9,59 @@ Next Steps
 7. file name format: bid_vid_file-name-suffix.mp4
 8. Align the CSV with google spreadsheet column sequence
 */
+
+const batch = {
+  1: {
+    min_date: "2023-08-01",
+    max_date: "2023-08-31",
+    pageCount: 3,
+    videoCount: 0,
+  },
+  2: {
+    min_date: "2023-09-01",
+    max_date: "2023-09-30",
+    pageCount: 65,
+    videoCount: 0,
+  },
+  3: {
+    min_date: "2023-10-01",
+    max_date: "2023-10-15",
+    pageCount: 17,
+    videoCount: 0,
+  },
+  4: {
+    min_date: "2023-10-16",
+    max_date: "2023-10-31",
+    pageCount: 130,
+    videoCount: 0,
+  },
+  5: {
+    min_date: "2023-11-01",
+    max_date: "2023-11-15",
+    pageCount: 57,
+    videoCount: 0,
+  },
+  6: {
+    min_date: "2023-11-16",
+    max_date: "2023-11-30",
+    pageCount: 87,
+    videoCount: 0,
+  },
+  6: {
+    min_date: "2023-12-01",
+    max_date: "2023-11-07",
+    pageCount: 3,
+    videoCount: 0,
+  },
+};
+const baseURL = "https://pledgewithpfizerco.pfizersite.io/amr-video";
+const getBatchUrlQueryString = ({ batchNumber = "1", pageNumber = 0 }) => {
+  const minDate = batch[batchNumber].min_date || "";
+  const maxDate = batch[batchNumber].max_date || "";
+  return `moderation_state=All&title=&created[min][date]=${minDate}&created[max][date]=${maxDate}&page=${pageNumber}`;
+};
+const getBatchUrl = ({ batchNumber = "1", pageNumber = 0 }) =>
+  `${baseURL}?${getBatchUrlQueryString({ batchNumber, pageNumber })}`;
 
 function convertToCSV(arrayOfObject, addHeader = false) {
   var str = "";
@@ -35,18 +88,18 @@ function convertToCSV(arrayOfObject, addHeader = false) {
   return str;
 }
 
-function downloadCSV(pageNumber, csv) {
+function downloadCSV(pageNumber, csv, batchNumber = "1") {
   var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   var a = document.createElement("a");
   a.href = window.URL.createObjectURL(blob);
-  a.download = `${pageNumber}.csv`;
+  a.download = `${batchNumber}_${pageNumber}.csv`;
   a.click();
 }
-function downloadJSON(pageNumber, data) {
-  const blob = new Blob([JSON.stringify(data)], { type: "text/json" });
+function downloadJSON({ pageNumber, dataList, batchNumber = "1" }) {
+  const blob = new Blob([JSON.stringify(dataList)], { type: "text/json" });
   var a = document.createElement("a");
   a.href = window.URL.createObjectURL(blob);
-  a.download = `${pageNumber}.json`;
+  a.download = `${batchNumber}_${pageNumber}.json`;
   a.click();
 }
 
@@ -75,7 +128,7 @@ function getCurrentPageNumber() {
   return Number(pageNumber);
 }
 
-function getCellData({ row, column }) {
+function getCellData({ row, column, pageNumber, batchNumber }) {
   // name and vid
   var downloadAnchorTag = document.querySelector(
     `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > div.views-field.views-field-nothing-3 > span.field-content > a`
@@ -117,39 +170,50 @@ function getCellData({ row, column }) {
     `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > div.views-field.views-field-field-last-name > div`
   ).innerText;
 
+  var nid = document
+    .querySelector(
+      `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-nothing > span > div > a`
+    )
+    .getAttribute("nid");
+
+  var buttonTag1 = document.querySelector(
+    `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-set-moderation-state > span > ul > li:nth-child(1) > a`
+  );
+  var buttonTag2 = document.querySelector(
+    `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-set-moderation-state > span > ul > li:nth-child(2) > a`
+  );
+  var links = {};
+  if (buttonTag1) {
+    links[buttonTag1.innerText] = buttonTag1.getAttribute("href");
+  }
+  if (buttonTag2) {
+    links[buttonTag2.innerText] = buttonTag2.getAttribute("href");
+  }
+
   return {
     row,
     column,
     index: 4 * (row - 1) + column,
+    batchNumber,
     pageNumber,
 
     vid: downloadAnchorTag.getAttribute("vid"),
     bid: refreshAnchorTag.getAttribute("bid"),
+    nid,
     name: downloadAnchorTag.getAttribute("name"),
     stateDuringScraping,
     emailId,
     resolution,
 
     vid_of_bid: refreshAnchorTag.getAttribute("vid"),
+    publish: links["Set to Published"],
+    reject: links["Set to Reject"],
+    draft: links["Set to Draft"],
     firstName,
     lastName,
     profession,
     source,
   };
-}
-
-function scrapeData(addHeader) {
-  const pageNumber = getCurrentPageNumber() + 1;
-  const dataList = [];
-  for (let row = 1; row < 6; row++) {
-    for (let column = 1; column < 5; column++) {
-      var data = getCellData({ row, column, pageNumber });
-      dataList.push(data);
-    }
-  }
-  downloadJSON(pageNumber, dataList);
-  downloadCSV(pageNumber, convertToCSV(dataList, addHeader));
-  return dataList;
 }
 
 function getFetchPayload({ index, dataList }) {
@@ -177,7 +241,7 @@ function getFetchPayload({ index, dataList }) {
       tracestate:
         "1460532@nr=0-1-3019207-1386097994-ea143b459515268a----1699392278669",
     },
-    referrer: `https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created%5Bmin%5D%5Bdate%5D=&created%5Bmax%5D%5Bdate%5D=&page=${pageNumber}`,
+    referrer: `${baseURL}?moderation_state=All&title=&created[min][date]=&created[max][date]=&page=${pageNumber}`,
     referrerPolicy: "strict-origin-when-cross-origin",
     body: JSON.stringify(payload),
     method: "POST",
@@ -186,7 +250,7 @@ function getFetchPayload({ index, dataList }) {
   };
 }
 
-function counter() {
+function counter(batchNumber) {
   pending -= 1;
   console.log("pending", pending);
   if (pending === 0) {
@@ -194,9 +258,24 @@ function counter() {
     pending = 20;
     const nextPageIndex = getCurrentPageNumber() + 1;
     window.location.replace(
-      `https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=&created[max][date]=&page=${nextPageIndex}`
+      `${getBatchUrl({ batchNumber, pageNumber: nextPageIndex })}`
     );
   }
+}
+
+function scrapeData({ addHeader, batchNumber = "1" }) {
+  const pageNumber = getCurrentPageNumber() + 1;
+  const dataList = [];
+  for (let row = 1; row < 6; row++) {
+    for (let column = 1; column < 5; column++) {
+      var data = getCellData({ row, column, pageNumber, batchNumber });
+      dataList.push(data);
+      counter(batchNumber);
+    }
+  }
+  downloadJSON({ pageNumber, dataList, batchNumber });
+  downloadCSV(pageNumber, convertToCSV(dataList, addHeader), batchNumber);
+  return dataList;
 }
 
 async function downloadVideo(dataList) {
@@ -225,7 +304,7 @@ async function downloadVideo(dataList) {
         } = dataList[index];
         var a = document.createElement("a");
         a.href = window.URL.createObjectURL(blobData);
-        a.download = `${pageNumber}_${row}_${column}_${video_id}_${name}`;
+        a.download = `${pageNumber}_${row}_${column}_${video_id}_${name}`; // TODO: bid_vid_all-lower-case.mp4
         a.click();
         counter();
         return Promise.resolve();
@@ -235,17 +314,19 @@ async function downloadVideo(dataList) {
   return;
 }
 
-function boomboom() {
-  var dataList = scrapeData(false);
-  downloadVideo(dataList)
-    .then((d) => {
-      console.log(d);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+function boomboom(batchNumber) {
+  const addHeader = true;
+  var dataList = scrapeData({ addHeader, batchNumber });
+  // downloadVideo(dataList)
+  //   .then((d) => {
+  //     console.log(d);
+  //   })
+  //   .catch((e) => {
+  //     console.error(e);
+  //   });
 }
 
+const batchNumber = "1";
 var pending = 20;
 var dataList = [];
-boomboom();
+boomboom(batchNumber);
