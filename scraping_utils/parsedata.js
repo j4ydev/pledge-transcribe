@@ -16,42 +16,56 @@ const batch = {
     max_date: "2023-08-31",
     pageCount: 3,
     videoCount: 0,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-08-01&created[max][date]=2023-08-31&page=0",
   },
   2: {
     min_date: "2023-09-01",
     max_date: "2023-09-30",
     pageCount: 65,
     videoCount: 0,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-09-01&created[max][date]=2023-09-30&page=0",
   },
   3: {
     min_date: "2023-10-01",
     max_date: "2023-10-15",
     pageCount: 17,
     videoCount: 0,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-10-01&created[max][date]=2023-10-15&page=0",
   },
   4: {
     min_date: "2023-10-16",
     max_date: "2023-10-31",
     pageCount: 130,
     videoCount: 0,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-10-16&created[max][date]=2023-10-31&page=0",
   },
   5: {
     min_date: "2023-11-01",
     max_date: "2023-11-15",
     pageCount: 57,
     videoCount: 0,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-01&created[max][date]=2023-11-15&page=0",
   },
   6: {
     min_date: "2023-11-16",
     max_date: "2023-11-30",
     pageCount: 87,
     videoCount: 0,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-16&created[max][date]=2023-11-30&page=0",
   },
-  6: {
+  7: {
     min_date: "2023-12-01",
-    max_date: "2023-11-07",
+    max_date: "2023-12-07",
     pageCount: 3,
     videoCount: 0,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-12-01&created[max][date]=2023-12-07&page=0",
   },
 };
 const baseURL = "https://pledgewithpfizerco.pfizersite.io/amr-video";
@@ -134,47 +148,55 @@ function getCellData({ row, column, pageNumber, batchNumber }) {
     `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > div.views-field.views-field-nothing-3 > span.field-content > a`
   );
 
-  var stateDuringScraping = document.querySelector(
-    `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-moderation-state > span.field-content`
-  ).innerText;
+  var stateDuringScraping =
+    document.querySelector(
+      `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-moderation-state > span.field-content`
+    )?.innerText || "";
 
-  var emailId = document.querySelector(
-    `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-field-email > span.field-content`
-  ).innerText;
+  var emailId =
+    document.querySelector(
+      `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-field-email > span.field-content`
+    )?.innerText || "";
 
-  var profession = document.querySelector(
-    `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-field-i-am > span.field-content`
-  ).innerText;
+  var profession =
+    document.querySelector(
+      `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-field-i-am > span.field-content`
+    )?.innerText || "";
 
-  var resolution = document
-    .querySelector(
-      `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > div.views-field.views-field-nothing-1 > span.field-content`
-    )
-    .innerText.trim();
+  var resolution =
+    document
+      .querySelector(
+        `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > div.views-field.views-field-nothing-1 > span.field-content`
+      )
+      ?.innerText.trim() || "";
 
-  var source = document
-    .querySelector(
-      `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > div.views-field.views-field-field-source > div`
-    )
-    .innerText.trim();
+  var source =
+    document
+      .querySelector(
+        `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > div.views-field.views-field-field-source > div`
+      )
+      ?.innerText.trim() || "";
 
   var refreshAnchorTag = document.querySelector(
     `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > div.views-field.views-field-nothing-2 > span > a`
   );
 
-  var firstName = document.querySelector(
-    `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-field-first-name > span.field-content`
-  ).innerText;
+  var firstName =
+    document.querySelector(
+      `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-field-first-name > span.field-content`
+    )?.innerText || "";
 
-  var lastName = document.querySelector(
-    `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > div.views-field.views-field-field-last-name > div`
-  ).innerText;
+  var lastName =
+    document.querySelector(
+      `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > div.views-field.views-field-field-last-name > div`
+    )?.innerText || "";
 
-  var nid = document
-    .querySelector(
-      `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-nothing > span > div > a`
-    )
-    .getAttribute("nid");
+  var nid =
+    document
+      .querySelector(
+        `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-nothing > span > div > a`
+      )
+      ?.getAttribute("nid") || "";
 
   var buttonTag1 = document.querySelector(
     `body > div.dialog-off-canvas-main-canvas > div > div > section > div > div.views-element-container.form-group > div > div.view-content > div.views-view-grid.horizontal.cols-4.clearfix > div.views-row.clearfix.row-${row} > div.views-col.col-${column} > span.views-field.views-field-set-moderation-state > span > ul > li:nth-child(1) > a`
@@ -190,30 +212,45 @@ function getCellData({ row, column, pageNumber, batchNumber }) {
     links[buttonTag2.innerText] = buttonTag2.getAttribute("href");
   }
 
-  return {
-    row,
-    column,
-    index: 4 * (row - 1) + column,
-    batchNumber,
-    pageNumber,
+  const name = downloadAnchorTag?.getAttribute("name") || "";
+  const bid = refreshAnchorTag?.getAttribute("bid") || "";
+  const vid = downloadAnchorTag?.getAttribute("vid") || "";
+  const filenameSuffix = name
+    .replace(/[^a-zA-Z0-9-_.]/g, "_")
+    .replaceAll("__", "_")
+    .replaceAll("__", "_")
+    .replaceAll("__", "_")
+    .replaceAll("__", "_")
+    .toLowerCase();
+  const fileName = vid ? `${bid}_${vid}_${filenameSuffix}.mp4` : "";
 
-    vid: downloadAnchorTag.getAttribute("vid"),
-    bid: refreshAnchorTag.getAttribute("bid"),
-    nid,
-    name: downloadAnchorTag.getAttribute("name"),
-    stateDuringScraping,
-    emailId,
-    resolution,
+  return vid
+    ? {
+        bid,
+        vid,
+        nid,
+        name,
+        stateDuringScraping,
+        emailId,
+        resolution,
+        fileName,
 
-    vid_of_bid: refreshAnchorTag.getAttribute("vid"),
-    publish: links["Set to Published"],
-    reject: links["Set to Reject"],
-    draft: links["Set to Draft"],
-    firstName,
-    lastName,
-    profession,
-    source,
-  };
+        firstName,
+        lastName,
+        profession,
+
+        batchNumber,
+        pageNumber,
+        row,
+        column,
+        index: 4 * (row - 1) + column,
+        vid_of_bid: refreshAnchorTag?.getAttribute("vid"),
+        publish: links["Set to Published"],
+        reject: links["Set to Reject"],
+        draft: links["Set to Draft"],
+        source,
+      }
+    : {};
 }
 
 function getFetchPayload({ index, dataList }) {
@@ -254,12 +291,17 @@ function counter(batchNumber) {
   pending -= 1;
   console.log("pending", pending);
   if (pending === 0) {
-    console.log("======= Batch Finished ========");
+    console.log("======= PAGE Finished ========");
     pending = 20;
     const nextPageIndex = getCurrentPageNumber() + 1;
-    window.location.replace(
-      `${getBatchUrl({ batchNumber, pageNumber: nextPageIndex })}`
-    );
+    if (Number.parseInt(batch[batchNumber].pageCount) >= nextPageIndex) {
+      window.location.replace(
+        `${getBatchUrl({ batchNumber, pageNumber: nextPageIndex })}`
+      );
+    } else {
+      console.log("===XX==+ Batch Finished ===XX===");
+      window.location.replace("https://google.com");
+    }
   }
 }
 
@@ -295,16 +337,11 @@ async function downloadVideo(dataList) {
       })
       .then((blobData) => {
         console.log(index, "blobData");
-        const {
-          vid: video_id,
-          name,
-          pageNumber,
-          row,
-          column,
-        } = dataList[index];
+        const { fileName } = dataList[index];
+
         var a = document.createElement("a");
         a.href = window.URL.createObjectURL(blobData);
-        a.download = `${pageNumber}_${row}_${column}_${video_id}_${name}`; // TODO: bid_vid_all-lower-case.mp4
+        a.download = fileName;
         a.click();
         counter();
         return Promise.resolve();
