@@ -15,59 +15,132 @@ const batch = {
     min_date: "2023-08-01",
     max_date: "2023-08-31",
     pageCount: 3,
-    videoCount: 0,
+    videoCount: 52,
     pageZeroURL:
       "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-08-01&created[max][date]=2023-08-31&page=0",
   },
   2: {
     min_date: "2023-09-01",
-    max_date: "2023-09-30",
-    pageCount: 65,
-    videoCount: 0,
+    max_date: "2023-09-10",
+    pageCount: 19,
+    videoCount: 367,
     pageZeroURL:
-      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-09-01&created[max][date]=2023-09-30&page=0",
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-09-01&created[max][date]=2023-09-10&page=0",
   },
   3: {
+    min_date: "2023-09-11",
+    max_date: "2023-09-20",
+    pageCount: 32,
+    videoCount: 634,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-09-11&created[max][date]=2023-09-20&page=0",
+  },
+  4: {
+    min_date: "2023-09-21",
+    max_date: "2023-09-30",
+    pageCount: 15,
+    videoCount: 283,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-09-21&created[max][date]=2023-09-30&page=0",
+  },
+  5: {
     min_date: "2023-10-01",
     max_date: "2023-10-15",
     pageCount: 17,
-    videoCount: 0,
+    videoCount: 328,
     pageZeroURL:
       "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-10-01&created[max][date]=2023-10-15&page=0",
   },
-  4: {
-    min_date: "2023-10-16",
-    max_date: "2023-10-31",
-    pageCount: 130,
-    videoCount: 0,
-    pageZeroURL:
-      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-10-16&created[max][date]=2023-10-31&page=0",
-  },
-  5: {
-    min_date: "2023-11-01",
-    max_date: "2023-11-15",
-    pageCount: 57,
-    videoCount: 0,
-    pageZeroURL:
-      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-01&created[max][date]=2023-11-15&page=0",
-  },
   6: {
-    min_date: "2023-11-16",
-    max_date: "2023-11-30",
-    pageCount: 87,
-    videoCount: 0,
+    min_date: "2023-10-16",
+    max_date: "2023-10-21",
+    pageCount: 34,
+    videoCount: 675,
     pageZeroURL:
-      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-16&created[max][date]=2023-11-30&page=0",
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-10-16&created[max][date]=2023-10-21&page=0",
   },
   7: {
-    min_date: "2023-12-01",
-    max_date: "2023-12-07",
-    pageCount: 3,
-    videoCount: 0,
+    min_date: "2023-10-22",
+    max_date: "2023-10-25",
+    pageCount: 36,
+    videoCount: 710,
     pageZeroURL:
-      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-12-01&created[max][date]=2023-12-07&page=0",
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-10-22&created[max][date]=2023-10-25&page=0",
+  },
+  8: {
+    min_date: "2023-10-26",
+    max_date: "2023-10-28",
+    pageCount: 41,
+    videoCount: 810,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-10-26&created[max][date]=2023-10-28&page=0",
+  },
+  9: {
+    min_date: "2023-10-29",
+    max_date: "2023-10-31",
+    pageCount: 20,
+    videoCount: 400,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-10-29&created[max][date]=2023-10-31&page=0",
+  },
+  10: {
+    min_date: "2023-11-01",
+    max_date: "2023-11-05",
+    pageCount: 20,
+    videoCount: 397,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-01&created[max][date]=2023-11-05&page=0",
+  },
+  11: {
+    min_date: "2023-11-06",
+    max_date: "2023-11-12",
+    pageCount: 30,
+    videoCount: 594,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-06&created[max][date]=2023-11-12&page=0",
+  },
+  13: {
+    min_date: "2023-11-13",
+    max_date: "2023-11-20",
+    pageCount: 26,
+    videoCount: 503,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-13&created[max][date]=2023-11-20&page=0",
+  },
+  14: {
+    min_date: "2023-11-21",
+    max_date: "2023-11-23",
+    pageCount: 33,
+    videoCount: 645,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-21&created[max][date]=2023-11-23&page=0",
+  },
+  15: {
+    min_date: "2023-11-24",
+    max_date: "2023-11-27",
+    pageCount: 25,
+    videoCount: 500,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-24&created[max][date]=2023-11-27&page=0",
+  },
+  16: {
+    min_date: "2023-11-28",
+    max_date: "2023-11-30",
+    pageCount: 11,
+    videoCount: 218,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-28&created[max][date]=2023-11-30&page=0",
+  },
+  17: {
+    min_date: "2023-12-01",
+    max_date: "2023-12-09",
+    pageCount: 4,
+    videoCount: 67,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-12-01&created[max][date]=2023-12-09&page=0",
   },
 };
+
 const baseURL = "https://pledgewithpfizerco.pfizersite.io/amr-video";
 const getBatchUrlQueryString = ({ batchNumber = "1", pageNumber = 0 }) => {
   const minDate = batch[batchNumber].min_date || "";
