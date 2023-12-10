@@ -222,13 +222,11 @@ function getCellData({ row, column, pageNumber, batchNumber }) {
     .replaceAll("__", "_")
     .replaceAll("__", "_")
     .toLowerCase();
-  const fileName = vid ? `${bid}_${vid}_${filenameSuffix}.mp4` : "";
+  const fileName = vid ? `${vid}_${filenameSuffix}.mp4` : "";
 
   return vid
     ? {
-        bid,
         vid,
-        nid,
         name,
         stateDuringScraping,
         emailId,
