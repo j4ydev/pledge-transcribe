@@ -324,6 +324,7 @@ function scrapeData({ addHeader, batchNumber = "1" }) {
 
 async function downloadVideo(dataList) {
   for (let index = 0; index < dataList.length; index++) {
+    if (!dataList[index].vid) continue;
     fetch(
       "https://pledgewithpfizerco.pfizersite.io/download_video",
       getFetchPayload({ index, dataList })
