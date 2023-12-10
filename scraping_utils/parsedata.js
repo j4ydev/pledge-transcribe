@@ -79,7 +79,6 @@ const getBatchUrl = ({ batchNumber = "1", pageNumber = 0 }) =>
 
 function convertToCSV(arrayOfObject, addHeader = false) {
   var str = "";
-
   if (addHeader) {
     var line = "";
     var keyList = Object.keys(arrayOfObject[0]);
@@ -101,7 +100,6 @@ function convertToCSV(arrayOfObject, addHeader = false) {
 
   return str;
 }
-
 function downloadCSV(pageNumber, csv, batchNumber = "1") {
   var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   var a = document.createElement("a");
@@ -206,10 +204,14 @@ function getCellData({ row, column, pageNumber, batchNumber }) {
   );
   var links = {};
   if (buttonTag1) {
-    links[buttonTag1.innerText] = buttonTag1.getAttribute("href");
+    links[buttonTag1.innerText] = decodeURIComponent(
+      decodeURIComponent(buttonTag1.getAttribute("href") || "")
+    );
   }
   if (buttonTag2) {
-    links[buttonTag2.innerText] = buttonTag2.getAttribute("href");
+    links[buttonTag2.innerText] = decodeURIComponent(
+      decodeURIComponent(buttonTag2.getAttribute("href") || "")
+    );
   }
 
   const name = downloadAnchorTag?.getAttribute("name") || "";
