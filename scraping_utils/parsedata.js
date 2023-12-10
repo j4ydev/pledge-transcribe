@@ -314,7 +314,7 @@ function scrapeData({ addHeader, batchNumber = "1" }) {
     for (let column = 1; column < 5; column++) {
       var data = getCellData({ row, column, pageNumber, batchNumber });
       dataList.push(data);
-      counter(batchNumber);
+      // counter(batchNumber);
     }
   }
   downloadJSON({ pageNumber, dataList, batchNumber });
@@ -346,7 +346,7 @@ async function downloadVideo(dataList) {
         a.href = window.URL.createObjectURL(blobData);
         a.download = fileName;
         a.click();
-        counter();
+        counter(batchNumber);
         return Promise.resolve();
       })
       .catch((error) => console.error(error));
@@ -357,13 +357,13 @@ async function downloadVideo(dataList) {
 function boomboom(batchNumber) {
   const addHeader = true;
   var dataList = scrapeData({ addHeader, batchNumber });
-  // downloadVideo(dataList)
-  //   .then((d) => {
-  //     console.log(d);
-  //   })
-  //   .catch((e) => {
-  //     console.error(e);
-  //   });
+  downloadVideo(dataList)
+    .then((d) => {
+      console.log(d);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
 }
 
 const batchNumber = "1";
