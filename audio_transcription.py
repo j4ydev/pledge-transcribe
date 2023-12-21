@@ -3,9 +3,9 @@ import os
 import time
 
 import pandas as pd
+import torch
 import whisper
 from icecream import ic
-import torch
 
 from config import (BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY,
                     BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY,
