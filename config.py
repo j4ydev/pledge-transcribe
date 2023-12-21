@@ -14,7 +14,7 @@ FACE_MATCH_RESULT_CSV_PATH = "output/face_match.csv"
 NUMBER_OF_BEST_MATCH_TO_CONSIDER = 5
 FAILED_FACE_CAPTURE_CSV_PATH = "output/error/failed_capture_face.csv"
 
-DIRECTORY_OF_INPUT_VIDEO_DIRECTORY = "/Users/khasgiwa/Workbench/data-dumps/GWR/new"
+DIRECTORY_OF_INPUT_VIDEO_DIRECTORY = "/Users/khasgiwa/Workbench/data-dumps/GWR/current"
 INPUT_VIDEO_DIRECTORY = "/Users/khasgiwa/Workbench/data-dumps/GWR/new/50" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH)
 INPUT_VIDEO_FILE_FORMAT = '.mp4'
 

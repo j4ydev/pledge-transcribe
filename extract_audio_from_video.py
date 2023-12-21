@@ -31,8 +31,12 @@ from moviepy.editor import VideoFileClip
 from pydub import AudioSegment
 
 # TODO:Done Import only needed names or import the module and then use its members. google to know more : JAY
-from config import (AUDIO_EXTRACT_CSV_PATH, FAILED_VIDEO_2_AUDIO_CSV_PATH, INPUT_VIDEO_FILE_FORMAT, BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY, 
-                    BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY, BACKGROUND_REMOVED_FILE_NAME, DIRECTORY_OF_INPUT_VIDEO_DIRECTORY)
+from config import (AUDIO_EXTRACT_CSV_PATH,
+                    BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY,
+                    BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY,
+                    BACKGROUND_REMOVED_FILE_NAME,
+                    DIRECTORY_OF_INPUT_VIDEO_DIRECTORY,
+                    FAILED_VIDEO_2_AUDIO_CSV_PATH, INPUT_VIDEO_FILE_FORMAT)
 from utils import get_metadata_from_file_name, is_value_present_in_dataframe
 
 
@@ -75,6 +79,20 @@ class VIDEO2AUDIO():
             file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
             is_value_present_flag = is_value_present_in_dataframe(file_video_id, self.video2audio_dataframe)
 
+            # TODO: jay analyse # TODO: Jay i had to do this because the loop was breaking again and again and some exceptions were not getting caught till i added generic exception
+            if file_video_id == "6341475570112":
+                continue
+            if file_video_id == "6341539218112":
+                continue
+            if file_video_id == "6341599016112":
+                continue
+            if file_video_id == "6341660118112":
+                continue
+            if file_video_id == "6341701468112":
+                continue
+            if file_video_id == "6341703907112":
+                continue
+
             if not is_value_present_flag:
                 try:
                     start_time = time.time()
@@ -100,6 +118,8 @@ class VIDEO2AUDIO():
                     self.video2audio_dataframe.to_csv(AUDIO_EXTRACT_CSV_PATH, index=False)
                 except Exception as e:
                     self.add_failed_video2audio_file_to_csv(input_video_path)
+                except: # TODO: Jay i had to do this because the loop was breaking again and again and some exceptions were not getting caught
+                    self.add_failed_video2audio_file_to_csv(input_video_path)
             else:
                 print(f"Audio of the this {input_video_path} is already seperated.")
 
@@ -107,8 +127,8 @@ if __name__ == "__main__":
     video2audio_obj = VIDEO2AUDIO()
     input_video_folder_list = glob.glob(f"{DIRECTORY_OF_INPUT_VIDEO_DIRECTORY}/*")
     input_video_folder_list.sort()
-    start_index = 0
-    end_index = 60
+    start_index = 5
+    end_index = 50
     # for input_video_folder in input_video_folder_list:
     for index, input_video_folder in enumerate(input_video_folder_list):
         if start_index <= index and index < end_index:

@@ -1,6 +1,6 @@
 import numpy as np
 
-USE_OLD_VIDEO_FILE_NAME = False
+USE_OLD_VIDEO_FILE_NAME = True
 
 # current video file name format is 500_6340863312112_naresh_ch.mp4
 def get_metadata_from_file_name(file_name):
