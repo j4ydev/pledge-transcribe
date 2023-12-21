@@ -99,7 +99,7 @@ const batch = {
     pageZeroURL:
       "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-06&created[max][date]=2023-11-12&page=0",
   },
-  13: {
+  12: {
     min_date: "2023-11-13",
     max_date: "2023-11-20",
     pageCount: 26,
@@ -107,21 +107,29 @@ const batch = {
     pageZeroURL:
       "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-13&created[max][date]=2023-11-20&page=0",
   },
-  14: {
+  13: {
     min_date: "2023-11-21",
-    max_date: "2023-11-23",
-    pageCount: 33,
-    videoCount: 645,
+    max_date: "2023-11-22",
+    pageCount: 21,
+    videoCount: 402,
     pageZeroURL:
-      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-21&created[max][date]=2023-11-23&page=0",
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-21&created[max][date]=2023-11-22&page=0",
+  },
+  14: {
+    min_date: "2023-11-23",
+    max_date: "2023-11-24",
+    pageCount: 21,
+    videoCount: 406,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-23&created[max][date]=2023-11-24&page=0",
   },
   15: {
-    min_date: "2023-11-24",
+    min_date: "2023-11-25",
     max_date: "2023-11-27",
-    pageCount: 25,
-    videoCount: 500,
+    pageCount: 17,
+    videoCount: 337,
     pageZeroURL:
-      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-24&created[max][date]=2023-11-27&page=0",
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-11-25&created[max][date]=2023-11-27&page=0",
   },
   16: {
     min_date: "2023-11-28",
@@ -133,11 +141,19 @@ const batch = {
   },
   17: {
     min_date: "2023-12-01",
-    max_date: "2023-12-09",
-    pageCount: 4,
-    videoCount: 67,
+    max_date: "2023-12-14",
+    pageCount: 19,
+    videoCount: 369,
     pageZeroURL:
-      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-12-01&created[max][date]=2023-12-09&page=0",
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-12-01&created[max][date]=2023-12-14&page=0",
+  },
+  18: {
+    min_date: "2023-12-15",
+    max_date: "2023-12-18",
+    pageCount: 20,
+    videoCount: 400,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2023-12-15&created[max][date]=2023-12-18&page=0",
   },
 };
 
@@ -278,12 +294,12 @@ function getCellData({ row, column, pageNumber, batchNumber }) {
   var links = {};
   if (buttonTag1) {
     links[buttonTag1.innerText] = decodeURIComponent(
-      decodeURIComponent(buttonTag1.getAttribute("href") || "")
+      decodeURIComponent(buttonTag1.getAttribute("href") || "").split("?")[0]
     );
   }
   if (buttonTag2) {
     links[buttonTag2.innerText] = decodeURIComponent(
-      decodeURIComponent(buttonTag2.getAttribute("href") || "")
+      decodeURIComponent(buttonTag2.getAttribute("href") || "").split("?")[0]
     );
   }
 
@@ -387,7 +403,9 @@ function scrapeData({ addHeader, batchNumber = "1" }) {
     for (let column = 1; column < 5; column++) {
       var data = getCellData({ row, column, pageNumber, batchNumber });
       dataList.push(data);
-      // counter(batchNumber);
+      if (!downloadVideoFlag) {
+        counter(batchNumber);
+      }
     }
   }
   downloadJSON({ pageNumber, dataList, batchNumber });
@@ -428,18 +446,30 @@ async function downloadVideo(dataList) {
 }
 
 function boomboom(batchNumber) {
-  const addHeader = true;
   var dataList = scrapeData({ addHeader, batchNumber });
-  downloadVideo(dataList)
-    .then((d) => {
-      console.log(d);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+  if (downloadVideoFlag) {
+    downloadVideo(dataList)
+      .then((d) => {
+        console.log(d);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }
 }
 
-const batchNumber = "1";
+const addHeader = false;
+const downloadVideoFlag = true;
+const batchNumber = "12";
 var pending = 20;
 var dataList = [];
 boomboom(batchNumber);
+
+/*
+var arr = [];
+var urlSuffix = "?destination=/amr-video?moderation_state=All&title=&created[min][date]=2023-10-22&created[max][date]=2023-10-25&page=0";
+for (let index = 0; index < arr.length; index++) {
+  const url = `${arr[index]}${urlSuffix}`;
+  fetch(url).then((response) => { console.log(index, response.status, url); return response.blob();}).then(x => x).catch(error => console.error(error));
+}
+*/
