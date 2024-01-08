@@ -127,7 +127,7 @@ if __name__ == "__main__":
     video2audio_obj = VIDEO2AUDIO()
     input_video_folder_list = glob.glob(f"{DIRECTORY_OF_INPUT_VIDEO_DIRECTORY}/*")
     input_video_folder_list.sort()
-    start_index = 5
+    start_index = 0
     end_index = 50
     # for input_video_folder in input_video_folder_list:
     for index, input_video_folder in enumerate(input_video_folder_list):

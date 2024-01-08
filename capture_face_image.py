@@ -39,7 +39,7 @@ class GETFRAME():
             os.remove(file_path)
 
     def get_image_from_video(self, video_path):
-        video_capture = cv2.VideoCapture(video_path)
+        video_capture = cv2.VideoCapture(video_path, cv2.CAP_FFMPEG)
         total_frames = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
         random_frame = random.randint(1, total_frames-5)
         current_frame = 0
@@ -113,6 +113,14 @@ class GETFRAME():
                 video_file_name = video_file_name.replace(INPUT_VIDEO_FILE_FORMAT, "")
                 file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
                 image_file_name_without_extension = video_file_path.split("/")[-1].replace(INPUT_VIDEO_FILE_FORMAT, "")
+
+                if file_video_id == "6344129230112":
+                    continue
+                if file_video_id == "6344128893112":
+                    continue
+                if file_video_id == "6344127905112":
+                    continue
+
                 screenshot_present_flag = is_value_present_in_dataframe(file_video_id, self.face_capture_dataframe)
                 if not screenshot_present_flag:
                     self.counter = 0
@@ -142,7 +150,7 @@ if __name__ == "__main__":
     input_video_folder_list = glob.glob(f"{DIRECTORY_OF_INPUT_VIDEO_DIRECTORY}/*")
     input_video_folder_list.sort()
     start_index = 0
-    end_index = 600
+    end_index = 50
     # for input_video_folder in input_video_folder_list:
     for index, input_video_folder in enumerate(input_video_folder_list):
         if start_index <= index and index < end_index:
