@@ -8,7 +8,7 @@ import pandas as pd
 INPUT_VIDEO_FILE_FORMAT = '.mp4'
 ONLY_UNIQUE_VIDEO_DIRECTORY = "/Users/khasgiwa/Workbench/data-dumps/GWR/combined"
 RENAME_FILES_DATAFRAME_PATH = "output/rename_video_files_1.csv"
-INPUT_VIDEO_DIRECTORY="/Users/khasgiwa/Workbench/data-dumps/GWR/old"
+INPUT_VIDEO_DIRECTORY="/Users/khasgiwa/Workbench/data-dumps/GWR/old-1"
 
 class RENAMEVIDEOFILES():
     def __init__(self):
