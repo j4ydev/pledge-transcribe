@@ -120,6 +120,8 @@ class GETFRAME():
                     continue
                 if file_video_id == "6344127905112":
                     continue
+                if file_video_id == "6339834764112":
+                    continue
 
                 screenshot_present_flag = is_value_present_in_dataframe(file_video_id, self.face_capture_dataframe)
                 if not screenshot_present_flag:
