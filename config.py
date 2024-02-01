@@ -6,11 +6,19 @@ FAILED_TRANSCRIBE_CSV_PATH = "output/error/failed_transcribe.csv"
 FAILED_VIDEO_2_AUDIO_CSV_PATH = "output/error/failed_video2audio.csv"
 
 FACE_MATCH_SAVE_IMAGES_DIRECTORY = "output/similar_pledge_takers"
+VGG_FACE_MATCH_SAVE_IMAGES_DIRECTORY = "output/similar_pledge_takers_vggface"
+FACENET512_MATCH_SAVE_IMAGES_DIRECTORY = "output/similar_pledge_takers_facenet512"
+
 FACE_CAPTURE_CSV_PATH = "output/capture_face.csv"
 FACE_IMAGE_DIRECTORY = "output/screenshots" # PATH DIR OF SAVE FRAME FROM VIDEO (DO NOT ADD / AT THE END OF PATH)
 FACE_IMAGE_FILE_FORMAT = '.png'
 FACE_INDEX_FILE_FORMAT = '.txt'
+
 FACE_MATCH_RESULT_CSV_PATH = "output/face_match.csv"
+VGG_FACE_MATCH_RESULT_CSV_PATH = "output/face_match_vggface.csv"
+FACENET512_MATCH_RESULT_CSV_PATH = "output/face_match_facenet512.csv"
+
+
 NUMBER_OF_BEST_MATCH_TO_CONSIDER = 5
 FAILED_FACE_CAPTURE_CSV_PATH = "output/error/failed_capture_face.csv"
 
