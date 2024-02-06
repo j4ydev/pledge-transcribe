@@ -243,6 +243,46 @@ const batch = {
     pageZeroURL:
       "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-01-17&created[max][date]=2024-01-19&page=0",
   },
+  30: {
+    min_date: "2024-01-20",
+    max_date: "2024-01-29",
+    pageCount: 14,
+    videoCount: 275,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-01-20&created[max][date]=2024-01-29&page=0",
+  },
+  31: {
+    min_date: "2024-01-30",
+    max_date: "2024-02-02",
+    pageCount: 17,
+    videoCount: 322,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-01-30&created[max][date]=2024-02-02&page=0",
+  },
+  32: {
+    min_date: "2024-02-03",
+    max_date: "2024-02-03",
+    pageCount: 56,
+    videoCount: 1106,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-03&created[max][date]=2024-02-03&page=0",
+  },
+  33: {
+    min_date: "2024-02-04",
+    max_date: "2024-02-04",
+    pageCount: 66,
+    videoCount: 1306,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-04&created[max][date]=2024-02-04&page=0",
+  },
+  34: {
+    min_date: "2024-02-05",
+    max_date: "2024-02-05",
+    pageCount: 29,
+    videoCount: 569,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-05&created[max][date]=2024-02-05&page=0",
+  },
 };
 
 const baseURL = "https://pledgewithpfizerco.pfizersite.io/amr-video";
@@ -547,8 +587,8 @@ function boomboom(batchNumber) {
 }
 
 const addHeader = false;
-const downloadVideoFlag = false;
-const batchNumber = "1";
+const downloadVideoFlag = true;
+const batchNumber = "30";
 var pending = 20;
 var dataList = [];
 boomboom(batchNumber);
