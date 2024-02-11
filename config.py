@@ -30,3 +30,6 @@ TRANSCRIBED_FILE_PATH = "output/transcribe_text.csv" ### PATH OF THE OUTPUT CSV 
 USE_FP16 = False
 
 AUDIO_EXTRACT_CSV_PATH = "output/extract_audio_from_video.csv"
+
+
+APPROVAL_DATAFRAME_PATH = "output/approval.csv"

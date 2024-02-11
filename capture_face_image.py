@@ -10,7 +10,7 @@ from icecream import ic
 
 from config import (DIRECTORY_OF_INPUT_VIDEO_DIRECTORY, FACE_CAPTURE_CSV_PATH,
                     FACE_IMAGE_DIRECTORY, FACE_IMAGE_FILE_FORMAT,
-                    FAILED_FACE_CAPTURE_CSV_PATH, INPUT_VIDEO_FILE_FORMAT)
+                    FAILED_FACE_CAPTURE_CSV_PATH, INPUT_VIDEO_FILE_FORMAT, APPROVAL_DATAFRAME_PATH)
 from utils import get_metadata_from_file_name, is_value_present_in_dataframe
 
 
@@ -32,7 +32,8 @@ class GETFRAME():
                 print(f"{FAILED_FACE_CAPTURE_CSV_PATH} already present.")
                 self.failed_capture_face_dataframe = pd.DataFrame(columns=['video_id'])
         else:
-            self.failed_capture_face_dataframe = pd.DataFrame(columns=['video_id'])
+            self.failed_capture_face_dataframe = pd.DataFrame(columns=['video_id'])     
+        self.inspect_dataframe = pd.read_csv(APPROVAL_DATAFRAME_PATH)
 
     def remove_file_if_exists(self, file_path):
         if os.path.exists(file_path):
@@ -108,40 +109,41 @@ class GETFRAME():
 
     def process(self, input_video_file_list):
         for video_file_path in input_video_file_list:
+            self.counter = 0
             try:
                 video_file_name = video_file_path.split("/")[-1]
                 video_file_name = video_file_name.replace(INPUT_VIDEO_FILE_FORMAT, "")
                 file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
                 image_file_name_without_extension = video_file_path.split("/")[-1].replace(INPUT_VIDEO_FILE_FORMAT, "")
 
-                if file_video_id == "6344129230112":
-                    continue
-                if file_video_id == "6344128893112":
-                    continue
-                if file_video_id == "6344127905112":
-                    continue
-                if file_video_id == "6339834764112":
-                    continue
+                approval_status = self.inspect_dataframe.loc[self.inspect_dataframe['video_id'] == file_video_id, 'approval'].iloc[0]
+                if approval_status == "Accept":
+                    screenshot_present_flag = is_value_present_in_dataframe(file_video_id, self.face_capture_dataframe)
+                    if not screenshot_present_flag:
+                        self.counter = 0
+                        start_time = time.time()
+                        capture_face_status = self.capture_face_image(video_file_path, image_file_name_without_extension)
+                        end_time = time.time()
+                        time_consumed_by_face_capture = end_time - start_time
 
-                screenshot_present_flag = is_value_present_in_dataframe(file_video_id, self.face_capture_dataframe)
-                if not screenshot_present_flag:
-                    self.counter = 0
-                    start_time = time.time()
-                    capture_face_status = self.capture_face_image(video_file_path, image_file_name_without_extension)
-                    end_time = time.time()
-                    time_consumed_by_face_capture = end_time - start_time
+                        if capture_face_status == None :
+                            capture_face_status = "False"
+                        
+                        if self.counter <= 30:
+                            capture_face_status = "True"
+                else:
+                    capture_face_status = "False"
+                    time_consumed_by_face_capture = 0
+                    
+                new_face_capture_raw = {'video_id': file_video_id, 'face_found': capture_face_status, 'attempt': self.counter, "inspect_csv_status": approval_status, 'time_consumed': time_consumed_by_face_capture}
 
-                    if capture_face_status == None:
-                        capture_face_status = "False"
-                    new_face_capture_raw = {'video_id': file_video_id, 'face_found': capture_face_status, 'attempt': self.counter, 'time_consumed': time_consumed_by_face_capture}
+                print("##" * 20)
+                ic(new_face_capture_raw)
+                print("##" * 20)
 
-                    print("##" * 20)
-                    ic(new_face_capture_raw)
-                    print("##" * 20)
-
-                    new_face_capture_dataframe = pd.DataFrame(new_face_capture_raw, index=[0])
-                    self.face_capture_dataframe = pd.concat([self.face_capture_dataframe, new_face_capture_dataframe], ignore_index=True)
-                    self.face_capture_dataframe.to_csv(FACE_CAPTURE_CSV_PATH, index=False)
+                new_face_capture_dataframe = pd.DataFrame(new_face_capture_raw, index=[0])
+                self.face_capture_dataframe = pd.concat([self.face_capture_dataframe, new_face_capture_dataframe], ignore_index=True)
+                self.face_capture_dataframe.to_csv(FACE_CAPTURE_CSV_PATH, index=False)       
             except Exception as e:
                 print(f"{video_file_path} error occurred.")
                 self.add_failed_capture_face_csv(video_file_path)
