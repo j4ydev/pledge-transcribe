@@ -1,8 +1,8 @@
 import pandas as pd
-from config import APPROVAL_DATAFRAME_PATH
+from config import APPROVAL_DATAFRAME_PATH, INSPECT_DATAFRAME_PATH
 
-df = pd.read_csv("")# inspect csv path.
-headings = df.columns.tolist()
+df = pd.read_csv("")
+headings = df.columns.tolist(INSPECT_DATAFRAME_PATH)
 
 # Drop unnecessary columns.
 df.drop(columns=headings[1], inplace=True)

@@ -2,10 +2,10 @@ import pandas as pd
 import glob
 from utils import get_metadata_from_file_name
 import shutil
-from config import FACE_CAPTURE_CSV_PATH, FACE_IMAGE_DIRECTORY, FACE_IMAGE_FILE_FORMAT
+from config import FACE_CAPTURE_CSV_PATH, FACE_IMAGE_DIRECTORY, FACE_IMAGE_FILE_FORMAT, MANUAL_FACE_CAPTURE_DIRECTORY
 
 capture_face_dataframe = pd.read_csv(FACE_CAPTURE_CSV_PATH)
-invigilation_images_list = glob.glob("/Users/jay/work/input_videos/screenshots_old_pattern/*.png") # capture images manually directory path 
+invigilation_images_list = glob.glob(f"{MANUAL_FACE_CAPTURE_DIRECTORY}/*.{FACE_IMAGE_FILE_FORMAT}") # capture images manually directory path 
 
 for index, row in capture_face_dataframe.iterrows():
     video_id = row['video_id']
@@ -14,7 +14,6 @@ for index, row in capture_face_dataframe.iterrows():
 
     
     if str(face_found_status) == "False" and approval_status == "Accept":
-            print(video_id)
             copy_status = False
             for image_path in invigilation_images_list:
                 image_name = image_path.split("/")[-1].replace(f".{FACE_IMAGE_FILE_FORMAT}", "")
