@@ -297,7 +297,15 @@ const batch = {
     pageCount: 17,
     videoCount: 325,
     pageZeroURL:
-      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-06&created[max][date]=2024-02-07&page=0",
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-08&created[max][date]=2024-02-09&page=0",
+  },
+  37: {
+    min_date: "2024-02-10",
+    max_date: "2024-02-11",
+    pageCount: 8,
+    videoCount: 148,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-10&created[max][date]=2024-02-11&page=0",
   },
 };
 
@@ -604,7 +612,7 @@ function boomboom(batchNumber) {
 
 const addHeader = false;
 const downloadVideoFlag = true;
-const batchNumber = "36";
+const batchNumber = "37";
 var pending = 20;
 var dataList = [];
 boomboom(batchNumber);
