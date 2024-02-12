@@ -6,7 +6,7 @@ import pandas as pd
 from deepface import DeepFace
 from icecream import ic
 
-from config import (FACE_IMAGE_DIRECTORY, FACE_IMAGE_FILE_FORMAT,
+from config import (FACE_IMAGE_DIRECTORY, FINAL_FACES_DIRECTORY,
                     VGG_FACE_MATCH_RESULT_CSV_PATH,
                     VGG_FACE_MATCH_SAVE_IMAGES_DIRECTORY)
 from config import NUMBER_OF_BEST_MATCH_TO_CONSIDER
@@ -40,7 +40,7 @@ class MATCHFACE():
 
                 if not is_value_present_flag:
                     print("--" * 200)
-                    dfs = DeepFace.find(img_path = face_image_path, db_path = FACE_IMAGE_DIRECTORY, distance_metric="cosine", model_name="VGG-Face", enforce_detection=False)
+                    dfs = DeepFace.find(img_path = face_image_path, db_path = FINAL_FACES_DIRECTORY, distance_metric="cosine", model_name="VGG-Face", enforce_detection=False)
                     print("NUMBER_OF_BEST_MATCH_TO_CONSIDER: ", self.NUMBER_OF_BEST_MATCH_TO_CONSIDER)
                     print(type(self.NUMBER_OF_BEST_MATCH_TO_CONSIDER))
                     match_face_paths = list(dfs[0].head(self.NUMBER_OF_BEST_MATCH_TO_CONSIDER)["identity"])
@@ -97,7 +97,7 @@ class MATCHFACE():
 
 
 if __name__ == "__main__":
-    face_images_list = glob.glob(f"{FACE_IMAGE_DIRECTORY}/*")
+    face_images_list = glob.glob(f"{FINAL_FACES_DIRECTORY}/*")
     face_images_list.sort()
 
     facematch_obj = MATCHFACE()
