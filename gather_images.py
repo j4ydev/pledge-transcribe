@@ -61,13 +61,13 @@ class GATHERFACES():
     def process(self):
         
         approval_dataframe = self.remove_unnecessary_columns()
-        print(approval_dataframe.head())
-
         for index, row in self.capture_face_dataframe.iterrows():
             video_id = row['video_id']
             face_found_status = self.capture_face_dataframe.loc[self.capture_face_dataframe['video_id'] == video_id, 'face_found'].iloc[0]
             approval_status = approval_dataframe.loc[approval_dataframe['video_id'] == str(video_id), 'approval'].iloc[0]
             video_file_path = self.ledger_dataframe.loc[self.ledger_dataframe['vid'] == video_id, 'fileName'].iloc[0]
+
+            #CASE:1
             if approval_status == "Accept" and face_found_status == True:
                 copy_status = False
                 
@@ -85,7 +85,7 @@ class GATHERFACES():
                         self.final_face_dataframe = pd.concat([self.final_face_dataframe, new_final_face_dataframe], ignore_index=True)
                         self.final_face_dataframe.to_csv(FINAL_FACES_CSV_PATH, index=False)
 
-            
+            #CASE:2
             elif approval_status == "Accept" and face_found_status == False:
                 copy_status = False
                 for image_path in self.manually_captured_image_list:
@@ -106,7 +106,9 @@ class GATHERFACES():
                 if not copy_status:
                     print("user not found in manually uploaded face images.")
                     
-                    
+            #CASE:3
+            # if approval_status == "Reject":
+                # pass
                         
 if __name__ == "__main__":
     gather_faces_obj = GATHERFACES()
