@@ -32,7 +32,9 @@ USE_FP16 = False
 AUDIO_EXTRACT_CSV_PATH = "output/extract_audio_from_video.csv"
 
 
-APPROVAL_DATAFRAME_PATH = "output/approval.csv"
-INSPECT_DATAFRAME_PATH = "" ### INSPECT.CSV PATH FROM LOCAL MACHINE
-MANUAL_FACE_CAPTURE_DIRECTORY = "" ### DIRECTORY OF MANUALLY CAPTURED FACES(DO NOT ADD "/" AT THE END)
+FINAL_FACES_DIRECTORY = "output/final_faces"
+FINAL_FACES_CSV_PATH = "output/final_faces.csv"
 
+INSPECT_DATAFRAME_PATH = "/Users/jay/work/input_videos/inspect.csv" ### INSPECT.CSV PATH FROM LOCAL MACHINE
+MANUAL_FACE_CAPTURE_DIRECTORY = "/Users/jay/work/input_videos/screenshots_old_pattern" ### DIRECTORY OF MANUALLY CAPTURED FACES(DO NOT ADD "/" AT THE END)
+LEDGER_CSV_PATH = "/Users/jay/work/input_videos/ledger.csv" ### LEDGER.CSV PATH FROM LOCAL MACHINE
