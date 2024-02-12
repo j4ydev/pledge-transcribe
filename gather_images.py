@@ -2,7 +2,7 @@ import glob
 import pandas as pd
 from config import (INSPECT_DATAFRAME_PATH, FACE_CAPTURE_CSV_PATH, FACE_IMAGE_DIRECTORY, 
                     FACE_IMAGE_FILE_FORMAT, MANUAL_FACE_CAPTURE_DIRECTORY, FINAL_FACES_DIRECTORY, 
-                    FINAL_FACES_CSV_PATH, LEDGER_CSV_PATH)
+                    FINAL_FACES_CSV_PATH)
 from utils import get_metadata_from_file_name
 import os
 import shutil
@@ -13,7 +13,7 @@ class GATHERFACES():
         self.inspect_dataframe = pd.read_csv(INSPECT_DATAFRAME_PATH)
         self.manually_captured_image_list = glob.glob(f"{MANUAL_FACE_CAPTURE_DIRECTORY}/*{FACE_IMAGE_FILE_FORMAT}")
         self.auto_captured_image_list = glob.glob(f"{FACE_IMAGE_DIRECTORY}/*{FACE_IMAGE_FILE_FORMAT}")
-        self.ledger_dataframe = pd.read_csv(LEDGER_CSV_PATH)
+        # self.ledger_dataframe = pd.read_csv(LEDGER_CSV_PATH)
         
         if os.path.isfile(FINAL_FACES_CSV_PATH):
             try:
@@ -65,7 +65,7 @@ class GATHERFACES():
             video_id = row['video_id']
             face_found_status = self.capture_face_dataframe.loc[self.capture_face_dataframe['video_id'] == video_id, 'face_found'].iloc[0]
             approval_status = approval_dataframe.loc[approval_dataframe['video_id'] == str(video_id), 'approval'].iloc[0]
-            video_file_path = self.ledger_dataframe.loc[self.ledger_dataframe['vid'] == video_id, 'fileName'].iloc[0]
+            # video_file_path = self.ledger_dataframe.loc[self.ledger_dataframe['vid'] == video_id, 'fileName'].iloc[0]
 
             #CASE:1
             if approval_status == "Accept" and face_found_status == True:
@@ -79,7 +79,7 @@ class GATHERFACES():
                         print("-- copying image. --")
                         shutil.copy(image_path , f"{FINAL_FACES_DIRECTORY}/")
                         copy_status = True
-                        new_final_face_raw = {'video_id': video_id, 'face_found': True, 'image_file_name': image_name, 'videos_file_path': video_file_path, "image_source": "AUTO"}
+                        new_final_face_raw = {'video_id': video_id, 'face_found': True, 'image_file_name': image_name, "image_source": "AUTO"}
                         new_final_face_dataframe = pd.DataFrame(new_final_face_raw, index=[0])
 
                         self.final_face_dataframe = pd.concat([self.final_face_dataframe, new_final_face_dataframe], ignore_index=True)
@@ -97,7 +97,7 @@ class GATHERFACES():
                         shutil.copy(image_path , f"{FINAL_FACES_DIRECTORY}/")
                         copy_status = True
 
-                        new_final_face_raw = {'video_id': video_id, 'face_found': True, 'image_file_name': image_name, 'videos_file_path': video_file_path, "image_source": "MANUAL"}
+                        new_final_face_raw = {'video_id': video_id, 'face_found': True, 'image_file_name': image_name , "image_source": "MANUAL"}
                         new_final_face_dataframe = pd.DataFrame(new_final_face_raw, index=[0])
 
                         self.final_face_dataframe = pd.concat([self.final_face_dataframe, new_final_face_dataframe], ignore_index=True)
