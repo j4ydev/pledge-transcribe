@@ -38,6 +38,6 @@ FINAL_FACES_DIRECTORY = "output/accepted_video_faces"
 FINAL_FACES_CSV_PATH = "output/accepted_video_faces.csv"
 
 INSPECT_DATAFRAME_PATH = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/inspect.csv" ### INSPECT.CSV PATH FROM LOCAL MACHINE
-MANUAL_FACE_CAPTURE_DIRECTORY = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_raw/31" ### DIRECTORY OF MANUALLY CAPTURED FACES(DO NOT ADD "/" AT THE END)
+MANUAL_FACE_CAPTURE_DIRECTORY = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_raw" ### DIRECTORY OF MANUALLY CAPTURED FACES(DO NOT ADD "/" AT THE END)
 
 MANUAL_FACE_IMAGE_FILE_FORMAT = ".PNG"
