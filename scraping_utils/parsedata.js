@@ -295,7 +295,7 @@ const batch = {
     min_date: "2024-02-08",
     max_date: "2024-02-09",
     pageCount: 17,
-    videoCount: 325,
+    videoCount: 324,
     pageZeroURL:
       "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-08&created[max][date]=2024-02-09&page=0",
   },
