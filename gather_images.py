@@ -32,37 +32,17 @@ class GATHERFACES():
 
     def remove_unnecessary_columns(self):
         df = self.inspect_dataframe
-        headings = df.columns.tolist()
-        # Drop unnecessary columns.
-        df.drop(columns=headings[1], inplace=True)
-        df.drop(columns=headings[2], inplace=True)
-        df.drop(columns=headings[3], inplace=True)
-        df.drop(columns=headings[4], inplace=True)
-        df.drop(columns=headings[5], inplace=True)
-        df.drop(columns=headings[6], inplace=True)
-        df.drop(columns=headings[7], inplace=True)
-        df.drop(columns=headings[8], inplace=True)
-        df.drop(columns=headings[9], inplace=True)
-        df.drop(columns=headings[10], inplace=True)
-        df.drop(columns=headings[11], inplace=True)
-        df.drop(columns=headings[12], inplace=True)
-        df.drop(columns=headings[13], inplace=True)
-        df.drop(columns=headings[15], inplace=True)
-        df.drop(columns=headings[16], inplace=True)
-        df.drop(columns=headings[17], inplace=True)
+        df2 = df[['vid','batch Number', 'InvigilationState']]
+        df2 = df2.rename(columns={'vid': 'video_id', 'batch Number':'batch_number', 'InvigilationState': 'approval'})
 
-        headings = ['video_id', 'approval']  
-        df.columns = headings
-
-        df['approval'].replace('Doubt', 'Reject', inplace=True)
-        df['approval'].replace('InvigilationState', 'Reject', inplace=True)
-        df['approval'].fillna('Reject', inplace=True)
-
-        return df
+        df2['approval'].replace('Doubt', 'Reject', inplace=True)
+        df2['approval'].replace('InvigilationState', 'Reject', inplace=True)
+        df2['approval'].fillna('Reject', inplace=True)
+        return df2
 
     def verify_video_id(self, approval_dataframe, video_id):
         try:
-            approval_status = approval_dataframe.loc[approval_dataframe['video_id'] == str(video_id), 'approval'].iloc[0]
+            approval_status = approval_dataframe.loc[approval_dataframe['video_id'] == video_id, 'approval'].iloc[0]
             return True
         except:
             print(f"{video_id} not present in approval_dataframe.")
@@ -76,6 +56,9 @@ class GATHERFACES():
             found_face_flag = False
         return found_face_flag
 
+    def get_manual_face_capture_images_list(self, batch_number):
+        manually_captured_image_list = glob.glob(f"{MANUAL_FACE_CAPTURE_DIRECTORY}/{batch_number}/*{MANUAL_FACE_IMAGE_FILE_FORMAT}")
+        return manually_captured_image_list
 
     def process(self):
         
@@ -87,7 +70,8 @@ class GATHERFACES():
             if self.verify_video_id(approval_dataframe, video_id):
                 if not is_value_present_flag:
                     face_found_status = self.capture_face_dataframe.loc[self.capture_face_dataframe['video_id'] == video_id, 'face_found'].iloc[0]
-                    approval_status = approval_dataframe.loc[approval_dataframe['video_id'] == str(video_id), 'approval'].iloc[0]
+                    approval_status = approval_dataframe.loc[approval_dataframe['video_id'] == video_id, 'approval'].iloc[0]
+                    batch_number = approval_dataframe.loc[approval_dataframe['video_id'] == video_id, 'batch_number'].iloc[0]
                     # video_file_path = self.ledger_dataframe.loc[self.ledger_dataframe['vid'] == video_id, 'fileName'].iloc[0]
                     
                     #CASE:1
@@ -111,7 +95,8 @@ class GATHERFACES():
                     #CASE:2
                     elif approval_status == "Accept" and face_found_status == False:
                         video_id_found_status = False
-                        for image_path in self.manually_captured_image_list:
+                        manually_captured_image_list = self.get_manual_face_capture_images_list(batch_number)
+                        for image_path in manually_captured_image_list:
                             image_name = image_path.split("/")[-1].replace(f"{MANUAL_FACE_IMAGE_FILE_FORMAT}", "")
                             file_bid, video_id_, file_name_suffix = get_metadata_from_file_name(image_name)
 
