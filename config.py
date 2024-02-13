@@ -1,4 +1,4 @@
-WORKING_DIR_PREFIX = "/Users/khasgiwa/Workbench"
+WORKING_DIR_PREFIX = "/Users/jay"
 
 BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY = "output/audio_from_video"
 BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY = "mdx_extra"
@@ -41,3 +41,7 @@ INSPECT_DATAFRAME_PATH = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/ins
 MANUAL_FACE_CAPTURE_DIRECTORY = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_raw" ### DIRECTORY OF MANUALLY CAPTURED FACES(DO NOT ADD "/" AT THE END)
 
 MANUAL_FACE_IMAGE_FILE_FORMAT = ".PNG"
+FLATTEN_IMAGE_DIRECTORY = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_flatten"
+FLATTEN_CSV_FILE_PATH = "output/flatten_manual_images.csv"
+
+# MANUAL_FACE_CAPTURE_DIRECTORY = FLATTEN_IMAGE_DIRECTORY
