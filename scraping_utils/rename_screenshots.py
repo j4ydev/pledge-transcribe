@@ -1,6 +1,8 @@
 import glob
 import os
 
+from config import WORKING_DIR_PREFIX
+
 ### Handled cases:
 # 1. when there is vid_fname_lname.png file. We will not rename the file.
 # 2. when there is vid_frame_lname_.png file. We will not rename the file.
@@ -10,7 +12,7 @@ import os
 # TO ADD 1 LAYER OF ASSURANCE:: before removing any id it will check if id term is int or not if not then we will not remove the id term.
 
 #
-screenshot_image_list = glob.glob("/Users/khasgiwa/Workbench/codebench/a7v/pledge-transcribe/output/screenshots/*.png") ## update the location of screenshot directory.
+screenshot_image_list = glob.glob(f"{WORKING_DIR_PREFIX}/codebench/a7v/pledge-transcribe/output/screenshots/*.png") ## update the location of screenshot directory.
 print(screenshot_image_list[0])
 
 for image_path in screenshot_image_list:

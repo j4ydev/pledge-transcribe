@@ -5,10 +5,12 @@ import shutil
 
 import pandas as pd
 
+from config import WORKING_DIR_PREFIX
+
 INPUT_VIDEO_FILE_FORMAT = '.mp4'
-ONLY_UNIQUE_VIDEO_DIRECTORY = "/Users/khasgiwa/Workbench/data-dumps/GWR/combined"
+ONLY_UNIQUE_VIDEO_DIRECTORY = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/combined"
 RENAME_FILES_DATAFRAME_PATH = "output/rename_video_files_1.csv"
-INPUT_VIDEO_DIRECTORY="/Users/khasgiwa/Workbench/data-dumps/GWR/old-1"
+INPUT_VIDEO_DIRECTORY=f"{WORKING_DIR_PREFIX}/data-dumps/GWR/old-1"
 
 class RENAMEVIDEOFILES():
     def __init__(self):

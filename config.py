@@ -1,3 +1,5 @@
+WORKING_DIR_PREFIX = "/Users/khasgiwa/Workbench"
+
 BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY = "output/audio_from_video"
 BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY = "mdx_extra"
 BACKGROUND_REMOVED_FILE_NAME = "vocals.mp3"
@@ -22,8 +24,8 @@ FACENET512_MATCH_RESULT_CSV_PATH = "output/face_match_facenet512.csv"
 NUMBER_OF_BEST_MATCH_TO_CONSIDER = 5
 FAILED_FACE_CAPTURE_CSV_PATH = "output/error/failed_capture_face.csv"
 
-DIRECTORY_OF_INPUT_VIDEO_DIRECTORY = "/Users/jay/work/input_video"
-INPUT_VIDEO_DIRECTORY = "/Users/jay/work/input_video/9" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH)
+DIRECTORY_OF_INPUT_VIDEO_DIRECTORY = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/downloaded_videos_raw"
+# INPUT_VIDEO_DIRECTORY = f"{WORKING_DIR_PREFIX}data-dumps/GWR/new/50" ### DIRECTORY OF VIDEO FILES (DO NOT ADD / AT THE END OF THE PATH) ## unused
 INPUT_VIDEO_FILE_FORMAT = '.mp4'
 
 TRANSCRIBED_FILE_PATH = "output/transcribe_text.csv" ### PATH OF THE OUTPUT CSV FILE
@@ -35,8 +37,7 @@ AUDIO_EXTRACT_CSV_PATH = "output/extract_audio_from_video.csv"
 FINAL_FACES_DIRECTORY = "output/accepted_video_faces"
 FINAL_FACES_CSV_PATH = "output/accepted_video_faces.csv"
 
-INSPECT_DATAFRAME_PATH = "/Users/jay/work/input_video/inspect.csv" ### INSPECT.CSV PATH FROM LOCAL MACHINE
-MANUAL_FACE_CAPTURE_DIRECTORY = "/Users/jay/work/manual_images/9_manual_images" ### DIRECTORY OF MANUALLY CAPTURED FACES(DO NOT ADD "/" AT THE END)
-# LEDGER_CSV_PATH = "/Users/jay/work/input_videos/ledger.csv" ### LEDGER.CSV PATH FROM LOCAL MACHINE
+INSPECT_DATAFRAME_PATH = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/inspect.csv" ### INSPECT.CSV PATH FROM LOCAL MACHINE
+MANUAL_FACE_CAPTURE_DIRECTORY = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_raw/31" ### DIRECTORY OF MANUALLY CAPTURED FACES(DO NOT ADD "/" AT THE END)
 
 MANUAL_FACE_IMAGE_FILE_FORMAT = ".PNG"
