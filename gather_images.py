@@ -13,7 +13,6 @@ class GATHERFACES():
     def __init__(self):
         self.capture_face_dataframe = pd.read_csv(FACE_CAPTURE_CSV_PATH)
         self.inspect_dataframe = pd.read_csv(INSPECT_DATAFRAME_PATH)
-        self.manually_captured_image_list = glob.glob(f"{MANUAL_FACE_CAPTURE_DIRECTORY}/*{MANUAL_FACE_IMAGE_FILE_FORMAT}")
         self.auto_captured_image_list = glob.glob(f"{FACE_IMAGE_DIRECTORY}/*{FACE_IMAGE_FILE_FORMAT}")
         # self.ledger_dataframe = pd.read_csv(LEDGER_CSV_PATH)
 
@@ -22,9 +21,9 @@ class GATHERFACES():
                 self.final_face_dataframe = pd.read_csv(FINAL_FACES_CSV_PATH)
             except Exception as e:
                 print(f"{FINAL_FACES_CSV_PATH} already present.")
-                self.final_face_dataframe = pd.DataFrame(columns=['video_id', 'vid_accepted', 'auto_face_found', 'file_gathered', 'face_found'])
+                self.final_face_dataframe = pd.DataFrame(columns=['video_id', 'auto_face_found', 'file_gathered', 'face_found'])
         else:
-            self.final_face_dataframe = pd.DataFrame(columns=['video_id', 'vid_accepted', 'auto_face_found', 'file_gathered', 'face_found'])
+            self.final_face_dataframe = pd.DataFrame(columns=['video_id', 'auto_face_found', 'file_gathered', 'face_found'])
 
 
         if not os.path.isdir(FINAL_FACES_DIRECTORY):
@@ -34,10 +33,6 @@ class GATHERFACES():
         df = self.inspect_dataframe
         df2 = df[['vid','batch Number', 'InvigilationState']]
         df2 = df2.rename(columns={'vid': 'video_id', 'batch Number':'batch_number', 'InvigilationState': 'approval'})
-
-        df2['approval'].replace('Doubt', 'Reject', inplace=True)
-        df2['approval'].replace('InvigilationState', 'Reject', inplace=True)
-        df2['approval'].fillna('Reject', inplace=True)
         return df2
 
     def verify_video_id(self, approval_dataframe, video_id):
@@ -60,86 +55,83 @@ class GATHERFACES():
         manually_captured_image_list = glob.glob(f"{MANUAL_FACE_CAPTURE_DIRECTORY}/{batch_number}/*{MANUAL_FACE_IMAGE_FILE_FORMAT}")
         return manually_captured_image_list
 
-    def process(self):
-        
-        approval_dataframe = self.remove_unnecessary_columns()
-        for index, row in self.capture_face_dataframe.iterrows():
-            video_id = row['video_id']
-            is_value_present_flag = is_value_present_in_dataframe(video_id, self.final_face_dataframe)
+    def get_image_from_auto_face_capture_directory(self, video_id):
+        for image_path in self.auto_captured_image_list:
+            image_name = image_path.split("/")[-1].replace(f"{FACE_IMAGE_FILE_FORMAT}", "")
+            file_bid, video_id_, file_name_suffix = get_metadata_from_file_name(image_name)
             
-            if self.verify_video_id(approval_dataframe, video_id):
-                if not is_value_present_flag:
-                    face_found_status = self.capture_face_dataframe.loc[self.capture_face_dataframe['video_id'] == video_id, 'face_found'].iloc[0]
-                    approval_status = approval_dataframe.loc[approval_dataframe['video_id'] == video_id, 'approval'].iloc[0]
-                    batch_number = approval_dataframe.loc[approval_dataframe['video_id'] == video_id, 'batch_number'].iloc[0]
-                    # video_file_path = self.ledger_dataframe.loc[self.ledger_dataframe['vid'] == video_id, 'fileName'].iloc[0]
-                    
-                    #CASE:1
-                    if approval_status == "Accept" and face_found_status == True:
-                        copy_status = False
-                        
-                        for image_path in self.auto_captured_image_list:
-                            image_name = image_path.split("/")[-1].replace(f"{FACE_IMAGE_FILE_FORMAT}", "")
-                            file_bid, video_id_, file_name_suffix = get_metadata_from_file_name(image_name)
-                            
-                            if str(video_id) == str(video_id_):
-                                print("-- copying image. --")
-                                shutil.copy(image_path , f"{FINAL_FACES_DIRECTORY}/")
-                                copy_status = True
-                                new_final_face_raw = {'video_id': video_id, 'vid_accepted': True, 'auto_face_found': True, 'file_gathered': True, "face_found": True}
-                                new_final_face_dataframe = pd.DataFrame(new_final_face_raw, index=[0])
-
-                                self.final_face_dataframe = pd.concat([self.final_face_dataframe, new_final_face_dataframe], ignore_index=True)
-                                self.final_face_dataframe.to_csv(FINAL_FACES_CSV_PATH, index=False)
-
-                    #CASE:2
-                    elif approval_status == "Accept" and face_found_status == False:
-                        video_id_found_status = False
-                        manually_captured_image_list = self.get_manual_face_capture_images_list(batch_number)
-                        for image_path in manually_captured_image_list:
-                            image_name = image_path.split("/")[-1].replace(f"{MANUAL_FACE_IMAGE_FILE_FORMAT}", "")
-                            file_bid, video_id_, file_name_suffix = get_metadata_from_file_name(image_name)
-
-                            if str(video_id) == str(video_id_):
-                                if self.verify_face(image_path,image_path):
-                                    print(f" {video_id} -------------- copying image. --")
-                                    shutil.copy(image_path , f"{FINAL_FACES_DIRECTORY}/{image_name}{FACE_IMAGE_FILE_FORMAT}")
-                                    video_id_found_status = True
-
-                                    new_final_face_raw = {'video_id': video_id, 'vid_accepted': True, 'auto_face_found': False, 'file_gathered': True, "face_found": True}
-                                    new_final_face_dataframe = pd.DataFrame(new_final_face_raw, index=[0])
-
-                                    self.final_face_dataframe = pd.concat([self.final_face_dataframe, new_final_face_dataframe], ignore_index=True)
-                                    self.final_face_dataframe.to_csv(FINAL_FACES_CSV_PATH, index=False)
-                                else:
-                                    print(f"{video_id} ------- face not found in image. ---")
-                                    video_id_found_status = True
-                                    new_final_face_raw = {'video_id': video_id, 'vid_accepted': True, 'auto_face_found': False, 'file_gathered': True, "face_found": False}
-                                    new_final_face_dataframe = pd.DataFrame(new_final_face_raw, index=[0])
-
-                                    self.final_face_dataframe = pd.concat([self.final_face_dataframe, new_final_face_dataframe], ignore_index=True)
-                                    self.final_face_dataframe.to_csv(FINAL_FACES_CSV_PATH, index=False)
-
-                        if not video_id_found_status:
-                            new_final_face_raw = {'video_id': video_id, 'vid_accepted': True, 'auto_face_found': False, 'file_gathered': False, "face_found": False}
-                            new_final_face_dataframe = pd.DataFrame(new_final_face_raw, index=[0])
-                            a = input()
-                            print(f"{video_id} videoid not found in manually uploaded face images.")
-                    else:
-                        # if approval_status == "Reject"
-                        continue
-                    # self.final_face_dataframe = pd.concat([self.final_face_dataframe, new_final_face_dataframe], ignore_index=True)
-                    # self.final_face_dataframe.to_csv(FINAL_FACES_CSV_PATH, index=False)
-            else:
-                new_final_face_raw = {'video_id': video_id, 'vid_accepted': False, 'auto_face_found': False, 'file_gathered': False, "face_found": False}
+            if str(video_id) == str(video_id_):
+                print("-- copying image. --")
+                shutil.copy(image_path , f"{FINAL_FACES_DIRECTORY}/")
+                new_final_face_raw = {'video_id': video_id,  'auto_face_found': True, 'file_gathered': True, "face_found": True}
                 new_final_face_dataframe = pd.DataFrame(new_final_face_raw, index=[0])
 
                 self.final_face_dataframe = pd.concat([self.final_face_dataframe, new_final_face_dataframe], ignore_index=True)
                 self.final_face_dataframe.to_csv(FINAL_FACES_CSV_PATH, index=False)
 
-            
-                        
+    def get_image_from_manual_face_capture_directory(self, video_id, batch_number):
+        video_id_found_status = False
+        manually_captured_image_list = self.get_manual_face_capture_images_list(batch_number)
+
+        for image_path in manually_captured_image_list:
+            image_name = image_path.split("/")[-1].replace(f"{MANUAL_FACE_IMAGE_FILE_FORMAT}", "")
+            file_bid, video_id_, file_name_suffix = get_metadata_from_file_name(image_name)
+
+            if str(video_id) == str(video_id_):
+                if self.verify_face(image_path,image_path):
+                    print(f" {video_id} -------------- copying image. --")
+                    shutil.copy(image_path , f"{FINAL_FACES_DIRECTORY}/{image_name}{FACE_IMAGE_FILE_FORMAT}")
+                    video_id_found_status = True
+
+                    new_final_face_raw = {'video_id': video_id, 'auto_face_found': False, 'file_gathered': True, "face_found": True}
+                    new_final_face_dataframe = pd.DataFrame(new_final_face_raw, index=[0])
+
+                    self.final_face_dataframe = pd.concat([self.final_face_dataframe, new_final_face_dataframe], ignore_index=True)
+                    self.final_face_dataframe.to_csv(FINAL_FACES_CSV_PATH, index=False)
+                else:
+                    print(f"{video_id} ------- face not found in image. ---")
+                    video_id_found_status = True
+                    new_final_face_raw = {'video_id': video_id, 'auto_face_found': False, 'file_gathered': True, "face_found": False}
+                    new_final_face_dataframe = pd.DataFrame(new_final_face_raw, index=[0])
+
+                    self.final_face_dataframe = pd.concat([self.final_face_dataframe, new_final_face_dataframe], ignore_index=True)
+                    self.final_face_dataframe.to_csv(FINAL_FACES_CSV_PATH, index=False)
+
+        if not video_id_found_status:
+            new_final_face_raw = {'video_id': video_id, 'auto_face_found': False, 'file_gathered': False, "face_found": False}
+            new_final_face_dataframe = pd.DataFrame(new_final_face_raw, index=[0])
+            print(f"{video_id} videoid not found in manually uploaded face images.")
+            self.final_face_dataframe = pd.concat([self.final_face_dataframe, new_final_face_dataframe], ignore_index=True)
+            self.final_face_dataframe.to_csv(FINAL_FACES_CSV_PATH, index=False)
+
+    def process(self):
+        
+        approval_dataframe = self.remove_unnecessary_columns()
+        
+        print(approval_dataframe.head())
+        for index, row in approval_dataframe.iterrows():
+            video_id = row['video_id']
+            is_value_present_flag = is_value_present_in_dataframe(video_id, self.final_face_dataframe)
+
+            if not is_value_present_flag:
+                approval_status = approval_dataframe.loc[approval_dataframe['video_id'] == video_id, 'approval'].iloc[0]
+                batch_number = approval_dataframe.loc[approval_dataframe['video_id'] == video_id, 'batch_number'].iloc[0]
+
+                if str(video_id) in self.capture_face_dataframe["video_id"].values:
+                    auto_face_found_status = self.capture_face_dataframe.loc[self.capture_face_dataframe['video_id'] == str(video_id), 'face_found'].iloc[0]
+                else:
+                    self.get_image_from_manual_face_capture_directory(video_id, batch_number)
+                    continue
+
+
+                #CASE:1
+                if approval_status == "Accept" and auto_face_found_status == True:
+                    self.get_image_from_auto_face_capture_directory(video_id)
+                #CASE:2
+                elif approval_status == "Accept" and auto_face_found_status == False:
+                    self.get_image_from_manual_face_capture_directory(video_id, batch_number)
 
 if __name__ == "__main__":
     gather_faces_obj = GATHERFACES()
+    manually_captured_image_list = glob.glob(f"{MANUAL_FACE_CAPTURE_DIRECTORY}/*{MANUAL_FACE_IMAGE_FILE_FORMAT}")
     gather_faces_obj.process()
