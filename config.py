@@ -44,4 +44,14 @@ MANUAL_FACE_IMAGE_FILE_FORMAT = ".PNG"
 FLATTEN_IMAGE_DIRECTORY = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_flatten"
 FLATTEN_CSV_FILE_PATH = "output/flatten_manual_images.csv"
 
+FLATTEN_ERROR_CSV_FILE_PATH = "output/error/failed_flatten.csv"
 # MANUAL_FACE_CAPTURE_DIRECTORY = FLATTEN_IMAGE_DIRECTORY
+
+INPUT_VIDEO_DIRECTORY = "/Users/jay/data-dumps/GWR/input_videos"
+FLATTEN_VIDEO_DIRECTORY = "/Users/jay/data-dumps/GWR/flattern_input_videos"
+VIDEO_FILE_FORMAT =  ".mp4"
+
+
+FLATTEN_VIDEO_CSV_FILE_PATH =  "output/flatten_input_video.csv"
+FLATTEN_VIDEO_ERROR_CSV_FILE_PATH = "output/error/failed_flatten.csv"
+FINDING_FACE_AGAIN_CSV_PATH = "output/find_faces_again.csv"
