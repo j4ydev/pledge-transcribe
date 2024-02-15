@@ -307,13 +307,23 @@ const batch = {
     pageZeroURL:
       "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-10&created[max][date]=2024-02-11&page=0",
   },
+  100: {
+    min_date: "2022-01-01",
+    max_date: "2024-02-11",
+    pageCount: 6,
+    videoCount: 103,
+    moderationState: "pfizer_workflow-draft",
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=pfizer_workflow-draft&title=&created[min][date]=2023-01-01&created[max][date]=2024-02-11",
+  },
 };
 
 const baseURL = "https://pledgewithpfizerco.pfizersite.io/amr-video";
 const getBatchUrlQueryString = ({ batchNumber = "1", pageNumber = 0 }) => {
   const minDate = batch[batchNumber].min_date || "";
   const maxDate = batch[batchNumber].max_date || "";
-  return `moderation_state=All&title=&created[min][date]=${minDate}&created[max][date]=${maxDate}&page=${pageNumber}`;
+  const moderationState = batch[batchNumber].moderationState || "All";
+  return `moderation_state=${moderationState}&title=&created[min][date]=${minDate}&created[max][date]=${maxDate}&page=${pageNumber}`;
 };
 const getBatchUrl = ({ batchNumber = "1", pageNumber = 0 }) =>
   `${baseURL}?${getBatchUrlQueryString({ batchNumber, pageNumber })}`;
