@@ -307,6 +307,22 @@ const batch = {
     pageZeroURL:
       "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-10&created[max][date]=2024-02-11&page=0",
   },
+  38: {
+    min_date: "2024-02-12",
+    max_date: "2024-02-15",
+    pageCount: 27,
+    videoCount: 524,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-12&created[max][date]=2024-02-15&page=0",
+  },
+  39: {
+    min_date: "2024-02-16",
+    max_date: "2024-02-17",
+    pageCount: 28,
+    videoCount: 548,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-16&created[max][date]=2024-02-17&page=0",
+  },
   100: {
     min_date: "2022-01-01",
     max_date: "2024-02-11",
