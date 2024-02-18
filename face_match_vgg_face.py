@@ -84,8 +84,7 @@ class MATCHFACE():
                         ic(match_file_name_suffix)
                         ic(match_video_id)
                         print("**" * 20)
-
-                        similar_face_image_path = f"{individual_face_match_directory}/{i+1}_{'{:04d}'.format(int(match_face_distance[i]*1000))}_{match_video_id}_{match_file_name_suffix}.png"
+                        similar_face_image_path = f"{individual_face_match_directory}/{i+1}_{match_video_id}_{match_file_name_suffix}.png"
                         ic(individual_face_match_directory)
                         
                         ic(similar_face_image_path)

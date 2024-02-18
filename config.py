@@ -65,5 +65,6 @@ ADD_IMAGES_TO_API_ERROR_CSV = "output/add_images_to_api_error.csv"
 SIMILAR_PLEDGE_TAKERS_API_DIRECTORY = "output/similar_pledge_takers_api"
 FIND_FACES_API_CSV = "output/find_faces_api.csv"
 FIND_FACES_API_ERROR_CSV = "output/find_faces_api_error.csv"
+FIND_FACES_MANAGE_PICS_ERROR_CSV = "output/find_faces_manage_pics.csv"
 
 API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjI0NGY2ODMtZTYxNy00MGNkLWFjNTktYjhiZTc5YTQ4NWY1IiwidHlwZSI6ImFwaV90b2tlbiJ9.te2w5Uc3aVbgOylenYlZbnZhxFkXQrvL15p4DB76i3A"
