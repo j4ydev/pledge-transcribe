@@ -57,3 +57,13 @@ VIDEO_FILE_FORMAT =  ".mp4"
 FLATTEN_VIDEO_CSV_FILE_PATH =  "output/flatten_input_video.csv"
 FLATTEN_VIDEO_ERROR_CSV_FILE_PATH = "output/error/failed_flatten.csv"
 FINDING_FACE_AGAIN_CSV_PATH = "output/find_faces_again.csv"
+FINDING_FACE_AGAIN_ERROR_CSV_PATH = "output/find_faces_again_error.csv"
+
+ADD_IMAGES_TO_API_CSV = "output/add_images_to_api.csv"
+ADD_IMAGES_TO_API_ERROR_CSV = "output/add_images_to_api_error.csv"
+
+SIMILAR_PLEDGE_TAKERS_API_DIRECTORY = "output/similar_pledge_takers_api"
+FIND_FACES_API_CSV = "output/find_faces_api.csv"
+FIND_FACES_API_ERROR_CSV = "output/find_faces_api_error.csv"
+
+API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjI0NGY2ODMtZTYxNy00MGNkLWFjNTktYjhiZTc5YTQ4NWY1IiwidHlwZSI6ImFwaV90b2tlbiJ9.te2w5Uc3aVbgOylenYlZbnZhxFkXQrvL15p4DB76i3A"
