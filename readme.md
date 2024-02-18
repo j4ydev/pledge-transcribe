@@ -104,3 +104,27 @@ Info: `index: 4 * (row - 1) + column`
    5. example the most matching file will be 1_difference-indicator_6340954574112_rahul_vp.png
    6. where difference_indicator is stringified 1000\*"VGG-Face_cosine" - this should be exact 4 chars, so in case of exact match it will be 1_0000_6340954574112_rahul_vp.png
 8. match_found will be set to true if atleast 1 image (except the one corresponding to the self video) is very similar (developer can decide the criteria for that)
+
+---
+
+Transcribe
+
+1. extract_audio_from_video.py
+2. audio_transcription.py
+
+Duplicate Face detection - data preparation
+
+1. capture_face_image.py
+2. flatten_the_manual_images.py (operators will arrange the data batch wise and we need flattend images for processing, and we need images in png so transform where needed)
+3. gather_images.py (from manual screenshots and auto generated screen shots - for the accepted videos gather images having faces
+4. flatten_video.py (this we need for the next step)
+5. find_faces_again.py (wherever we do not get face from the file gatherd via "gather_images" we reprocess the video to get the face)
+
+Duplicate Face detection - process data
+
+1. face_match_facenet512.py
+2. face_match_vgg_face.py
+3. eden.ai
+   1. face_match_add_images.py
+   2. face_match_recognition.py
+   3.
