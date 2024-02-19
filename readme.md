@@ -128,3 +128,26 @@ Duplicate Face detection - process data
    1. face_match_add_images.py
    2. face_match_recognition.py
    3.
+
+
+## DELETE FOLLOWING FILES TO RERUN THE CODE:-
+Duplicate Face detection - data preparation
+
+1. "output/capture_face.csv", 
+   "output/error/failed_capture_face.csv", 
+   "output/screenshots".
+
+2. "{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_flatten", 
+   "output/flatten_manual_images.csv", 
+   "output/error/failed_flatten.csv"
+
+3. "output/accepted_video_faces", 
+   "output/accepted_video_faces.csv", 
+   "output/flatten_manual_images.csv", 
+   "{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_flatten"
+
+4. "{WORKING_DIR_PREFIX}/data-dumps/GWR/flattern_input_videos", 
+   "output/flatten_input_video.csv", 
+   "output/error/failed_flatten.csv"
+
+5. "output/find_faces_again.csv", "output/find_faces_again_error.csv", 
