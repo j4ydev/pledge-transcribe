@@ -1,9 +1,14 @@
 import glob
-import pandas as pd
-from config import INPUT_VIDEO_DIRECTORY, FLATTEN_VIDEO_DIRECTORY, VIDEO_FILE_FORMAT, FLATTEN_VIDEO_CSV_FILE_PATH, FLATTEN_VIDEO_ERROR_CSV_FILE_PATH
-import shutil
 import os
+import shutil
+
+import pandas as pd
+
+from config import (DIRECTORY_OF_INPUT_VIDEO_DIRECTORY,
+                    FLATTEN_VIDEO_CSV_FILE_PATH, FLATTEN_VIDEO_DIRECTORY,
+                    FLATTEN_VIDEO_ERROR_CSV_FILE_PATH, VIDEO_FILE_FORMAT)
 from utils import get_metadata_from_file_name
+
 
 class FLATTENORIGINALVIDEOS():
     def __init__(self):
@@ -31,7 +36,7 @@ class FLATTENORIGINALVIDEOS():
 
     def process(self):
 
-        input_video_folder_list = glob.glob(f"{INPUT_VIDEO_DIRECTORY}/*")
+        input_video_folder_list = glob.glob(f"{DIRECTORY_OF_INPUT_VIDEO_DIRECTORY}/*")
         print(input_video_folder_list)
         for index, input_video_folder in enumerate(input_video_folder_list):
             input_video_file_list = glob.glob(f"{input_video_folder}/*{VIDEO_FILE_FORMAT}")
@@ -51,15 +56,15 @@ class FLATTENORIGINALVIDEOS():
                         self.flatten_dataframe = pd.concat([self.flatten_dataframe, new_flatten_dataframe], ignore_index=True)
                         self.flatten_dataframe.to_csv(FLATTEN_VIDEO_CSV_FILE_PATH, index=False)
                 except:
-                    
+
                     new_error_flatten_raw = {'video_path': str(video_path)}
                     new_error_flatten_dataframe = pd.DataFrame(new_error_flatten_raw, index=[0])
 
                     self.error_flatten_dataframe = pd.concat([self.error_flatten_dataframe, new_error_flatten_dataframe], ignore_index=True)
                     self.error_flatten_dataframe.to_csv(FLATTEN_VIDEO_ERROR_CSV_FILE_PATH, index=False)
 
-                    
-        
+
+
 if __name__ == "__main__":
     flatten_obj = FLATTENORIGINALVIDEOS()
     flatten_obj.process()
