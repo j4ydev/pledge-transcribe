@@ -42,3 +42,50 @@ mv 100/6346684609112_aashi_priya.mp4 37/6346684609112_aashi_priya.mp4
 mv 100/6346684713112_dr_sunil_juneja.mp4 37/6346684713112_dr_sunil_juneja.mp4
 mv 100/6346684974112_dr_simran_bali.mp4 37/6346684974112_dr_simran_bali.mp4
 mv 100/6346685037112_dr_shikha_gupta.mp4 37/6346685037112_dr_shikha_gupta.mp4
+
+##   from just outside your videos folder execute
+ls -1 1/*.mp4 >1.csv
+ls -1 2/*.mp4 >2.csv
+ls -1 3/*.mp4 >3.csv
+ls -1 4/*.mp4 >4.csv
+ls -1 5/*.mp4 >5.csv
+ls -1 6/*.mp4 >6.csv
+ls -1 7/*.mp4 >7.csv
+ls -1 8/*.mp4 >8.csv
+ls -1 9/*.mp4 >9.csv
+ls -1 10/*.mp4 >10.csv
+ls -1 11/*.mp4 >11.csv
+ls -1 12/*.mp4 >12.csv
+ls -1 13/*.mp4 >13.csv
+ls -1 14/*.mp4 >14.csv
+ls -1 15/*.mp4 >15.csv
+ls -1 16/*.mp4 >16.csv
+ls -1 17/*.mp4 >17.csv
+ls -1 18/*.mp4 >18.csv
+ls -1 19/*.mp4 >19.csv
+ls -1 20/*.mp4 >20.csv
+ls -1 21/*.mp4 >21.csv
+ls -1 22/*.mp4 >22.csv
+ls -1 23/*.mp4 >23.csv
+ls -1 24/*.mp4 >24.csv
+ls -1 25/*.mp4 >25.csv
+ls -1 26/*.mp4 >26.csv
+ls -1 27/*.mp4 >27.csv
+ls -1 28/*.mp4 >28.csv
+ls -1 29/*.mp4 >29.csv
+ls -1 30/*.mp4 >30.csv
+ls -1 31/*.mp4 >31.csv
+ls -1 32/*.mp4 >32.csv
+ls -1 33/*.mp4 >33.csv
+ls -1 34/*.mp4 >34.csv
+ls -1 35/*.mp4 >35.csv
+ls -1 36/*.mp4 >36.csv
+ls -1 37/*.mp4 >37.csv
+ls -1 38/*.mp4 >38.csv
+ls -1 39/*.mp4 >39.csv
+
+mkdir file_list
+mv *.csv file_list/
+cd file_list
+cat *.csv >combined
+mv combined sidd_machine_vid.csv
