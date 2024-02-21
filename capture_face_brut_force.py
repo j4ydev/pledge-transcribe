@@ -66,7 +66,6 @@ class CAPTUREFACEBRUT():
             frame_count += 1
             ret, frame = video.read()
             if not ret:
-                video.release()
                 break
 
             # if frame_count % 2 == 0:
@@ -81,6 +80,7 @@ class CAPTUREFACEBRUT():
                 # self.accepted_video_faces.loc[self.accepted_video_faces['video_id'] == video_id, 'file_gathered'] = True
                 # self.accepted_video_faces.loc[self.accepted_video_faces['video_id'] == video_id, 'face_found'] = True
                 # self.accepted_video_faces.to_csv(FINAL_FACES_CSV_PATH, index=False)
+                video.release()
                 return True
 
         # Release the video object
@@ -91,7 +91,8 @@ class CAPTUREFACEBRUT():
         for index, row in self.inspect_dataframe.iterrows():
             # print(row["Capture Face"])
             # print(row["InvigilationState"])
-            if row["Capture Face"]== "yes" and row["InvigilationState"]=="Accept":
+            # if row["Capture Face"]== "yes" and row["InvigilationState"]=="Accept": #TODO: to avoid the re computation and reconciliation we capture all
+            if row["InvigilationState"]=="Accept":
                 video_id = row['vid']
                 # print(video_id)
                 try:

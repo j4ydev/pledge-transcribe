@@ -112,13 +112,18 @@ Transcribe
 1. extract_audio_from_video.py
 2. audio_transcription.py
 
-Duplicate Face detection - data preparation
+Duplicate Face detection - data preparation -- approach #1
 
 1. capture_face_image.py
 2. flatten_the_manual_images.py (operators will arrange the data batch wise and we need flattend images for processing, and we need images in png so transform where needed)
 3. gather_images.py (from manual screenshots and auto generated screen shots - for the accepted videos gather images having faces
 4. flatten_video.py (this we need for the next step)
 5. find_faces_again.py (wherever we do not get face from the file gatherd via "gather_images" we reprocess the video to get the face)
+
+Duplicate Face detection - data preparation -- approach #2
+
+1. flatten_video.py
+2. capture_face_brut_force.py ( here we mark capture face = yes for all videos irrespective of what we found in capture_face_image)
 
 Duplicate Face detection - process data
 
@@ -129,25 +134,25 @@ Duplicate Face detection - process data
    2. face_match_recognition.py
    3.
 
-
 ## DELETE FOLLOWING FILES TO RERUN THE CODE:-
+
 Duplicate Face detection - data preparation
 
-1. "output/capture_face.csv", 
-   "output/error/failed_capture_face.csv", 
+1. "output/capture_face.csv",
+   "output/error/failed_capture_face.csv",
    "output/screenshots".
 
-2. "{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_flatten", 
-   "output/flatten_manual_images.csv", 
+2. "{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_flatten",
+   "output/flatten_manual_images.csv",
    "output/error/failed_flatten.csv"
 
-3. "output/accepted_video_faces", 
-   "output/accepted_video_faces.csv", 
-   "output/flatten_manual_images.csv", 
+3. "output/accepted_video_faces",
+   "output/accepted_video_faces.csv",
+   "output/flatten_manual_images.csv",
    "{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_flatten"
 
-4. "{WORKING_DIR_PREFIX}/data-dumps/GWR/flattern_input_videos", 
-   "output/flatten_input_video.csv", 
+4. "{WORKING_DIR_PREFIX}/data-dumps/GWR/flattern_input_videos",
+   "output/flatten_input_video.csv",
    "output/error/failed_flatten.csv"
 
-5. "output/find_faces_again.csv", "output/find_faces_again_error.csv", 
+5. "output/find_faces_again.csv", "output/find_faces_again_error.csv",

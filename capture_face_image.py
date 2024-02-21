@@ -145,9 +145,10 @@ if __name__ == "__main__":
     getframe_obj = GETFRAME()
     input_video_folder_list = glob.glob(f"{DIRECTORY_OF_INPUT_VIDEO_DIRECTORY}/*")
     input_video_folder_list.sort()
+    ic(input_video_folder_list)
     start_index = 0
     end_index = 150
-    print(input_video_folder_list)
+    # print(input_video_folder_list)
     # for input_video_folder in input_video_folder_list:
     for index, input_video_folder in enumerate(input_video_folder_list):
         if start_index <= index and index < end_index:
