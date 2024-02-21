@@ -67,4 +67,8 @@ FIND_FACES_API_CSV = "output/find_faces_api.csv"
 FIND_FACES_API_ERROR_CSV = "output/find_faces_api_error.csv"
 FIND_FACES_MANAGE_PICS_ERROR_CSV = "output/find_faces_manage_pics.csv"
 
+CAPTURE_FACE_BRUT_FORCE_CSV_PATH = "output/capture_face_brut_force.csv"
+CAPTURE_FACE_BRUT_FORCE_ERROR_CSV_PATH = "output/error/accepted_pledge_face_not_found.csv"
+CAPTURE_FACES_BRUT_FORCE_DIRECTORY = "output/capture_face_brut_force"
+CAPTURE_FACES_BRUT_FORCE_ERROR_DIRECTORY = "output/error/accepted_pledge_face_not_found"
 API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjI0NGY2ODMtZTYxNy00MGNkLWFjNTktYjhiZTc5YTQ4NWY1IiwidHlwZSI6ImFwaV90b2tlbiJ9.te2w5Uc3aVbgOylenYlZbnZhxFkXQrvL15p4DB76i3A"
