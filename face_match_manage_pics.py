@@ -13,8 +13,15 @@ from utils import get_metadata_from_file_name
 
 class MANAGEFACEMATCHPICS():
     def __init__(self):
-        # self.accepted_video_faces_list = glob.glob(f"{FINAL_FACES_DIRECTORY}/*{FACE_IMAGE_FILE_FORMAT}")
-        self.accepted_video_faces_list = glob.glob("output/accepted_video_faces_1/*.png") # TODO: jay
+        self.accepted_video_faces_list = glob.glob(f"{FINAL_FACES_DIRECTORY}/*{FACE_IMAGE_FILE_FORMAT}") # TODO:Done jay
+        self.video_id_map_with_image_path = {}
+        for self.video_face_image_path in self.accepted_video_faces_list:
+            self.video_face_image_name = self.video_face_image_path.split("/")[-1].replace(FACE_IMAGE_FILE_FORMAT, "")
+            _,self.video_id_, file_name_suffix = get_metadata_from_file_name(self.video_face_image_name)    
+            self.video_id_map_with_image_path[self.video_id_] = self.video_face_image_path
+
+
+        print(self.video_id_map_with_image_path)     
         if not os.path.isdir(SIMILAR_PLEDGE_TAKERS_API_DIRECTORY):
             os.mkdir(SIMILAR_PLEDGE_TAKERS_API_DIRECTORY)
 
@@ -29,12 +36,13 @@ class MANAGEFACEMATCHPICS():
 
 
     def find_face_image_path(self, video_id):
-        ic(video_id)
-        for image_path in self.accepted_video_faces_list:
-            image_name = image_path.split("/")[-1].replace(FACE_IMAGE_FILE_FORMAT, "")
-            _,video_id_, file_name_suffix = get_metadata_from_file_name(image_name)
-            if str(video_id) == str(video_id_):
-                return image_path, video_id_,  file_name_suffix
+
+        video_face_image_path = self.video_id_map_with_image_path[str(video_id)]
+        ic(video_face_image_path)
+        video_face_image_name = video_face_image_path.split('/')[-1].replace(FACE_IMAGE_FILE_FORMAT, "")
+        _, video_id_, file_name_suffix = get_metadata_from_file_name(video_face_image_name)
+        return video_face_image_path, video_id_,  file_name_suffix
+        
 
 
     def identity_number_of_face_matches(self, row_data):

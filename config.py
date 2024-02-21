@@ -60,15 +60,19 @@ FINDING_FACE_AGAIN_CSV_PATH = "output/find_faces_again.csv"
 FINDING_FACE_AGAIN_ERROR_CSV_PATH = "output/find_faces_again_error.csv"
 
 ADD_IMAGES_TO_API_CSV = "output/add_images_to_api.csv"
-ADD_IMAGES_TO_API_ERROR_CSV = "output/add_images_to_api_error.csv"
+ADD_IMAGES_TO_API_ERROR_CSV = "output/error/add_images_to_api_error.csv"
 
 SIMILAR_PLEDGE_TAKERS_API_DIRECTORY = "output/similar_pledge_takers_api"
 FIND_FACES_API_CSV = "output/find_faces_api.csv"
-FIND_FACES_API_ERROR_CSV = "output/find_faces_api_error.csv"
+FIND_FACES_API_ERROR_CSV = "output/error/find_faces_api_error.csv"
 FIND_FACES_MANAGE_PICS_ERROR_CSV = "output/find_faces_manage_pics.csv"
 
 CAPTURE_FACE_BRUT_FORCE_CSV_PATH = "output/capture_face_brut_force.csv"
 CAPTURE_FACE_BRUT_FORCE_ERROR_CSV_PATH = "output/error/accepted_pledge_face_not_found.csv"
 CAPTURE_FACES_BRUT_FORCE_DIRECTORY = "output/capture_face_brut_force"
 CAPTURE_FACES_BRUT_FORCE_ERROR_DIRECTORY = "output/error/accepted_pledge_face_not_found"
+
+FACE_MATCH_ADD_IMAGES_RESPONSE_DIRECTORY = "output/upload/edenai_upload"
+FACE_MATCH_RECOGNITION_RESPONSE_DIRECTORY = "output/upload/edenai_recognition"
+
 API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjI0NGY2ODMtZTYxNy00MGNkLWFjNTktYjhiZTc5YTQ4NWY1IiwidHlwZSI6ImFwaV90b2tlbiJ9.te2w5Uc3aVbgOylenYlZbnZhxFkXQrvL15p4DB76i3A"
