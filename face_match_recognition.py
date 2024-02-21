@@ -62,10 +62,10 @@ class FINDFACESAPI():
                     match_found_status = True
 
                 new_face_match_api_row = {'video_id': str(video_id_), 'match_found': match_found_status, 'face_match_0': video_id_, 'confidence_0': 100}
-                if not os.path.isdir(f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}"):
-                    os.mkdir(f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}")
-                    similar_face_image_path = f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}/0_{video_id_}_{file_name_suffix}_{FACE_IMAGE_FILE_FORMAT}"
-                    shutil.copy(face_path, similar_face_image_path)
+                # if not os.path.isdir(f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}"):
+                    # os.mkdir(f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}")
+                    # similar_face_image_path = f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}/0_{video_id_}_{file_name_suffix}_{FACE_IMAGE_FILE_FORMAT}"
+                    # shutil.copy(face_path, similar_face_image_path)
                 
                 i=0
                 for matched_face in matches:
@@ -81,11 +81,11 @@ class FINDFACESAPI():
                     new_face_match_api_row[f"face_match_{i+1}"] = face_video_id
                     new_face_match_api_row[f"confidence_{i+1}"] = confidence * 100
                     
-                    similar_face_image_path = f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}/{i+1}_{face_video_id}_{face_video_suffix}.png"
-                    print("similar_face_image_path::", similar_face_image_path)
-                    print("--" * 40)
-                    shutil.copy(image_file_path, similar_face_image_path)
-                    i= i+1
+                    # similar_face_image_path = f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}/{i+1}_{face_video_id}_{face_video_suffix}.png"
+                    # print("similar_face_image_path::", similar_face_image_path)
+                    # print("--" * 40)
+                    # shutil.copy(image_file_path, similar_face_image_path)
+                    # i= i+1
 
 
                 print("new_face_match_api_row::", new_face_match_api_row)
