@@ -114,16 +114,8 @@ class GETFRAME():
                 file_bid, file_video_id, file_name_suffix = get_metadata_from_file_name(video_file_name)
                 image_file_name_without_extension = video_file_path.split("/")[-1].replace(INPUT_VIDEO_FILE_FORMAT, "")
 
-                if file_video_id == "6344129230112":
-                    continue
-                if file_video_id == "6344128893112":
-                    continue
-                if file_video_id == "6344127905112":
-                    continue
-                if file_video_id == "6339834764112":
-                    continue
-                if file_video_id == "6343906490112":
-                    continue
+                if file_video_id == "6344129230112" or file_video_id == "6344128893112" or file_video_id == "6344127905112" or file_video_id == "6339834764112" or file_video_id == "6343906490112":
+                    self.add_failed_capture_face_csv(video_file_path)
 
                 screenshot_present_flag = is_value_present_in_dataframe(file_video_id, self.face_capture_dataframe)
                 if not screenshot_present_flag:
@@ -154,7 +146,8 @@ if __name__ == "__main__":
     input_video_folder_list = glob.glob(f"{DIRECTORY_OF_INPUT_VIDEO_DIRECTORY}/*")
     input_video_folder_list.sort()
     start_index = 0
-    end_index = 50
+    end_index = 150
+    print(input_video_folder_list)
     # for input_video_folder in input_video_folder_list:
     for index, input_video_folder in enumerate(input_video_folder_list):
         if start_index <= index and index < end_index:
