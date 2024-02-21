@@ -4,7 +4,7 @@ import os
 from config import ADD_IMAGES_TO_API_CSV, ADD_IMAGES_TO_API_ERROR_CSV, FINAL_FACES_DIRECTORY, FACE_IMAGE_FILE_FORMAT, API_KEY
 import pandas as pd
 from utils import get_metadata_from_file_name, is_value_present_in_dataframe
-
+import time
 class ADDFACES():
     def __init__(self):
 
@@ -45,6 +45,7 @@ class ADDFACES():
                 response = requests.post(
                     self.add_face_url, data=self.payload, files=files, headers=self.headers
                 )
+                time.sleep(0.75)
                 # print(type(response.text))
                 print(eval(response.text))
                 face_id = eval(response.text)["amazon"]["face_ids"][0]

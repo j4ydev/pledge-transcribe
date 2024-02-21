@@ -1,6 +1,6 @@
 WORKING_DIR_PREFIX_JAY = "/Users/jay"
 WORKING_DIR_PREFIX_SID = "/Users/khasgiwa/Workbench"
-WORKING_DIR_PREFIX = WORKING_DIR_PREFIX_SID
+WORKING_DIR_PREFIX = WORKING_DIR_PREFIX_JAY
 
 BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY = "output/audio_from_video"
 BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY = "mdx_extra"
@@ -55,7 +55,7 @@ VIDEO_FILE_FORMAT =  ".mp4"
 
 
 FLATTEN_VIDEO_CSV_FILE_PATH =  "output/flatten_input_video.csv"
-FLATTEN_VIDEO_ERROR_CSV_FILE_PATH = "output/error/failed_flatten.csv"
+FLATTEN_VIDEO_ERROR_CSV_FILE_PATH = "output/error/failed_flatten_video.csv"
 FINDING_FACE_AGAIN_CSV_PATH = "output/find_faces_again.csv"
 FINDING_FACE_AGAIN_ERROR_CSV_PATH = "output/find_faces_again_error.csv"
 

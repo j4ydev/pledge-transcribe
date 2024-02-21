@@ -5,6 +5,7 @@ from config import FIND_FACES_API_CSV, FIND_FACES_API_ERROR_CSV, ADD_IMAGES_TO_A
 import pandas as pd
 from utils import get_metadata_from_file_name, is_value_present_in_dataframe
 import shutil
+import time
 
 class FINDFACESAPI():
     def __init__(self):
@@ -51,6 +52,7 @@ class FINDFACESAPI():
                 recognize_response = requests.post(
                     recognize_url, data=self.payload, files=face_to_recognize, headers=self.headers
                 )
+                time.sleep(0.75)
                 print("response::", recognize_response)
                 matches = recognize_response.json()[self.providers]["items"]
                 print("matches::", matches)
@@ -60,10 +62,10 @@ class FINDFACESAPI():
                     match_found_status = True
 
                 new_face_match_api_row = {'video_id': str(video_id_), 'match_found': match_found_status, 'face_match_0': video_id_, 'confidence_0': 100}
-                # if not os.path.isdir(f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}"):
-                #     os.mkdir(f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}")
-                #     similar_face_image_path = f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}/0_{video_id_}_{file_name_suffix}_{FACE_IMAGE_FILE_FORMAT}"
-                #     shutil.copy(face_path, similar_face_image_path)
+                if not os.path.isdir(f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}"):
+                    os.mkdir(f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}")
+                    similar_face_image_path = f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}/0_{video_id_}_{file_name_suffix}_{FACE_IMAGE_FILE_FORMAT}"
+                    shutil.copy(face_path, similar_face_image_path)
                 
                 i=0
                 for matched_face in matches:
@@ -79,10 +81,10 @@ class FINDFACESAPI():
                     new_face_match_api_row[f"face_match_{i+1}"] = face_video_id
                     new_face_match_api_row[f"confidence_{i+1}"] = confidence * 100
                     
-                    # similar_face_image_path = f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}/{i+1}_{face_video_id}_{face_video_suffix}.png"
-                    # print("similar_face_image_path::", similar_face_image_path)
-                    # print("--" * 40)
-                    # shutil.copy(image_file_path, similar_face_image_path)
+                    similar_face_image_path = f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}/{i+1}_{face_video_id}_{face_video_suffix}.png"
+                    print("similar_face_image_path::", similar_face_image_path)
+                    print("--" * 40)
+                    shutil.copy(image_file_path, similar_face_image_path)
                     i= i+1
 
 
