@@ -1,13 +1,19 @@
-import pandas as pd
-from deepface import DeepFace
 import glob
 import os
 import shutil
+
 import cv2
-from config import (INSPECT_DATAFRAME_PATH, VIDEO_FILE_FORMAT, FACE_IMAGE_FILE_FORMAT,
-                    CAPTURE_FACE_BRUT_FORCE_CSV_PATH, CAPTURE_FACE_BRUT_FORCE_ERROR_CSV_PATH,
-                    FLATTEN_VIDEO_CSV_FILE_PATH, CAPTURE_FACES_BRUT_FORCE_DIRECTORY, CAPTURE_FACES_BRUT_FORCE_ERROR_DIRECTORY)
+import pandas as pd
+from deepface import DeepFace
+
+from config import (CAPTURE_FACE_BRUT_FORCE_CSV_PATH,
+                    CAPTURE_FACE_BRUT_FORCE_ERROR_CSV_PATH,
+                    CAPTURE_FACES_BRUT_FORCE_DIRECTORY,
+                    CAPTURE_FACES_BRUT_FORCE_ERROR_DIRECTORY,
+                    FACE_IMAGE_FILE_FORMAT, FLATTEN_VIDEO_CSV_FILE_PATH,
+                    INSPECT_DATAFRAME_PATH, VIDEO_FILE_FORMAT)
 from utils import is_value_present_in_dataframe
+
 
 class CAPTUREFACEBRUT():
     def __init__(self):
@@ -53,13 +59,16 @@ class CAPTUREFACEBRUT():
 
     def find_face_from_video(self, video_file, video_id):
         print(video_file)
-        video = cv2.VideoCapture(video_file)        
+        video = cv2.VideoCapture(video_file)
         frame_count = 0
-        
+
         while True:
+            frame_count += 1
             ret, frame = video.read()
             if not ret:
+                video.release()
                 break
+
             # if frame_count % 2 == 0:
             cv2.imwrite(f"temp_face.png", frame)
             validation = self.find_face("temp_face.png","temp_face.png")
@@ -74,12 +83,9 @@ class CAPTUREFACEBRUT():
                 # self.accepted_video_faces.to_csv(FINAL_FACES_CSV_PATH, index=False)
                 return True
 
-            frame_count += 1     
         # Release the video object
-        return False
         video.release()
-
-
+        return False
 
     def process(self,):
         for index, row in self.inspect_dataframe.iterrows():
