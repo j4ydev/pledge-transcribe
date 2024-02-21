@@ -1,18 +1,24 @@
-import requests
 import glob
 import os
-from config import FIND_FACES_API_CSV, FIND_FACES_API_ERROR_CSV, ADD_IMAGES_TO_API_CSV, FINAL_FACES_DIRECTORY, FACE_IMAGE_FILE_FORMAT, SIMILAR_PLEDGE_TAKERS_API_DIRECTORY, API_KEY
-import pandas as pd
-from utils import get_metadata_from_file_name, is_value_present_in_dataframe
 import shutil
 import time
+
+import pandas as pd
+import requests
+
+from config import (ADD_IMAGES_TO_API_CSV, API_KEY, FACE_IMAGE_FILE_FORMAT,
+                    FINAL_FACES_DIRECTORY, FIND_FACES_API_CSV,
+                    FIND_FACES_API_ERROR_CSV,
+                    SIMILAR_PLEDGE_TAKERS_API_DIRECTORY)
+from utils import get_metadata_from_file_name, is_value_present_in_dataframe
+
 
 class FINDFACESAPI():
     def __init__(self):
 
         self.key__ = API_KEY
         self.headers = {"Authorization": f"Bearer {self.key__}"}
-        self.add_face_url = "https://api.edenai.run/v2/image/face_recognition/add_face"
+        self.add_face_url = "https://api.edenai.run/v2/image/face_recognition/add_face" # TODO: not needed
         self.providers = "amazon"
         self.payload = {"providers": self.providers}
         self.add_images_to_api_dataframe = pd.read_csv(ADD_IMAGES_TO_API_CSV)
@@ -34,7 +40,7 @@ class FINDFACESAPI():
                 self.find_faces_api_error_dataframe = pd.DataFrame(columns=['video_id'])
         else:
             self.find_faces_api_error_dataframe = pd.DataFrame(columns=['video_id'])
-        
+
         if not os.path.isdir(SIMILAR_PLEDGE_TAKERS_API_DIRECTORY):
             os.mkdir(SIMILAR_PLEDGE_TAKERS_API_DIRECTORY)
 
@@ -46,13 +52,14 @@ class FINDFACESAPI():
 
         if not is_value_present_flag:
             try:
+                time.sleep(0.75)
                 # print("--" * 20)
                 face_to_recognize = {"file": open(face_path, 'rb')}
-                recognize_url = "https://api.edenai.run/v2/image/face_recognition/recognize"
+                recognize_url = "https://api.edenai.run/v2/image/face_recognition/recognize" # TODO: move up
                 recognize_response = requests.post(
                     recognize_url, data=self.payload, files=face_to_recognize, headers=self.headers
                 )
-                time.sleep(0.75)
+                # TODO: edenai_recognize -> vid.json
                 print("response::", recognize_response)
                 matches = recognize_response.json()[self.providers]["items"]
                 print("matches::", matches)
@@ -66,27 +73,23 @@ class FINDFACESAPI():
                     # os.mkdir(f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}")
                     # similar_face_image_path = f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}/0_{video_id_}_{file_name_suffix}_{FACE_IMAGE_FILE_FORMAT}"
                     # shutil.copy(face_path, similar_face_image_path)
-                
+
                 i=0
-                for matched_face in matches:
+                for matching_face_file_info in matches:
+                    i= i+1
                     print("-- ++ " * 20 )
-                    print("matched_face::"), matched_face
-                    face_id = matched_face["face_id"]
-                    print("face_id::", face_id)
-                    confidence = matched_face["confidence"]
-                    print("confidence::", confidence)
+                    print("matching_face_file_info::", matching_face_file_info) # TODO:
+                    face_id = matching_face_file_info["face_id"]
+                    confidence = matching_face_file_info["confidence"]
                     image_file_path = self.add_images_to_api_dataframe.loc[self.add_images_to_api_dataframe['face_id'] == str(face_id), 'image_file_path'].iloc[0]
                     print("image_file_path::", image_file_path)
                     _, face_video_id, face_video_suffix = get_metadata_from_file_name(image_file_path.split("/")[-1].replace(FACE_IMAGE_FILE_FORMAT, ""))
-                    new_face_match_api_row[f"face_match_{i+1}"] = face_video_id
-                    new_face_match_api_row[f"confidence_{i+1}"] = confidence * 100
-                    
+                    new_face_match_api_row[f"face_match_{i}"] = face_video_id
+                    new_face_match_api_row[f"confidence_{i}"] = confidence * 100
                     # similar_face_image_path = f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{video_id_}/{i+1}_{face_video_id}_{face_video_suffix}.png"
                     # print("similar_face_image_path::", similar_face_image_path)
                     # print("--" * 40)
                     # shutil.copy(image_file_path, similar_face_image_path)
-                    # i= i+1
-
 
                 print("new_face_match_api_row::", new_face_match_api_row)
                 new_face_match_dataframe = pd.DataFrame(new_face_match_api_row, index=[0])
@@ -102,11 +105,11 @@ class FINDFACESAPI():
 
 if __name__ == "__main__":
     find_faces_obj = FINDFACESAPI()
-    
+
     face_images_list = glob.glob(f"{FINAL_FACES_DIRECTORY}/*{FACE_IMAGE_FILE_FORMAT}")
     for face_image_path in face_images_list:
         # print("=================", face_image_path)
         find_faces_obj.process(face_image_path)
-        
 
-  
+
+

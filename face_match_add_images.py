@@ -51,7 +51,7 @@ class ADDFACES():
                 response = requests.post(
                     self.add_face_url, data=self.payload, files=files, headers=self.headers
                 )
-                time.sleep(0.75)
+                # output to edenai_upload -> vid.json # TODO: Jay
                 # print(type(response.text))
                 print(eval(response.text))
                 face_id = eval(response.text)["amazon"]["face_ids"][0]
@@ -63,6 +63,7 @@ class ADDFACES():
 
                 self.add_images_to_api_dataframe = pd.concat([self.add_images_to_api_dataframe, new_add_images_to_api_dataframe], ignore_index=True)
                 self.add_images_to_api_dataframe.to_csv(ADD_IMAGES_TO_API_CSV, index=False)
+                time.sleep(0.75)
             except:
                 new_add_images_to_api_error_raw = {'video_id': str(video_id_)}
                 new_add_images_to_api_error_dataframe = pd.DataFrame(new_add_images_to_api_error_raw, index=[0])
