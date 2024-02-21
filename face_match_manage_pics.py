@@ -1,17 +1,20 @@
-import pandas as pd
-from config import (FIND_FACES_API_CSV, FINAL_FACES_DIRECTORY, FACE_IMAGE_FILE_FORMAT, 
-                    SIMILAR_PLEDGE_TAKERS_API_DIRECTORY, FIND_FACES_MANAGE_PICS_ERROR_CSV)
 import glob
-from utils import get_metadata_from_file_name
 import os
 import shutil
+
+import pandas as pd
 from icecream import ic
+
+from config import (FACE_IMAGE_FILE_FORMAT, FINAL_FACES_DIRECTORY,
+                    FIND_FACES_API_CSV, FIND_FACES_MANAGE_PICS_ERROR_CSV,
+                    SIMILAR_PLEDGE_TAKERS_API_DIRECTORY)
+from utils import get_metadata_from_file_name
+
 
 class MANAGEFACEMATCHPICS():
     def __init__(self):
         # self.accepted_video_faces_list = glob.glob(f"{FINAL_FACES_DIRECTORY}/*{FACE_IMAGE_FILE_FORMAT}")
-        self.accepted_video_faces_list = glob.glob("output/accepted_video_faces_1/*.png")
-        ic(self.accepted_video_faces_list)
+        self.accepted_video_faces_list = glob.glob("output/accepted_video_faces_1/*.png") # TODO: jay
         if not os.path.isdir(SIMILAR_PLEDGE_TAKERS_API_DIRECTORY):
             os.mkdir(SIMILAR_PLEDGE_TAKERS_API_DIRECTORY)
 
@@ -54,7 +57,7 @@ class MANAGEFACEMATCHPICS():
                     copy_target_path = f"{SIMILAR_PLEDGE_TAKERS_API_DIRECTORY}/{source_video_id}/0_{video_id}_{file_name_suffix}{FACE_IMAGE_FILE_FORMAT}"
                     if not os.path.isfile(copy_target_path):
                         shutil.copy(source_image_path, copy_target_path)
-                
+
                 num_of_faces = self.identity_number_of_face_matches(row)
                 # ic(num_of_faces)
                 # print("--- --- " * 20 )
