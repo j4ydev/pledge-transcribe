@@ -145,3 +145,28 @@ for file in *; do
     mv "$file" "$new_name"
   fi
 done
+
+# distribute images to compare
+directory_count=4
+i=1
+for file in *; do
+  if [[ -f "$file" ]]; then
+    remainder=$(($i % $directory_count))
+    echo "$i: $remainder : $file"
+    case $remainder in
+    1)
+      cp "$file" ../accepted_video_faces_1/
+      ;;
+    2)
+      cp "$file" ../accepted_video_faces_2/
+      ;;
+    3)
+      cp "$file" ../accepted_video_faces_3/
+      ;;
+    0)
+      cp "$file" ../accepted_video_faces_4/
+      ;;
+    esac
+    i=$(($i + 1))
+  fi
+done
