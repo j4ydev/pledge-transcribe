@@ -35,9 +35,13 @@ USE_FP16 = False
 
 AUDIO_EXTRACT_CSV_PATH = "output/extract_audio_from_video.csv"
 
-
-FINAL_FACES_DIRECTORY = "output/accepted_video_faces"
 FINAL_FACES_CSV_PATH = "output/accepted_video_faces.csv"
+# TODO: sidd to clean up later
+FINAL_FACES_DIRECTORY = "output/accepted_video_faces"
+# FINAL_FACES_DIRECTORY = "output/accepted_video_faces_1"
+# FINAL_FACES_DIRECTORY = "output/accepted_video_faces_2"
+# FINAL_FACES_DIRECTORY = "output/accepted_video_faces_3"
+# FINAL_FACES_DIRECTORY = "output/accepted_video_faces_4"
 
 INSPECT_DATAFRAME_PATH = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/inspect.csv" ### INSPECT.CSV PATH FROM LOCAL MACHINE
 MANUAL_FACE_CAPTURE_DIRECTORY = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/manual_screenshot_raw" ### DIRECTORY OF MANUALLY CAPTURED FACES(DO NOT ADD "/" AT THE END)
@@ -62,10 +66,20 @@ FINDING_FACE_AGAIN_ERROR_CSV_PATH = "output/find_faces_again_error.csv"
 ADD_IMAGES_TO_API_CSV = "output/add_images_to_api.csv"
 ADD_IMAGES_TO_API_ERROR_CSV = "output/error/add_images_to_api_error.csv"
 
-SIMILAR_PLEDGE_TAKERS_API_DIRECTORY = "output/similar_pledge_takers_api"
+SIMILAR_PLEDGE_TAKERS_API_DIRECTORY = "output/similar_pledge_takers_api" # where we copy the images to compare - 1 dir for each accepted video
+FIND_FACES_MANAGE_PICS_ERROR_CSV = "output/find_faces_manage_pics.csv"
+
 FIND_FACES_API_CSV = "output/find_faces_api.csv"
 FIND_FACES_API_ERROR_CSV = "output/error/find_faces_api_error.csv"
-FIND_FACES_MANAGE_PICS_ERROR_CSV = "output/find_faces_manage_pics.csv"
+# TODO: sidd to clean up later_1
+# FIND_FACES_API_CSV = "output/find_faces_api_1.csv"
+# FIND_FACES_API_ERROR_CSV = "output/error/find_faces_api_error_1.csv"
+# FIND_FACES_API_CSV = "output/find_faces_api_2.csv"
+# FIND_FACES_API_ERROR_CSV = "output/error/find_faces_api_error_2.csv"
+# FIND_FACES_API_CSV = "output/find_faces_api_3.csv"
+# FIND_FACES_API_ERROR_CSV = "output/error/find_faces_api_error_3.csv"
+# FIND_FACES_API_CSV = "output/find_faces_api_4.csv"
+# FIND_FACES_API_ERROR_CSV = "output/error/find_faces_api_error_4.csv"
 
 CAPTURE_FACE_BRUT_FORCE_CSV_PATH = "output/capture_face_brut_force.csv"
 CAPTURE_FACE_BRUT_FORCE_ERROR_CSV_PATH = "output/error/accepted_pledge_face_not_found.csv"
