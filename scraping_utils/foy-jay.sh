@@ -89,3 +89,59 @@ mv *.csv file_list/
 cd file_list
 cat *.csv >combined
 mv combined sidd_machine_vid.csv
+
+# to generate manual screenshot file list
+
+ls -1 1/* >1.csv
+ls -1 2/* >2.csv
+ls -1 3/* >3.csv
+ls -1 4/* >4.csv
+ls -1 5/* >5.csv
+ls -1 6/* >6.csv
+ls -1 7/* >7.csv
+ls -1 8/* >8.csv
+ls -1 9/* >9.csv
+ls -1 10/* >10.csv
+ls -1 11/* >11.csv
+ls -1 12/* >12.csv
+ls -1 13/* >13.csv
+ls -1 14/* >14.csv
+ls -1 15/* >15.csv
+ls -1 16/* >16.csv
+ls -1 17/* >17.csv
+ls -1 18/* >18.csv
+ls -1 19/* >19.csv
+ls -1 20/* >20.csv
+ls -1 21/* >21.csv
+ls -1 22/* >22.csv
+ls -1 23/* >23.csv
+ls -1 24/* >24.csv
+ls -1 25/* >25.csv
+ls -1 26/* >26.csv
+ls -1 27/* >27.csv
+ls -1 28/* >28.csv
+ls -1 29/* >29.csv
+ls -1 30/* >30.csv
+ls -1 31/* >31.csv
+ls -1 32/* >32.csv
+ls -1 33/* >33.csv
+ls -1 34/* >34.csv
+ls -1 35/* >35.csv
+ls -1 36/* >36.csv
+ls -1 37/* >37.csv
+ls -1 38/* >38.csv
+ls -1 39/* >39.csv
+
+#####    ADD BRUTE AS A SUFFIX TO THE FILES WE UPLOADING #######
+for file in *; do
+  # Check if it's a file (not a directory)
+  if [[ -f "$file" ]]; then
+    # Extract filename without extension
+    name="${file%.*}"
+    # Add suffix and extension
+    new_name="${name}_brute.${file##*.}"
+    echo "$new_name"
+    # Rename the file
+    mv "$file" "$new_name"
+  fi
+done
