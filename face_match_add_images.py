@@ -21,7 +21,6 @@ class ADDFACES():
         self.add_face_url = "https://api.edenai.run/v2/image/face_recognition/add_face"
         self.providers = "amazon"
         self.payload = {"providers": self.providers}
-        # print("-------------------")
 
         if not os.path.isdir(FACE_MATCH_ADD_IMAGES_RESPONSE_DIRECTORY):
             os.mkdir(FACE_MATCH_ADD_IMAGES_RESPONSE_DIRECTORY)
@@ -48,9 +47,12 @@ class ADDFACES():
         ## add face images
         face_image_name = face_path.split("/")[-1].replace(FACE_IMAGE_FILE_FORMAT, "")
         file_bid, video_id_, file_name_suffix = get_metadata_from_file_name(face_image_name)
-        is_value_present_flag = is_value_present_in_dataframe(video_id_, self.add_images_to_api_dataframe)
 
-        if not is_value_present_flag:
+        is_value_present_flag = is_value_present_in_dataframe(video_id_, self.add_images_to_api_dataframe)
+        is_value_present_flag_in_error = is_value_present_in_dataframe(video_id_, self.add_images_to_api_error_dataframe)
+        already_processed = is_value_present_flag or is_value_present_flag_in_error
+
+        if not already_processed:
             try:
                 files = {"file": open(face_path, "rb")}
                 print(f"{video_id_}: uploading  {face_path}")
@@ -67,8 +69,9 @@ class ADDFACES():
 
                 self.add_images_to_api_dataframe = pd.concat([self.add_images_to_api_dataframe, new_add_images_to_api_dataframe], ignore_index=True)
                 self.add_images_to_api_dataframe.to_csv(ADD_IMAGES_TO_API_CSV, index=False)
-                time.sleep(0.75)
+                time.sleep(0.1)
             except:
+                print(f"{video_id_}: -------------- upload failed --------------  {face_path}")
                 new_add_images_to_api_error_raw = {'video_id': str(video_id_)}
                 new_add_images_to_api_error_dataframe = pd.DataFrame(new_add_images_to_api_error_raw, index=[0])
 
@@ -80,7 +83,7 @@ if __name__ == "__main__":
     add_faces_obj = ADDFACES()
 
     face_images_list = glob.glob(f"{FINAL_FACES_DIRECTORY}/*{FACE_IMAGE_FILE_FORMAT}")
-    print(face_images_list)
+    # print(face_images_list)
     for face_image_path in face_images_list:
-        print(face_image_path)
+        # print(face_image_path)
         add_faces_obj.process(face_image_path)
