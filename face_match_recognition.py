@@ -1,4 +1,5 @@
 import glob
+import json
 import os
 import shutil
 import time
@@ -7,18 +8,19 @@ import pandas as pd
 import requests
 
 from config import (ADD_IMAGES_TO_API_CSV, API_KEY, FACE_IMAGE_FILE_FORMAT,
+                    FACE_MATCH_RECOGNITION_RESPONSE_DIRECTORY,
                     FINAL_FACES_DIRECTORY, FIND_FACES_API_CSV,
-                    FIND_FACES_API_ERROR_CSV, FACE_MATCH_RECOGNITION_RESPONSE_DIRECTORY,
+                    FIND_FACES_API_ERROR_CSV,
                     SIMILAR_PLEDGE_TAKERS_API_DIRECTORY)
 from utils import get_metadata_from_file_name, is_value_present_in_dataframe
-import json
+
 
 class FINDFACESAPI():
     def __init__(self):
 
         self.key__ = API_KEY
         self.headers = {"Authorization": f"Bearer {self.key__}"}
-        self.recognize_url = "https://api.edenai.run/v2/image/face_recognition/recognize" # TODO:Done not needed
+        self.recognize_url = "https://api.edenai.run/v2/image/face_recognition/recognize"
         self.providers = "amazon"
         self.payload = {"providers": self.providers}
         self.add_images_to_api_dataframe = pd.read_csv(ADD_IMAGES_TO_API_CSV)
@@ -55,14 +57,12 @@ class FINDFACESAPI():
 
         if not is_value_present_flag:
             try:
-                time.sleep(0.75)
-                # print("--" * 20)
+                time.sleep(0.6)
                 face_to_recognize = {"file": open(face_path, 'rb')}
-                # recognize_url = "https://api.edenai.run/v2/image/face_recognition/recognize" # TODO:Done move up
                 recognize_response = requests.post(
                     self.recognize_url, data=self.payload, files=face_to_recognize, headers=self.headers
                 )
-                # TODO:Done edenai_recognize -> vid.json
+
                 with open(f"{FACE_MATCH_RECOGNITION_RESPONSE_DIRECTORY}/{video_id_}.json", "w") as json_file:
                     json.dump(recognize_response.json(), json_file)
 
@@ -80,7 +80,6 @@ class FINDFACESAPI():
                 for matching_face_file_info in matches:
                     i= i+1
                     print("-- ++ " * 20 )
-                    # print("matching_face_file_info::", matching_face_file_info) # TODO: Done
                     face_id = matching_face_file_info["face_id"]
                     confidence = matching_face_file_info["confidence"]
                     image_file_path = self.add_images_to_api_dataframe.loc[self.add_images_to_api_dataframe['face_id'] == str(face_id), 'image_file_path'].iloc[0]
