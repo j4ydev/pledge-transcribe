@@ -1,6 +1,6 @@
 WORKING_DIR_PREFIX_JAY = "/Users/jay"
 WORKING_DIR_PREFIX_SID = "/Users/khasgiwa/Workbench"
-WORKING_DIR_PREFIX = WORKING_DIR_PREFIX_SID
+WORKING_DIR_PREFIX = WORKING_DIR_PREFIX_JAY
 
 BACKGROUND_NOISE_REMOVED_AUDIO_DIRECTORY = "output/audio_from_video"
 BACKGROUND_NOISE_REMOVED_AUDIO_SUB_DIRECTORY = "mdx_extra"
@@ -66,11 +66,20 @@ FINDING_FACE_AGAIN_ERROR_CSV_PATH = "output/find_faces_again_error.csv"
 ADD_IMAGES_TO_API_CSV = "output/add_images_to_api.csv"
 ADD_IMAGES_TO_API_ERROR_CSV = "output/error/add_images_to_api_error.csv"
 
+FACE_MATCH_ADD_IMAGES_1_INPUT = "output/accepted_video_faces" ##TODO: sid might have to change
+
+ADD_IMAGES_TO_API_CSV_1 = "output/face_match_add_images_1.csv"
+ADD_IMAGES_TO_API_ERROR_CSV_1 = "output/error/face_match_add_images_1_error.csv"
+
 SIMILAR_PLEDGE_TAKERS_API_DIRECTORY = "output/similar_pledge_takers_api" # where we copy the images to compare - 1 dir for each accepted video
 FIND_FACES_MANAGE_PICS_ERROR_CSV = "output/find_faces_manage_pics.csv"
 
 FIND_FACES_API_CSV = "output/find_faces_api.csv"
 FIND_FACES_API_ERROR_CSV = "output/error/find_faces_api_error.csv"
+
+FIND_FACES_API_CSV_1 = "output/face_match_recognition_1.csv"
+FIND_FACES_API_ERROR_CSV_1 = "output/error/face_match_recognition_1_error.csv"
+
 # TODO: sidd to clean up later_1
 # FIND_FACES_API_CSV = "output/find_faces_api_1.csv"
 # FIND_FACES_API_ERROR_CSV = "output/error/find_faces_api_error_1.csv"
@@ -88,5 +97,9 @@ CAPTURE_FACES_BRUT_FORCE_ERROR_DIRECTORY = "output/error/accepted_pledge_face_no
 
 FACE_MATCH_ADD_IMAGES_RESPONSE_DIRECTORY = "output/upload/edenai_upload"
 FACE_MATCH_RECOGNITION_RESPONSE_DIRECTORY = "output/upload/edenai_recognition"
+
+FACE_MATCH_ADD_IMAGES_RESPONSE_DIRECTORY_1 = "output/upload/edenai_upload_1"
+FACE_MATCH_RECOGNITION_RESPONSE_DIRECTORY_1 = "output/upload/face_match_recognition_1"
+
 
 API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjI0NGY2ODMtZTYxNy00MGNkLWFjNTktYjhiZTc5YTQ4NWY1IiwidHlwZSI6ImFwaV90b2tlbiJ9.te2w5Uc3aVbgOylenYlZbnZhxFkXQrvL15p4DB76i3A"
