@@ -156,3 +156,20 @@ Duplicate Face detection - data preparation
    "output/error/failed_flatten.csv"
 
 5. "output/find_faces_again.csv", "output/find_faces_again_error.csv",
+
+---
+
+face_match_add_images_1.py [ input dir: face_match_add_images_1_input ]
+o/p:
+
+- output/upload/edenai_upload_1/ to contain video_id_face_id.json
+- face_match_add_images_1.csv
+  -- video_id,face_id,image_file_path
+  -- 6346229376112,444ddbb0-698b-4c4d-b43a-f74a27afee2f, output/capture_face_brut_force/6346229376112_latif_pathan_brute.png
+
+face_match_recognition_1.py [ input: face_match_add_images_1.csv ]
+o/p:
+
+- output/face_match_recognition_1.csv
+- vid, face_id, image_file_path, face_id_1, confidence_1, face_id_2, confidence_2, face_id_3, confidence_3
+- output/upload/edenai_recognize_1/ to contain video_id_face_id.json
