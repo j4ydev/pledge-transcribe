@@ -1,12 +1,15 @@
 import glob
+import json
 import os
 import time
 
 import pandas as pd
 import requests
-import json
+
 from config import (ADD_IMAGES_TO_API_CSV, ADD_IMAGES_TO_API_ERROR_CSV,
-                    API_KEY, FACE_IMAGE_FILE_FORMAT, FINAL_FACES_DIRECTORY, FACE_MATCH_ADD_IMAGES_RESPONSE_DIRECTORY)
+                    API_KEY, FACE_IMAGE_FILE_FORMAT,
+                    FACE_MATCH_ADD_IMAGES_RESPONSE_DIRECTORY,
+                    FINAL_FACES_DIRECTORY)
 from utils import get_metadata_from_file_name, is_value_present_in_dataframe
 
 
@@ -54,7 +57,7 @@ class ADDFACES():
                 response = requests.post(
                     self.add_face_url, data=self.payload, files=files, headers=self.headers
                 )
-                
+
                 with open(f"{FACE_MATCH_ADD_IMAGES_RESPONSE_DIRECTORY}/{video_id_}.json", "w") as json_file:
                     json.dump(response.json(), json_file)
 
