@@ -103,3 +103,9 @@ FACE_MATCH_RECOGNITION_RESPONSE_DIRECTORY_1 = "output/upload/face_match_recognit
 
 
 API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjI0NGY2ODMtZTYxNy00MGNkLWFjNTktYjhiZTc5YTQ4NWY1IiwidHlwZSI6ImFwaV90b2tlbiJ9.te2w5Uc3aVbgOylenYlZbnZhxFkXQrvL15p4DB76i3A"
+
+CAPTURE_FACE_BRUT_FORCE_25_PER_CSV_PATH =  "output/capture_face_brut_force_25_per.csv"
+CAPTURE_FACE_BRUT_FORCE_25_PER_ERROR_CSV_PATH =  "output/error/capture_face_brut_force_25_per_error.csv"
+CAPTURE_FACES_BRUT_FORCE_25_PER_DIRECTORY = "output/capture_face_brut_force_25_per"
+CAPTURE_FACES_BRUT_FORCE_25_PER_ERROR_DIRECTORY = "output/error/capture_face_brut_force_25_per_error"
+SCREENSHOT_NOT_FOUND_DATAFRAME_PATH = f"{WORKING_DIR_PREFIX}/data-dumps/GWR/manual_output/missing_ss.csv"
