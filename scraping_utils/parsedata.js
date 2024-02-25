@@ -331,6 +331,22 @@ const batch = {
     pageZeroURL:
       "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-18&created[max][date]=2024-02-23&page=0",
   },
+  42: {
+    min_date: "2024-02-24",
+    max_date: "2024-02-24",
+    pageCount: 3,
+    videoCount: 56,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-24&created[max][date]=2024-02-24&page=0",
+  },
+  43: {
+    min_date: "2024-02-25",
+    max_date: "2024-02-25",
+    pageCount: 1,
+    videoCount: 7,
+    pageZeroURL:
+      "https://pledgewithpfizerco.pfizersite.io/amr-video?moderation_state=All&title=&created[min][date]=2024-02-24&created[max][date]=2024-02-24&page=0",
+  },
   100: {
     min_date: "2022-01-01",
     max_date: "2024-02-11",
@@ -571,13 +587,23 @@ function counter(batchNumber) {
     console.log("======= PAGE Finished ========");
     pending = 20;
     const nextPageIndex = getCurrentPageNumber() + 1;
-    if (Number.parseInt(batch[batchNumber].pageCount) >= nextPageIndex) {
+    if (nextPageIndex < Number.parseInt(batch[batchNumber].pageCount)) {
       window.location.replace(
         `${getBatchUrl({ batchNumber, pageNumber: nextPageIndex })}`
       );
     } else {
       console.log("===XX==+ Batch Finished ===XX===");
-      window.location.replace("https://google.com");
+      if (loadNextBatch) {
+        const newBatchNumber = `${Number.parseInt(batchNumber) + 1}`;
+        alert(
+          `newBatchNumber: ${newBatchNumber}, videoCount: ${batch[newBatchNumber].videoCount}`
+        );
+        window.location.replace(
+          `${getBatchUrl({ batchNumber: newBatchNumber, pageNumber: 0 })}`
+        );
+      } else {
+        window.location.replace("https://google.com");
+      }
     }
   }
 }
@@ -644,9 +670,10 @@ function boomboom(batchNumber) {
   }
 }
 
+const loadNextBatch = false;
 const addHeader = false;
-const downloadVideoFlag = true;
-const batchNumber = "41";
+const downloadVideoFlag = false;
+var batchNumber = "24";
 var pending = 20;
 var dataList = [];
 boomboom(batchNumber);
