@@ -38,20 +38,6 @@ class GETFRAME():
         if os.path.exists(file_path):
             os.remove(file_path)
 
-    def get_image_from_video(self, video_path):
-        video_capture = cv2.VideoCapture(video_path, cv2.CAP_FFMPEG)
-        total_frames = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
-        random_frame = random.randint(1, total_frames-5)
-        current_frame = 0
-        while True:
-            ret, frame = video_capture.read()
-            if not ret or current_frame == random_frame:
-                break
-            current_frame += 1
-        if current_frame == random_frame:
-            return frame
-
-
     def find_face(self, img1_path, img2_path):
         found_face_flag = False
         try:
@@ -60,6 +46,13 @@ class GETFRAME():
         except Exception as e:
             found_face_flag = False
         return found_face_flag
+
+    def get_image_from_video_frames(self, video_capture, total_frames):
+        random_frame = random.randint(1, total_frames-5)
+        video_capture.set(cv2.CAP_PROP_POS_FRAMES, random_frame - 1)
+        ret, frame = video_capture.read()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        return frame
 
     def capture_face_image(self, video_file_path, image_file_path_without_extension):
         reference_frame_file_path = f'{FACE_IMAGE_DIRECTORY}/{image_file_path_without_extension}{FACE_IMAGE_FILE_FORMAT}'
@@ -70,10 +63,13 @@ class GETFRAME():
 
         self.counter = self.counter + 1
 
-        reference_frame = self.get_image_from_video(video_file_path)
+        video_capture = cv2.VideoCapture(video_file_path, cv2.CAP_FFMPEG)
+        total_frames = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
+        reference_frame = self.get_image_from_video_frames(video_capture, total_frames)
         cv2.imwrite(reference_frame_file_path, reference_frame)
-        frame_to_compare = self.get_image_from_video(video_file_path)
+        frame_to_compare = self.get_image_from_video_frames(video_capture, total_frames)
         cv2.imwrite(frame_to_compare_file_path, frame_to_compare)
+        video_capture.release()
 
         if self.counter > 30:
             self.remove_file_if_exists(reference_frame_file_path)
